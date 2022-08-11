@@ -10,13 +10,16 @@ export default {
 
 <template>
   <p>Test text</p>
-  <DeleteIcon class="icon" />
+  <DeleteIcon class="icon" viewBox="0 0 32 32" />
 </template>
 
 <style lang="scss">
 p {
-  & {
-    color: red;
-  }
+  font-size: 2rem;
+}
+.icon {
+  border: 1px solid red;
+  height: 10rem;
+  width: 10rem;
 }
 </style>
