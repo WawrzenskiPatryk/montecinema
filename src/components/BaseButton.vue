@@ -39,9 +39,18 @@ export default defineComponent({
       },
     },
   },
+  data() {
+    return {
+      isHover: false,
+    };
+  },
   methods: {
     clickHandler() {
       this.$emit('btnClick');
+    },
+    hoverHandler(action) {
+      if (action === 'enter') this.isHover = true;
+      if (action === 'leave') this.isHover = false;
     },
   },
   computed: {
@@ -68,11 +77,21 @@ export default defineComponent({
       };
     },
     iconColor() {
-      if (this.buttonType === 'filled-red' || this.buttonType === 'filled-dark') return '#ffffff';
-      if (this.buttonType === 'hollow-red' || this.buttonType === 'borderless-red')
-        return '#ec1115';
-      if (this.buttonType === 'hollow-red-faded') return '#f7a0a1';
-      if (this.buttonType === 'hollow-dark') return '#343541';
+      const isFilled = this.buttonType === 'filled-red' || this.buttonType === 'filled-dark';
+      const isHollowRedOrBorderless =
+        this.buttonType === 'hollow-red' || this.buttonType === 'borderless-red';
+      const isHollowFaded = this.buttonType === 'hollow-red-faded';
+      const isHollowDark = this.buttonType === 'hollow-dark';
+
+      if (this.isHover) {
+        if (isHollowRedOrBorderless) return '#a60c0e';
+        if (isHollowFaded) return '#f47073';
+        if (isHollowDark) return '#85868d';
+      }
+      if (isFilled) return '#ffffff';
+      if (isHollowRedOrBorderless) return '#ec1115';
+      if (isHollowFaded) return '#f7a0a1';
+      if (isHollowDark) return '#343541';
       else return '#ffffff';
     },
   },
@@ -80,7 +99,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <button :class="buttonClasses" @click="clickHandler">
+  <button
+    :class="buttonClasses"
+    @click="clickHandler"
+    @mouseenter="hoverHandler('enter')"
+    @mouseleave="hoverHandler('leave')"
+  >
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" :stroke="iconColor" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" :stroke="iconColor" />
@@ -103,42 +127,78 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 
-  &,
+  // &,
   &--filled-red {
     color: #ffffff;
     background-color: #ec1115;
     border: 2px solid #ec1115;
     font-weight: 400;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: #a60c0e;
+        border: 2px solid #a60c0e;
+      }
+    }
   }
   &--hollow-red {
     color: #ec1115;
     border: 2px solid #ec1115;
     background: none;
     font-weight: 500;
+    @media (hover: hover) {
+      &:hover {
+        color: #a60c0e;
+        border: 2px solid #a60c0e;
+      }
+    }
   }
   &--hollow-red-faded {
     color: #f7a0a1;
     border: 2px solid #f7a0a1;
     background: none;
     font-weight: 500;
+    @media (hover: hover) {
+      &:hover {
+        color: #f47073;
+        border: 2px solid #f47073;
+      }
+    }
   }
   &--filled-dark {
     color: #ffffff;
     background-color: #343541;
-    border: 2px solid #ffffff;
+    border: 2px solid #343541;
     font-weight: 400;
+    @media (hover: hover) {
+      &:hover {
+        background-color: #5d5d67;
+        border: 2px solid #5d5d67;
+      }
+    }
   }
   &--hollow-dark {
     color: #343541;
     border: 2px solid #343541;
     background: none;
     font-weight: 500;
+    @media (hover: hover) {
+      &:hover {
+        color: #85868d;
+        border: 2px solid #85868d;
+      }
+    }
   }
   &--borderless-red {
     color: #ec1115;
     border: 2px solid #00000000;
     background: none;
     font-weight: 500;
+    @media (hover: hover) {
+      &:hover {
+        color: #a60c0e;
+      }
+    }
   }
 
   &--large {
