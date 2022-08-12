@@ -7,14 +7,10 @@ import svgLoader from 'vite-svg-loader';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  //
-  //// below import has been moved to main.js file with simpler approach
-  //// due to a bug that occured randomly
-  // unexpected, but works again without problems
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import '@/assets/stylesheets/base.scss';`,
+        additionalData: `@import '@/assets/stylesheets/variables.scss';`,
       },
     },
   },

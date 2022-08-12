@@ -44,15 +44,6 @@ export default defineComponent({
       isHover: false,
     };
   },
-  methods: {
-    clickHandler() {
-      this.$emit('btnClick');
-    },
-    hoverHandler(action) {
-      if (action === 'enter') this.isHover = true;
-      if (action === 'leave') this.isHover = false;
-    },
-  },
   computed: {
     buttonClasses() {
       return {
@@ -81,7 +72,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <button :class="buttonClasses" @click="clickHandler">
+  <button :class="buttonClasses" @click="this.$emit('btnClick')">
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />
@@ -90,159 +81,158 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .base-button {
-  // TODO: REFACTOR SCSS VARIABLES
   // TODO: active & focus states & similar
-
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.6rem;
+  gap: $padding-small;
 
   font-family: 'Roboto Mono', monospace;
 
-  border-radius: 6.4rem;
+  border: $button-border-width solid;
+  border-radius: $border-radius-full;
 
   cursor: pointer;
   user-select: none;
 
   &--filled-red {
-    color: #ffffff;
-    background-color: #ec1115;
-    border: 2px solid #ec1115;
-    font-weight: 400;
+    color: $white;
+    background-color: $red-cherryred;
+    border-color: $red-cherryred;
+    font-weight: $font-weight-regular;
 
     svg {
-      stroke: #ffffff;
+      stroke: $white;
     }
 
     @media (hover: hover) {
       &:hover {
-        background-color: #a60c0e;
-        border: 2px solid #a60c0e;
+        background-color: $red-totempole;
+        border-color: $red-totempole;
       }
     }
   }
 
   &--hollow-red {
-    color: #ec1115;
-    border: 2px solid #ec1115;
+    color: $red-cherryred;
+    border-color: $red-cherryred;
     background: none;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
 
     svg {
-      stroke: #ec1115;
+      stroke: $red-cherryred;
     }
 
     @media (hover: hover) {
       &:hover {
-        color: #a60c0e;
-        border: 2px solid #a60c0e;
+        color: $red-totempole;
+        border-color: $red-totempole;
         svg {
-          stroke: #a60c0e;
+          stroke: $red-totempole;
         }
       }
     }
   }
 
   &--hollow-red-faded {
-    color: #f7a0a1;
-    border: 2px solid #f7a0a1;
+    color: $red-sweetpink;
+    border-color: $red-sweetpink;
     background: none;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
 
     svg {
-      stroke: #f7a0a1;
+      stroke: $red-sweetpink;
     }
 
     @media (hover: hover) {
       &:hover {
-        color: #f47073;
-        border: 2px solid #f47073;
+        color: $red-bittersweet;
+        border-color: $red-bittersweet;
         svg {
-          stroke: #f47073;
+          stroke: $red-bittersweet;
         }
       }
     }
   }
 
   &--filled-dark {
-    color: #ffffff;
-    background-color: #343541;
-    border: 2px solid #343541;
-    font-weight: 400;
+    color: $white;
+    background-color: $gray-tuna;
+    border-color: $gray-tuna;
+    font-weight: $font-weight-regular;
 
     svg {
-      stroke: #ffffff;
+      stroke: $white;
     }
 
     @media (hover: hover) {
       &:hover {
-        background-color: #5d5d67;
-        border: 2px solid #5d5d67;
+        background-color: $gray-midgray;
+        border-color: $gray-midgray;
       }
     }
   }
 
   &--hollow-dark {
-    color: #343541;
-    border: 2px solid #343541;
+    color: $gray-tuna;
+    border-color: $gray-tuna;
     background: none;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
 
     svg {
-      stroke: #343541;
+      stroke: $gray-tuna;
     }
 
     @media (hover: hover) {
       &:hover {
-        color: #85868d;
-        border: 2px solid #85868d;
+        color: $gray-jumbo;
+        border-color: $gray-jumbo;
         svg {
-          stroke: #85868d;
+          stroke: $gray-jumbo;
         }
       }
     }
   }
-  
+
   &--borderless-red {
-    color: #ec1115;
-    border: 2px solid #00000000;
+    color: $red-cherryred;
+    border-color: $transparent;
     background: none;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
 
     svg {
-      stroke: #ec1115;
+      stroke: $red-cherryred;
     }
 
     @media (hover: hover) {
       &:hover {
-        color: #a60c0e;
+        color: $red-totempole;
         svg {
-          stroke: #a60c0e;
+          stroke: $red-totempole;
         }
       }
     }
   }
 
   &--large {
-    font-size: 1.8rem;
-    height: 5.6rem;
-    padding: 0 4rem;
+    font-size: $font-size-large;
+    height: $button-height-large;
+    padding: 0 $padding-large;
   }
   &--regular {
-    font-size: 1.6rem;
-    height: 4rem;
-    padding: 0 3.2rem;
+    font-size: $font-size-regular;
+    height: $button-height-regular;
+    padding: 0 $padding-regular;
   }
   &--medium {
-    font-size: 1.4rem;
-    height: 3.2rem;
-    padding: 0 2.4rem;
+    font-size: $font-size-small;
+    height: $button-height-medium;
+    padding: 0 $padding-medium;
   }
   &--small {
-    font-size: 1.4rem;
-    height: 2.4rem;
-    padding: 0 1.6rem;
+    font-size: $font-size-small;
+    height: $button-height-small;
+    padding: 0 $padding-small;
   }
 
   &__icon {
