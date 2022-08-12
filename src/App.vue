@@ -7,6 +7,11 @@ export default defineComponent({
   components: {
     BaseButton,
   },
+  methods: {
+    testClickHandler() {
+      console.log('Test positive');
+    },
+  },
 });
 </script>
 
@@ -15,7 +20,7 @@ export default defineComponent({
     <div>
       <BaseButton size="large"> Book a ticket </BaseButton>
       <br />
-      <BaseButton> Book a ticket </BaseButton>
+      <BaseButton @btn-click="testClickHandler"> Book a ticket </BaseButton>
       <br />
       <BaseButton size="medium"> Book a ticket </BaseButton>
       <br />

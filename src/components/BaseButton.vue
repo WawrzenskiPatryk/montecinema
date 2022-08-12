@@ -39,6 +39,11 @@ export default defineComponent({
       },
     },
   },
+  methods: {
+    clickHandler() {
+      this.$emit('btnClick');
+    },
+  },
   computed: {
     buttonClasses() {
       return {
@@ -75,7 +80,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <button :class="buttonClasses">
+  <button :class="buttonClasses" @click="clickHandler">
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" :stroke="iconColor" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" :stroke="iconColor" />
