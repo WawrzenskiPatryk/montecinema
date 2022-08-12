@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 
 import 'normalize.css';
-import '@/assets/stylesheets/base.scss';
+// import '@/assets/stylesheets/base.scss';
 
 const app = createApp(App);
 
