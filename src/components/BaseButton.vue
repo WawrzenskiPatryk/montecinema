@@ -76,44 +76,22 @@ export default defineComponent({
         'base-button__icon--left': this.arrowType === 'left',
       };
     },
-    iconColor() {
-      const isFilled = this.buttonType === 'filled-red' || this.buttonType === 'filled-dark';
-      const isHollowRedOrBorderless =
-        this.buttonType === 'hollow-red' || this.buttonType === 'borderless-red';
-      const isHollowFaded = this.buttonType === 'hollow-red-faded';
-      const isHollowDark = this.buttonType === 'hollow-dark';
-
-      if (this.isHover) {
-        if (isHollowRedOrBorderless) return '#a60c0e';
-        if (isHollowFaded) return '#f47073';
-        if (isHollowDark) return '#85868d';
-      }
-      if (isFilled) return '#ffffff';
-      if (isHollowRedOrBorderless) return '#ec1115';
-      if (isHollowFaded) return '#f7a0a1';
-      if (isHollowDark) return '#343541';
-      else return '#ffffff';
-    },
   },
 });
 </script>
 
 <template>
-  <button
-    :class="buttonClasses"
-    @click="clickHandler"
-    @mouseenter="hoverHandler('enter')"
-    @mouseleave="hoverHandler('leave')"
-  >
-    <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" :stroke="iconColor" />
+  <button :class="buttonClasses" @click="clickHandler">
+    <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
-    <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" :stroke="iconColor" />
+    <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />
   </button>
 </template>
 
 <style lang="scss" scoped>
 .base-button {
   // TODO: REFACTOR SCSS VARIABLES
+  // TODO: active & focus states & similar
 
   display: flex;
   justify-content: center;
@@ -127,12 +105,15 @@ export default defineComponent({
   cursor: pointer;
   user-select: none;
 
-  // &,
   &--filled-red {
     color: #ffffff;
     background-color: #ec1115;
     border: 2px solid #ec1115;
     font-weight: 400;
+
+    svg {
+      stroke: #ffffff;
+    }
 
     @media (hover: hover) {
       &:hover {
@@ -141,35 +122,59 @@ export default defineComponent({
       }
     }
   }
+
   &--hollow-red {
     color: #ec1115;
     border: 2px solid #ec1115;
     background: none;
     font-weight: 500;
+
+    svg {
+      stroke: #ec1115;
+    }
+
     @media (hover: hover) {
       &:hover {
         color: #a60c0e;
         border: 2px solid #a60c0e;
+        svg {
+          stroke: #a60c0e;
+        }
       }
     }
   }
+
   &--hollow-red-faded {
     color: #f7a0a1;
     border: 2px solid #f7a0a1;
     background: none;
     font-weight: 500;
+
+    svg {
+      stroke: #f7a0a1;
+    }
+
     @media (hover: hover) {
       &:hover {
         color: #f47073;
         border: 2px solid #f47073;
+        svg {
+          stroke: #f47073;
+        }
       }
     }
   }
+
   &--filled-dark {
     color: #ffffff;
     background-color: #343541;
     border: 2px solid #343541;
     font-weight: 400;
+
+    svg {
+      stroke: #ffffff;
+    }
+
     @media (hover: hover) {
       &:hover {
         background-color: #5d5d67;
@@ -177,26 +182,44 @@ export default defineComponent({
       }
     }
   }
+
   &--hollow-dark {
     color: #343541;
     border: 2px solid #343541;
     background: none;
     font-weight: 500;
+
+    svg {
+      stroke: #343541;
+    }
+
     @media (hover: hover) {
       &:hover {
         color: #85868d;
         border: 2px solid #85868d;
+        svg {
+          stroke: #85868d;
+        }
       }
     }
   }
+  
   &--borderless-red {
     color: #ec1115;
     border: 2px solid #00000000;
     background: none;
     font-weight: 500;
+
+    svg {
+      stroke: #ec1115;
+    }
+
     @media (hover: hover) {
       &:hover {
         color: #a60c0e;
+        svg {
+          stroke: #a60c0e;
+        }
       }
     }
   }
