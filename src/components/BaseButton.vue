@@ -9,6 +9,8 @@ export default defineComponent({
     ArrowLeftIcon,
   },
   props: {
+    // TODO: add below line after implementation of ROUTING
+    // to: { type: [Object, String], default: null, required: false },
     size: {
       type: String,
       default: 'regular',
@@ -44,6 +46,12 @@ export default defineComponent({
     };
   },
   computed: {
+    componentType() {
+      if (this.$attrs.href) return 'a';
+      // TODO: switch line below with the following one after implementation of ROUTING
+      return 'button';
+      // return this.to !== null ? 'router-link' : 'button';
+    },
     buttonClasses() {
       return {
         'base-button': true,
@@ -73,22 +81,28 @@ export default defineComponent({
 </script>
 
 <template>
-  <button :class="buttonClasses" @click="this.$emit('btnClick')">
+  <!-- TODO: switch line below with the following one after implementation of ROUTING -->
+  <component :is="componentType" :class="buttonClasses" @click="this.$emit('btnClick')">
+    <!-- <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('btnClick')"> -->
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />
-  </button>
+  </component>
 </template>
 
 <style lang="scss" scoped>
 .base-button {
-  // TODO: active & focus states & similar
   display: flex;
   justify-content: center;
   align-items: center;
   gap: $padding-small;
 
+  width: fit-content;
+
   font-family: 'Roboto Mono', monospace;
+  text-align: center;
+  line-height: 100%;
+  text-decoration: none;
 
   border: $button-border-width solid;
   border-radius: $border-radius-full;
