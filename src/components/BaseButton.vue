@@ -57,6 +57,8 @@ export default defineComponent({
         'base-button--filled-dark': this.buttonType === 'filled-dark',
         'base-button--hollow-dark': this.buttonType === 'hollow-dark',
         'base-button--borderless-red': this.buttonType === 'borderless-red',
+        'base-button--right': this.arrowType === 'right',
+        'base-button--left': this.arrowType === 'left',
       };
     },
     iconClasses() {
