@@ -4,7 +4,6 @@ import ArrowRightIcon from '@/assets/icons/arrow-right.svg';
 import ArrowLeftIcon from '@/assets/icons/arrow-left.svg';
 
 export default defineComponent({
-  name: 'BaseButton',
   components: {
     ArrowRightIcon,
     ArrowLeftIcon,
