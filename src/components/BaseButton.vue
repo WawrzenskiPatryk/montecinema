@@ -91,9 +91,31 @@ export default defineComponent({
 
   border: $button-border-width solid;
   border-radius: $border-radius-full;
+  outline: none;
 
-  cursor: pointer;
   user-select: none;
+  cursor: pointer;
+
+  transition: transform ease 75ms;
+
+  &:focus-visible,
+  &:active {
+    transform: translateY(0.2rem);
+  }
+
+  &--right {
+    &:focus-visible,
+    &:active {
+      transform: translateX(0.2rem);
+    }
+  }
+
+  &--left {
+    &:focus-visible,
+    &:active {
+      transform: translateX(-0.2rem);
+    }
+  }
 
   &--filled-red {
     color: $white;
