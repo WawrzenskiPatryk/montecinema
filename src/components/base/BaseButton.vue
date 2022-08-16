@@ -40,11 +40,6 @@ export default defineComponent({
       },
     },
   },
-  data() {
-    return {
-      isHover: false,
-    };
-  },
   computed: {
     componentType() {
       if (this.$attrs.href) return 'a';
