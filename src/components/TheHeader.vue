@@ -28,8 +28,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  border: 1px dashed red;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
