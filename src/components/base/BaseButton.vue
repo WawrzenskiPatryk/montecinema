@@ -108,6 +108,10 @@ export default defineComponent({
 
   transition: transform ease 75ms;
 
+  svg {
+    stroke: currentColor;
+  }
+
   &:focus-visible,
   &:active {
     transform: translateY(0.2rem);
@@ -133,10 +137,6 @@ export default defineComponent({
     border-color: $red-cherryred;
     font-weight: $font-weight-regular;
 
-    svg {
-      stroke: $white;
-    }
-
     @media (hover: hover) {
       &:hover {
         background-color: $red-totempole;
@@ -151,17 +151,10 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    svg {
-      stroke: $red-cherryred;
-    }
-
     @media (hover: hover) {
       &:hover {
         color: $red-totempole;
         border-color: $red-totempole;
-        svg {
-          stroke: $red-totempole;
-        }
       }
     }
   }
@@ -172,17 +165,10 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    svg {
-      stroke: $red-sweetpink;
-    }
-
     @media (hover: hover) {
       &:hover {
         color: $red-bittersweet;
         border-color: $red-bittersweet;
-        svg {
-          stroke: $red-bittersweet;
-        }
       }
     }
   }
@@ -192,10 +178,6 @@ export default defineComponent({
     background-color: $gray-tuna;
     border-color: $gray-tuna;
     font-weight: $font-weight-regular;
-
-    svg {
-      stroke: $white;
-    }
 
     @media (hover: hover) {
       &:hover {
@@ -211,17 +193,10 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    svg {
-      stroke: $gray-tuna;
-    }
-
     @media (hover: hover) {
       &:hover {
         color: $gray-jumbo;
         border-color: $gray-jumbo;
-        svg {
-          stroke: $gray-jumbo;
-        }
       }
     }
   }
@@ -232,16 +207,9 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    svg {
-      stroke: $red-cherryred;
-    }
-
     @media (hover: hover) {
       &:hover {
         color: $red-totempole;
-        svg {
-          stroke: $red-totempole;
-        }
       }
     }
   }
