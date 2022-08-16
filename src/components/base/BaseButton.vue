@@ -137,11 +137,9 @@ export default defineComponent({
     border-color: $red-cherryred;
     font-weight: $font-weight-regular;
 
-    @media (hover: hover) {
-      &:hover {
-        background-color: $red-totempole;
-        border-color: $red-totempole;
-      }
+    @include hover {
+      background-color: $red-totempole;
+      border-color: $red-totempole;
     }
   }
 
@@ -151,11 +149,9 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @media (hover: hover) {
-      &:hover {
-        color: $red-totempole;
-        border-color: $red-totempole;
-      }
+    @include hover {
+      color: $red-totempole;
+      border-color: $red-totempole;
     }
   }
 
@@ -165,11 +161,9 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @media (hover: hover) {
-      &:hover {
-        color: $red-bittersweet;
-        border-color: $red-bittersweet;
-      }
+    @include hover {
+      color: $red-bittersweet;
+      border-color: $red-bittersweet;
     }
   }
 
@@ -179,11 +173,9 @@ export default defineComponent({
     border-color: $gray-tuna;
     font-weight: $font-weight-regular;
 
-    @media (hover: hover) {
-      &:hover {
-        background-color: $gray-midgray;
-        border-color: $gray-midgray;
-      }
+    @include hover {
+      background-color: $gray-midgray;
+      border-color: $gray-midgray;
     }
   }
 
@@ -193,11 +185,9 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @media (hover: hover) {
-      &:hover {
-        color: $gray-jumbo;
-        border-color: $gray-jumbo;
-      }
+    @include hover {
+      color: $gray-jumbo;
+      border-color: $gray-jumbo;
     }
   }
 
@@ -207,10 +197,8 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @media (hover: hover) {
-      &:hover {
-        color: $red-totempole;
-      }
+    @include hover {
+      color: $red-totempole;
     }
   }
 
