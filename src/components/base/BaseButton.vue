@@ -114,20 +114,20 @@ export default defineComponent({
 
   &:focus-visible,
   &:active {
-    transform: translateY(0.2rem);
+    transform: translateY(0.1rem);
   }
 
   &--right {
     &:focus-visible,
     &:active {
-      transform: translateX(0.2rem);
+      transform: translateX(0.1rem);
     }
   }
 
   &--left {
     &:focus-visible,
     &:active {
-      transform: translateX(-0.2rem);
+      transform: translateX(-0.1rem);
     }
   }
 
