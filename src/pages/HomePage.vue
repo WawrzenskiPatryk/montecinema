@@ -8,8 +8,8 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="homepage">
-    <HeroBanner class="homepage__hero-banner" />
+  <main class="home-page">
+    <HeroBanner class="home-page__hero-banner" />
   </main>
 </template>
 

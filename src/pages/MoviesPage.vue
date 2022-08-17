@@ -5,7 +5,7 @@ export default defineComponent({});
 </script>
 
 <template>
-  <main class="moviespage">Movies Page</main>
+  <main class="movies-page">Movies Page</main>
 </template>
 
 <style lang="scss" scoped></style>
