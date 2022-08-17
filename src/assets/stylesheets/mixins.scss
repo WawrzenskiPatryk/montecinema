@@ -1,10 +1,10 @@
-@mixin screen-large {
+@mixin screen-min-large {
   @media (min-width: 1440px) {
     @content;
   }
 }
 
-@mixin screen-medium {
+@mixin screen-min-medium {
   @media (min-width: 1024px) {
     @content;
   }
