@@ -1,30 +1,25 @@
 import { createWebHistory, createRouter } from 'vue-router';
 
-import HomePage from '@/pages/HomePage.vue';
-import MoviesPage from '@/pages/MoviesPage.vue';
-import ScreeningsPage from '@/pages/ScreeningsPage.vue';
-import ContactPage from '@/pages/ContactPage.vue';
-
 const routes = [
   {
     path: '/',
     name: 'HomePage',
-    component: HomePage,
+    component: () => import('@/pages/HomePage.vue'),
   },
   {
     path: '/movies',
     name: 'MoviesPage',
-    component: MoviesPage,
+    component: () => import('@/pages/MoviesPage.vue'),
   },
   {
     path: '/screenings',
     name: 'ScreeningsPage',
-    component: ScreeningsPage,
+    component: () => import('@/pages/ScreeningsPage.vue'),
   },
   {
     path: '/contact',
     name: 'ContactPage',
-    component: ContactPage,
+    component: () => import('@/pages/ContactPage.vue'),
   },
 ];
 
