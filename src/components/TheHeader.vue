@@ -32,11 +32,11 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 2.4rem;
+  padding: $page-padding-small;
 
   background-color: $white;
 
-  height: 9.8rem;
+  height: $header-height-small;
   width: 100%;
 
   &__navigation,
@@ -44,9 +44,9 @@ export default defineComponent({
     display: none;
   }
 
-  @include screen-medium {
-    padding: 0 4.8rem;
-    height: 11.2rem;
+  @include screen-min-medium {
+    padding: $page-padding-regular;
+    height: $header-height-regular;
 
     &__navigation,
     &__actions {
