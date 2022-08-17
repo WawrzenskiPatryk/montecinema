@@ -105,6 +105,7 @@ export default defineComponent({
 
   user-select: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 
   transition: transform ease 75ms;
 
@@ -141,6 +142,11 @@ export default defineComponent({
       background-color: $red-totempole;
       border-color: $red-totempole;
     }
+    &:focus-visible,
+    &:active {
+      background-color: $red-totempole;
+      border-color: $red-totempole;
+    }
   }
 
   &--hollow-red {
@@ -150,6 +156,11 @@ export default defineComponent({
     font-weight: $font-weight-medium;
 
     @include hover {
+      color: $red-totempole;
+      border-color: $red-totempole;
+    }
+    &:focus-visible,
+    &:active {
       color: $red-totempole;
       border-color: $red-totempole;
     }
@@ -165,6 +176,11 @@ export default defineComponent({
       color: $red-bittersweet;
       border-color: $red-bittersweet;
     }
+    &:focus-visible,
+    &:active {
+      color: $red-bittersweet;
+      border-color: $red-bittersweet;
+    }
   }
 
   &--filled-dark {
@@ -174,6 +190,11 @@ export default defineComponent({
     font-weight: $font-weight-regular;
 
     @include hover {
+      background-color: $gray-midgray;
+      border-color: $gray-midgray;
+    }
+    &:focus-visible,
+    &:active {
       background-color: $gray-midgray;
       border-color: $gray-midgray;
     }
@@ -189,6 +210,11 @@ export default defineComponent({
       color: $gray-jumbo;
       border-color: $gray-jumbo;
     }
+    &:focus-visible,
+    &:active {
+      color: $gray-jumbo;
+      border-color: $gray-jumbo;
+    }
   }
 
   &--borderless-red {
@@ -200,26 +226,30 @@ export default defineComponent({
     @include hover {
       color: $red-totempole;
     }
+    &:focus-visible,
+    &:active {
+      color: $red-totempole;
+    }
   }
 
   &--large {
     font-size: $font-size-large;
-    height: $button-height-large;
+    min-height: $button-height-large;
     padding: 0 $padding-large;
   }
   &--regular {
     font-size: $font-size-regular;
-    height: $button-height-regular;
+    min-height: $button-height-regular;
     padding: 0 $padding-regular;
   }
   &--medium {
     font-size: $font-size-small;
-    height: $button-height-medium;
+    min-height: $button-height-medium;
     padding: 0 $padding-medium;
   }
   &--small {
     font-size: $font-size-small;
-    height: $button-height-small;
+    min-height: $button-height-small;
     padding: 0 $padding-small;
   }
 
