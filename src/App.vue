@@ -12,7 +12,7 @@ export default defineComponent({
 <template>
   <div class="app">
     <TheHeader class="app__header" />
-    <RouterView class="app__content" />
+    <router-view class="app__content" />
   </div>
 </template>
 
