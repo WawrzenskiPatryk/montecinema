@@ -5,9 +5,9 @@ export default defineComponent({
   data() {
     return {
       navigationItems: [
-        { id: 0, label: 'Movies', path: '#' },
-        { id: 1, label: 'Screenings', path: '#' },
-        { id: 2, label: 'Contact Us', path: '#' },
+        { id: 0, label: 'Movies', path: { name: 'MoviesPage' } },
+        { id: 1, label: 'Screenings', path: { name: 'ScreeningsPage' } },
+        { id: 2, label: 'Contact Us', path: { name: 'ContactPage' } },
       ],
     };
   },
@@ -17,7 +17,13 @@ export default defineComponent({
 <template>
   <ul class="header-navigation">
     <li class="header-navigation__item" v-for="item in navigationItems" :key="item.id">
-      <a class="header-navigation__item-link" :href="item.path">{{ item.label }}</a>
+      <router-link
+        :to="item.path"
+        class="header-navigation__item-link"
+        active-class="header-navigation__item-link--active"
+      >
+        {{ item.label }}
+      </router-link>
     </li>
   </ul>
 </template>
@@ -45,15 +51,6 @@ export default defineComponent({
       color: $gray-midgray;
       box-shadow: inset 0px -4px 0px $red-cosmos;
     }
-
-    // TODO: just for testing purposes =========================
-    // need to adjust logic for ROUTING (router active classes)
-    &:first-of-type {
-      box-shadow: inset 0px -4px 0px $red-cherryred;
-      color: $gray-abbey;
-      font-weight: $font-weight-bold;
-    }
-    // =========================================================
   }
 
   &__item-link {
@@ -63,6 +60,12 @@ export default defineComponent({
     height: 100%;
     color: inherit;
     text-decoration: none;
+
+    &--active {
+      box-shadow: inset 0px -4px 0px $red-cherryred;
+      color: $gray-abbey;
+      font-weight: $font-weight-bold;
+    }
   }
 }
 </style>

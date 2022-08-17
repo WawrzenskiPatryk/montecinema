@@ -17,9 +17,9 @@ export default defineComponent({
 
 <template>
   <header class="header">
-    <a href="#">
+    <router-link :to="{ name: 'HomePage' }">
       <LogoImage />
-    </a>
+    </router-link>
     <HeaderNavigation class="header__navigation" />
     <HeaderActions class="header__actions" />
     <HamburgerButton class="header__hamburger" />
