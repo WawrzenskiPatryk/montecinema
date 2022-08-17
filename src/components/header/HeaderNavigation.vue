@@ -32,6 +32,8 @@ export default defineComponent({
   margin: 0;
   padding: 0;
 
+  user-select: none;
+
   &__item {
     height: 100%;
     width: 14rem;
