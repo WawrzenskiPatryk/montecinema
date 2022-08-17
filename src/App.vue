@@ -12,9 +12,7 @@ export default defineComponent({
 <template>
   <div class="app">
     <TheHeader class="app__header"></TheHeader>
-    <main class="app__content">
-      <div class="app__content-element"></div>
-    </main>
+    <main class="app__content"></main>
   </div>
 </template>
 
@@ -29,16 +27,6 @@ export default defineComponent({
     @include screen-medium {
       padding: 0 4.8rem;
     }
-  }
-
-  &__content {
-    height: 100vh;
-    background-color: aquamarine;
-  }
-
-  &__content-element {
-    height: 100%;
-    background-color: cadetblue;
   }
 }
 </style>
