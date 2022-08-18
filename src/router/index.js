@@ -10,6 +10,14 @@ const routes = [
     path: '/movies',
     name: 'MoviesPage',
     component: () => import('@/pages/MoviesPage.vue'),
+    children: [
+      {
+        path: ':movieId',
+        name: 'MovieDetailPage',
+        component: () => import('@/pages/movies/MovieDetailPage.vue'),
+        props: true,
+      },
+    ],
   },
   {
     path: '/screenings',
@@ -20,6 +28,15 @@ const routes = [
     path: '/contact',
     name: 'ContactPage',
     component: () => import('@/pages/ContactPage.vue'),
+  },
+  {
+    path: '/404',
+    name: '404Page',
+    component: () => import('@/pages/404Page.vue'),
+  },
+  {
+    path: '/:path*',
+    redirect: '/404',
   },
 ];
 
