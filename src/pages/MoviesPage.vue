@@ -1,7 +1,13 @@
 <script>
 import { defineComponent } from 'vue';
 
-export default defineComponent({});
+export default defineComponent({
+  computed: {
+    hasChildRoutes() {
+      return this.$route.matched.length > 1;
+    },
+  },
+});
 </script>
 
 <template>
