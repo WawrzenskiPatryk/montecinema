@@ -9,8 +9,11 @@ export default defineComponent({
     ArrowLeftIcon,
   },
   props: {
-    // TODO: add below line after implementation of ROUTING
-    // to: { type: [Object, String], default: null, required: false },
+    to: {
+      type: [Object, String],
+      default: null,
+      required: false,
+    },
     size: {
       type: String,
       default: 'regular',
@@ -43,9 +46,7 @@ export default defineComponent({
   computed: {
     componentType() {
       if (this.$attrs.href) return 'a';
-      // TODO: switch line below with the following one after implementation of ROUTING
-      return 'button';
-      // return this.to !== null ? 'router-link' : 'button';
+      return this.to !== null ? 'router-link' : 'button';
     },
     buttonClasses() {
       return {
@@ -76,9 +77,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- TODO: switch line below with the following one after implementation of ROUTING -->
-  <component :is="componentType" :class="buttonClasses" @click="this.$emit('btnClick')">
-    <!-- <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('btnClick')"> -->
+  <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('btnClick')">
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />
