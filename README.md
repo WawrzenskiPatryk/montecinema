@@ -33,3 +33,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### .env file setting
+
+```
+VITE_API = http://localhost:3000/
+```
