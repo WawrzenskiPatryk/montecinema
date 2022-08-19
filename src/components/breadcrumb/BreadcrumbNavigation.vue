@@ -14,7 +14,7 @@ export default defineComponent({
       const firstLetter = routeName[0];
       return firstLetter.toUpperCase() + routeName.slice(1);
     },
-    getFullPath(index) {
+    getLinksFullPath(index) {
       return '/' + this.routeElements.slice(0, index + 1).join('/');
     },
   },
@@ -38,7 +38,7 @@ export default defineComponent({
 
         <router-link
           v-if="index + 1 !== routeElements.length"
-          :to="getFullPath(index)"
+          :to="getLinksFullPath(index)"
           class="breadcrumb-navigation__link breadcrumb-navigation__link--available"
         >
           {{ formatRouteName(route) }}
