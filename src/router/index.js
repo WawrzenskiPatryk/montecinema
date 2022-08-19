@@ -10,14 +10,12 @@ const routes = [
     path: '/movies',
     name: 'MoviesPage',
     component: () => import('@/pages/MoviesPage.vue'),
-    children: [
-      {
-        path: ':movieId',
-        name: 'MovieDetailPage',
-        component: () => import('@/pages/movies/MovieDetailPage.vue'),
-        props: true,
-      },
-    ],
+  },
+  {
+    path: '/movies/:movieId',
+    name: 'MovieDetailPage',
+    component: () => import('@/pages/movies/MovieDetailPage.vue'),
+    props: true,
   },
   {
     path: '/screenings',
@@ -25,7 +23,7 @@ const routes = [
     component: () => import('@/pages/ScreeningsPage.vue'),
   },
   {
-    path: '/contact',
+    path: '/contact-us',
     name: 'ContactPage',
     component: () => import('@/pages/ContactPage.vue'),
   },

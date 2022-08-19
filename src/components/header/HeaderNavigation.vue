@@ -7,7 +7,7 @@ export default defineComponent({
       navigationItems: [
         { id: 0, label: 'Movies', path: { name: 'MoviesPage' } },
         { id: 1, label: 'Screenings', path: { name: 'ScreeningsPage' } },
-        { id: 2, label: 'Contact Us', path: { name: 'ContactPage' } },
+        { id: 2, label: 'Contact us', path: { name: 'ContactPage' } },
       ],
     };
   },

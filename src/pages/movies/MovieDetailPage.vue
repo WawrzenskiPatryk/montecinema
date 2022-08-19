@@ -12,5 +12,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>MOVIE ID: {{ movieId }}</h1>
+  <span>Movie ID: {{ movieId }}</span>
 </template>

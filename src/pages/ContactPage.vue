@@ -5,7 +5,7 @@ export default defineComponent({});
 </script>
 
 <template>
-  <main class="contact-page">Contact Page</main>
+  <h1>Contact Page</h1>
 </template>
 
 <style lang="scss" scoped></style>

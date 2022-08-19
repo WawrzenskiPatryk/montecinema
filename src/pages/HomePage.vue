@@ -8,9 +8,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="home-page">
-    <HeroBanner class="home-page__hero-banner" />
-  </main>
+  <HeroBanner />
 </template>
 
 <style lang="scss" scoped></style>
