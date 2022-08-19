@@ -8,11 +8,13 @@ export default defineComponent({
     ArrowheadRight,
   },
   methods: {
+    capitalizeFirstCharacter(string) {
+      return string[0].toUpperCase() + string.slice(1);
+    },
     formatRouteName(route) {
       if (!route || route.length === 0) return;
       const routeName = route.split('-').join(' ');
-      const firstLetter = routeName[0];
-      return firstLetter.toUpperCase() + routeName.slice(1);
+      return this.capitalizeFirstCharacter(routeName);
     },
     getLinksFullPath(index) {
       return '/' + this.routeElements.slice(0, index + 1).join('/');
