@@ -4,7 +4,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   data() {
     return {
-      countdown: 5,
+      countdown: 10,
       timeout: null,
       interval: null,
     };
@@ -12,7 +12,7 @@ export default defineComponent({
   mounted() {
     this.timeout = setTimeout(() => {
       this.$router.replace({ name: 'HomePage' });
-    }, 5000);
+    }, 10000);
 
     this.interval = setInterval(() => {
       this.countdown--;
@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>404: Page not found</h1>
-  <h2>You will be redirected to Home Page in {{ countdown }}</h2>
+  <h1>Sorry something went wrong...</h1>
+  <h2>You will be redirected to Home Page in: {{ countdown }}</h2>
   <router-link :to="{ name: 'HomePage' }" replace>Go to home page</router-link>
 </template>
