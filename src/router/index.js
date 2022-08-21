@@ -1,36 +1,25 @@
 import { createWebHistory, createRouter } from 'vue-router';
 
+import landing from './landing';
+import auth from './auth';
+
 const routes = [
   {
     path: '/',
-    name: 'HomePage',
-    component: () => import('@/pages/HomePage.vue'),
+    component: () => import('@/pages/LandingPanel.vue'),
+    children: [
+      ...landing,
+      {
+        path: '/404',
+        name: '404Page',
+        component: () => import('@/pages/404Page.vue'),
+      },
+    ],
   },
   {
-    path: '/movies',
-    name: 'MoviesPage',
-    component: () => import('@/pages/MoviesPage.vue'),
-  },
-  {
-    path: '/movies/:movieId',
-    name: 'MovieDetailPage',
-    component: () => import('@/pages/movies/MovieDetailPage.vue'),
-    props: true,
-  },
-  {
-    path: '/screenings',
-    name: 'ScreeningsPage',
-    component: () => import('@/pages/ScreeningsPage.vue'),
-  },
-  {
-    path: '/contact-us',
-    name: 'ContactPage',
-    component: () => import('@/pages/ContactPage.vue'),
-  },
-  {
-    path: '/404',
-    name: '404Page',
-    component: () => import('@/pages/404Page.vue'),
+    path: '/',
+    component: () => import('@/pages/AuthPanel.vue'),
+    children: [...auth],
   },
   {
     path: '/:path*',

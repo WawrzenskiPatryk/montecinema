@@ -11,8 +11,8 @@ export default defineComponent({
 
 <template>
   <div class="header-actions">
-    <BaseButton buttonType="borderless-red">Register</BaseButton>
-    <BaseButton>Login</BaseButton>
+    <BaseButton :to="{ name: 'RegisterPage' }" buttonType="borderless-red">Register</BaseButton>
+    <BaseButton :to="{ name: 'LoginPage' }">Login</BaseButton>
   </div>
 </template>
 

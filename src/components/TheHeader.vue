@@ -12,6 +12,11 @@ export default defineComponent({
     HeaderNavigation,
     HeaderActions,
   },
+  computed: {
+    isAuthPanel() {
+      return ['LoginPage', 'RegisterPage'].includes(this.$route.name);
+    },
+  },
 });
 </script>
 
@@ -20,9 +25,10 @@ export default defineComponent({
     <router-link :to="{ name: 'HomePage' }">
       <LogoImage />
     </router-link>
-    <HeaderNavigation class="header__navigation" />
-    <HeaderActions class="header__actions" />
-    <HamburgerButton class="header__hamburger" />
+    <HeaderNavigation v-if="!isAuthPanel" class="header__navigation" />
+    <HeaderActions v-if="!isAuthPanel" class="header__actions" />
+    <HamburgerButton v-if="!isAuthPanel" class="header__hamburger" />
+    
   </header>
 </template>
 
