@@ -16,4 +16,11 @@ export default defineComponent({
   </main>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.landing-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6.4rem;
+  min-height: calc(100vh + 1px);
+}
+</style>
