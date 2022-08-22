@@ -12,6 +12,9 @@ export default defineComponent({
     ArrowLeftIcon,
   },
   computed: {
+    isVisible() {
+      return !['HomePage', '404Page'].includes(this.$route.name);
+    },
     parentPath() {
       const currentFullPath = this.$route.fullPath;
       const indexOfLastSlash = currentFullPath.lastIndexOf('/');
@@ -24,7 +27,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="breadcrumb">
+  <div v-if="isVisible" class="breadcrumb">
     <BaseButton
       @click="$router.push(parentPath)"
       arrowType="left"
