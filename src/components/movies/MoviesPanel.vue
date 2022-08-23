@@ -18,14 +18,18 @@ export default defineComponent({
   },
   data() {
     return {
+      isLoading: false,
       storedMovies: [],
     };
   },
   async mounted() {
     try {
+      this.isLoading = true;
       this.storedMovies = await getAllMoviesData();
     } catch {
       this.$router.push({ name: '404Page' });
+    } finally {
+      this.isLoading = false;
     }
   },
   computed: {
@@ -52,8 +56,9 @@ export default defineComponent({
         See all
       </router-link>
     </div>
-    
-    <MovieList :movies="displayedMovies" />
+
+    <div v-if="isLoading">Loading...</div>
+    <MovieList v-else :movies="displayedMovies" />
   </section>
 </template>
 

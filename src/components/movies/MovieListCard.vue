@@ -24,7 +24,8 @@ export default defineComponent({
 
 <template>
   <li class="movie-list-card">
-    <router-link :to="`/movies/${movieData.title}`" class="movie-list-card__link">
+    <!-- TODO: router link to exact movie page -->
+    <router-link to="/" class="movie-list-card__link">
       <h2 class="movie-list-card__title">{{ movieData.title }}</h2>
       <span class="movie-list-card__length">{{ formattedMovieLength }}</span>
       <img :src="movieData.poster_url" :alt="movieData.title" class="movie-list-card__image" />
