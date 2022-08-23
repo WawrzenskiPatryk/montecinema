@@ -1,11 +1,11 @@
 <script>
 import { defineComponent } from 'vue';
 import { getAllMoviesData } from '@/services/api.js';
-// import MovieList from '@/components/movies/MovieList.vue';
+import MovieList from '@/components/movies/MovieList.vue';
 
 export default defineComponent({
   components: {
-    // MovieList,
+    MovieList,
   },
   props: {
     panelType: {
@@ -29,6 +29,9 @@ export default defineComponent({
     }
   },
   computed: {
+    isHeadingVisible() {
+      return ['HomePage'].includes(this.$route.name);
+    },
     displayedMovies() {
       const isHomePage = this.$route.name === 'HomePage';
       if (isHomePage) return this.storedMovies.slice(0, 3);
@@ -40,7 +43,7 @@ export default defineComponent({
 
 <template>
   <section class="movies-panel">
-    <div class="movies-panel__heading">
+    <div v-if="isHeadingVisible" class="movies-panel__heading">
       <h1 class="movies-panel__heading-title movies-panel__heading-title--mobile">Soon</h1>
       <h1 class="movies-panel__heading-title movies-panel__heading-title--desktop">
         Soon in the cinema
@@ -49,7 +52,8 @@ export default defineComponent({
         See all
       </router-link>
     </div>
-    <!-- <MovieList :movies="displayedMovies" /> -->
+    
+    <MovieList :movies="displayedMovies" />
   </section>
 </template>
 
