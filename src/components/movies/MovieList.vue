@@ -13,12 +13,25 @@ export default defineComponent({
   components: {
     MovieListCard,
   },
+  computed: {
+    movieCardClasses() {
+      return {
+        'movie-list__card': true,
+        'movie-list__card--homepage-view': this.movies.length <= 3,
+      };
+    },
+  },
 });
 </script>
 
 <template>
   <ul class="movie-list">
-    <MovieListCard v-for="movieData in movies" :key="movieData.id" :movie-data="movieData" />
+    <MovieListCard
+      v-for="movieData in movies"
+      :key="movieData.id"
+      :movie-data="movieData"
+      :class="movieCardClasses"
+    />
   </ul>
 </template>
 
@@ -26,6 +39,7 @@ export default defineComponent({
 .movie-list {
   display: grid;
   grid-gap: 4rem;
+  justify-items: center;
 
   @include screen-min-medium {
     grid-template-columns: repeat(2, 1fr);
@@ -34,8 +48,17 @@ export default defineComponent({
     grid-template-columns: repeat(3, 1fr);
   }
 
-  grid-auto-rows: minmax(10rem, auto);
-
-  justify-items: center;
+  &__card {
+    &--homepage-view {
+      &:last-child {
+        @include screen-min-medium {
+          display: none;
+        }
+        @include screen-min-large {
+          display: initial;
+        }
+      }
+    }
+  }
 }
 </style>
