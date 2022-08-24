@@ -8,12 +8,19 @@ export default [
     path: '/movies',
     name: 'MoviesPage',
     component: () => import('@/pages/landing/MoviesPage.vue'),
-  },
-  {
-    path: '/movies/:movieId',
-    name: 'MovieDetailPage',
-    component: () => import('@/pages/landing/movies/MovieDetailPage.vue'),
-    props: true,
+    children: [
+      {
+        path: '',
+        name: 'MoviesListPage',
+        component: () => import('@/pages/landing/movies/MoviesListPage.vue'),
+      },
+      {
+        path: ':movieId',
+        name: 'MovieDetailPage',
+        component: () => import('@/pages/landing/movies/MovieDetailPage.vue'),
+        props: true,
+      },
+    ],
   },
   {
     path: '/screenings',

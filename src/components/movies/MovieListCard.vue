@@ -24,8 +24,7 @@ export default defineComponent({
 
 <template>
   <li class="movie-list-card">
-    <!-- TODO: router link to exact movie page -->
-    <router-link to="/" class="movie-list-card__link">
+    <router-link :to="`/movies/${movieData.id}`" class="movie-list-card__link">
       <h2 class="movie-list-card__title">{{ movieData.title }}</h2>
       <span class="movie-list-card__length">{{ formattedMovieLength }}</span>
       <img :src="movieData.poster_url" :alt="movieData.title" class="movie-list-card__image" />
@@ -39,10 +38,17 @@ export default defineComponent({
   box-shadow: $shadow-movie-card;
   border-radius: 0.8rem;
 
-  width: 31.1rem;
+  width: 100%;
+  max-width: 31.1rem;
+
+  transition: transform 300ms ease;
 
   @include screen-min-medium {
-    width: 42.1rem;
+    max-width: 42.1rem;
+  }
+
+  @include hover {
+    transform: translateY(-0.5rem);
   }
 
   &__link {

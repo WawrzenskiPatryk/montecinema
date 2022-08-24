@@ -7,15 +7,6 @@ export default defineComponent({
   components: {
     MovieList,
   },
-  props: {
-    panelType: {
-      type: String,
-      default: 'full',
-      validator(value) {
-        return ['full', 'demo'].includes(value);
-      },
-    },
-  },
   data() {
     return {
       isLoading: false,
@@ -32,33 +23,23 @@ export default defineComponent({
       this.isLoading = false;
     }
   },
-  computed: {
-    isHeadingVisible() {
-      return ['HomePage'].includes(this.$route.name);
-    },
-    displayedMovies() {
-      const isHomePage = this.$route.name === 'HomePage';
-      if (isHomePage) return this.storedMovies.slice(0, 3);
-      else return this.storedMovies;
-    },
-  },
 });
 </script>
 
 <template>
   <section class="movies-panel">
-    <div v-if="isHeadingVisible" class="movies-panel__heading">
+    <div class="movies-panel__heading">
       <h1 class="movies-panel__heading-title movies-panel__heading-title--mobile">Soon</h1>
       <h1 class="movies-panel__heading-title movies-panel__heading-title--desktop">
         Soon in the cinema
       </h1>
-      <router-link :to="{ name: 'MoviesPage' }" class="movies-panel__heading-link">
+      <router-link :to="{ name: 'MoviesListPage' }" class="movies-panel__heading-link">
         See all
       </router-link>
     </div>
 
     <div v-if="isLoading">Loading...</div>
-    <MovieList v-else :movies="displayedMovies" />
+    <MovieList v-else :movies="storedMovies.slice(0, 3)" />
   </section>
 </template>
 

@@ -1,19 +1,19 @@
 <script>
 import { defineComponent } from 'vue';
-import HeroBanner from '@/components/home/HeroBanner.vue';
-import MoviesPanel from '@/components/movies/MoviesPanel.vue';
+import HomeHeroBanner from '@/components/home/HomeHeroBanner.vue';
+import HomeMoviesPanel from '@/components/home/HomeMoviesPanel.vue';
 
 export default defineComponent({
   components: {
-    HeroBanner,
-    MoviesPanel,
+    HomeHeroBanner,
+    HomeMoviesPanel,
   },
 });
 </script>
 
 <template>
-  <HeroBanner />
-  <MoviesPanel panelType="demo" />
+  <HomeHeroBanner />
+  <HomeMoviesPanel />
 </template>
 
 <style lang="scss" scoped></style>
