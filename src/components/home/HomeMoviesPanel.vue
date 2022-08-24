@@ -1,27 +1,22 @@
 <script>
 import { defineComponent } from 'vue';
-import { getAllMoviesData } from '@/services/api.js';
+import { mapState, mapActions } from 'pinia';
+import { useMainStore } from '@/store/index.js';
+
 import MovieList from '@/components/movies/MovieList.vue';
 
 export default defineComponent({
   components: {
     MovieList,
   },
-  data() {
-    return {
-      isLoading: false,
-      storedMovies: [],
-    };
+  mounted() {
+    if (this.allMovies.length === 0) this.storeAllMovies();
   },
-  async mounted() {
-    try {
-      this.isLoading = true;
-      this.storedMovies = await getAllMoviesData();
-    } catch {
-      this.$router.push({ name: '404Page' });
-    } finally {
-      this.isLoading = false;
-    }
+  computed: {
+    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
+  },
+  methods: {
+    ...mapActions(useMainStore, ['storeAllMovies']),
   },
 });
 </script>
@@ -38,8 +33,8 @@ export default defineComponent({
       </router-link>
     </div>
 
-    <div v-if="isLoading">Loading...</div>
-    <MovieList v-else :movies="storedMovies.slice(0, 3)" />
+    <div v-if="areMoviesLoading">Loading...</div>
+    <MovieList v-else :movies="allMovies.slice(0, 3)" />
   </section>
 </template>
 
