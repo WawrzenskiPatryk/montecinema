@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 import { getMovieData } from '@/services/api.js';
 import { mapState } from 'pinia';
 import { useMainStore } from '@/store/index.js';
+
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieDetail from '@/components/movies/MovieDetail.vue';
 
@@ -25,35 +26,33 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.storeSingleMovie();
+    if (this.allMovies.length > 0) {
+      this.findMovieInAllMovies();
+    } else {
+      this.storeSingleMovie();
+    }
   },
   computed: {
     ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
   },
   methods: {
-    async storeSingleMovie() {
-      if (this.allMovies.length > 0) {
-        this.findMovieInAllMovies();
-      } else {
-        try {
-          this.storedMovie = await getMovieData(this.movieId);
-          this.movieTitle = this.storedMovie.title;
-        } catch {
-          this.$router.push({ name: '404Page' });
-        } finally {
-          if (this.storedMovie) {
-            this.isLoading = false;
-          }
-        }
-      }
-    },
     findMovieInAllMovies() {
-      const searchedId = parseInt(this.movieId);
-      const filteredMovie = this.allMovies.find(movie => movie.id === searchedId);
+      const filteredMovie = this.allMovies.find(movie => movie.id == this.movieId);
 
       this.storedMovie = filteredMovie;
       this.movieTitle = filteredMovie.title;
       this.isLoading = false;
+    },
+
+    async storeSingleMovie() {
+      try {
+        this.storedMovie = await getMovieData(this.movieId);
+        this.movieTitle = this.storedMovie.title;
+      } catch {
+        this.$router.push({ name: '404Page' });
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 });
