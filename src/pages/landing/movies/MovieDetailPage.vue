@@ -30,7 +30,6 @@ export default defineComponent({
       this.$router.push({ name: '404Page' });
     } finally {
       if (this.storedMovie) this.isLoading = false;
-      else this.$router.push({ name: '404Page' });
     }
   },
 });
