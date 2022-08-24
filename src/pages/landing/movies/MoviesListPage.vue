@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
 import { useMainStore } from '@/store/index.js';
+
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieList from '@/components/movies/MovieList.vue';
 
