@@ -8,9 +8,7 @@ export const useMainStore = defineStore('main', {
       allMovies: [],
     };
   },
-  getters: {
-    // <-- computed ;)
-  },
+  getters: {},
   actions: {
     async storeAllMovies() {
       this.areMoviesLoading = true;
