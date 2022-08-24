@@ -29,7 +29,8 @@ export default defineComponent({
     } catch {
       this.$router.push({ name: '404Page' });
     } finally {
-      this.isLoading = false;
+      if (this.storedMovie) this.isLoading = false;
+      else this.$router.push({ name: '404Page' });
     }
   },
 });
