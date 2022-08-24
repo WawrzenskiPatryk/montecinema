@@ -13,8 +13,8 @@ export default defineComponent({
     HeaderActions,
   },
   computed: {
-    isAuthPanel() {
-      return ['LoginPage', 'RegisterPage'].includes(this.$route.name);
+    isNotAuthPanel() {
+      return !['LoginPage', 'RegisterPage'].includes(this.$route.name);
     },
   },
 });
@@ -25,10 +25,12 @@ export default defineComponent({
     <router-link :to="{ name: 'HomePage' }">
       <LogoImage />
     </router-link>
-    <HeaderNavigation v-if="!isAuthPanel" class="header__navigation" />
-    <HeaderActions v-if="!isAuthPanel" class="header__actions" />
-    <HamburgerButton v-if="!isAuthPanel" class="header__hamburger" />
-    
+
+    <HeaderNavigation v-if="isNotAuthPanel" class="header__navigation" />
+    <HeaderActions v-if="isNotAuthPanel" class="header__actions" />
+    <HamburgerButton v-if="isNotAuthPanel" class="header__hamburger" />
+
+    <span v-else class="header__description">Developed with ❤️ by Monterail</span>
   </header>
 </template>
 
@@ -61,6 +63,20 @@ export default defineComponent({
 
     &__hamburger {
       display: none;
+    }
+  }
+
+  &__description {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: $font-weight-medium;
+    font-size: 1.6rem;
+    line-height: 2.1rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    display: none;
+    @include screen-min-medium {
+      display: initial;
     }
   }
 }
