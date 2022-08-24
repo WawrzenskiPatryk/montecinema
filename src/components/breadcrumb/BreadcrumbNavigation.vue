@@ -7,73 +7,62 @@ export default defineComponent({
   components: {
     ArrowheadRight,
   },
+  props: {
+    secondItem: {
+      type: String,
+      default: '',
+    },
+  },
   methods: {
     capitalizeFirstCharacter(string) {
       return string[0].toUpperCase() + string.slice(1);
     },
-    formatRouteName(route) {
-      if (!route || route.length === 0) return;
-      const routeName = route.split('-').join(' ');
+    formatRouteName(name) {
+      const routeName = name.split('-').join(' ');
       return this.capitalizeFirstCharacter(routeName);
-    },
-    getLinksFullPath(index) {
-      return '/' + this.routeElements.slice(0, index + 1).join('/');
     },
   },
   computed: {
-    routeElements() {
-      return this.$route.fullPath.slice(1).split('/');
+    firstRouteElement() {
+      return this.$route.fullPath.slice(1).split('/')[0];
     },
   },
 });
 </script>
 
 <template>
-  <nav class="breadcrumb-navigation">
-    <ul class="breadcrumb-navigation__list">
-      <li
-        class="breadcrumb-navigation__element"
-        v-for="(route, index) in routeElements"
-        :key="route"
-      >
-        <ArrowheadRight class="breadcrumb-navigation__arrowhead" v-if="index > 0" />
+  <nav v-if="!!secondItem" class="breadcrumb-navigation">
+    <router-link
+      :to="`/${firstRouteElement}`"
+      class="breadcrumb-navigation__link breadcrumb-navigation__link--available"
+    >
+      {{ formatRouteName(firstRouteElement) }}
+    </router-link>
 
-        <router-link
-          v-if="index + 1 !== routeElements.length"
-          :to="getLinksFullPath(index)"
-          class="breadcrumb-navigation__link breadcrumb-navigation__link--available"
-        >
-          {{ formatRouteName(route) }}
-        </router-link>
-        <span v-else class="breadcrumb-navigation__link breadcrumb-navigation__link--exact">
-          {{ formatRouteName(route) }}
-        </span>
-      </li>
-    </ul>
+    <ArrowheadRight class="breadcrumb-navigation__arrowhead" />
+
+    <span class="breadcrumb-navigation__link breadcrumb-navigation__link--exact">
+      {{ secondItem }}
+    </span>
+  </nav>
+
+  <nav v-else class="breadcrumb-navigation">
+    <span class="breadcrumb-navigation__link breadcrumb-navigation__link--exact">
+      {{ formatRouteName(firstRouteElement) }}
+    </span>
   </nav>
 </template>
 
 <style lang="scss" scoped>
 .breadcrumb-navigation {
-  &__list {
-    display: flex;
-    align-items: center;
-    list-style-type: none;
-    height: 100%;
-    padding: 0;
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  height: 100%;
+  padding: 0;
 
-    @include screen-min-medium {
-      gap: 0.8rem;
-    }
-  }
-
-  &__element {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    @include screen-min-medium {
-      gap: 0.8rem;
-    }
+  @include screen-min-medium {
+    gap: 0.8rem;
   }
 
   &__link {

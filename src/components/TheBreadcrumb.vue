@@ -11,10 +11,13 @@ export default defineComponent({
     BreadcrumbNavigation,
     ArrowLeftIcon,
   },
+  props: {
+    secondItem: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {
-    // isVisible() {
-    //   return !['HomePage', '404Page'].includes(this.$route.name);
-    // },
     parentPath() {
       const currentFullPath = this.$route.fullPath;
       const indexOfLastSlash = currentFullPath.lastIndexOf('/');
@@ -27,7 +30,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- <div v-if="isVisible" class="breadcrumb"> -->
   <div class="breadcrumb">
     <BaseButton
       @click="$router.push(parentPath)"
@@ -40,7 +42,7 @@ export default defineComponent({
 
     <ArrowLeftIcon @click="$router.push(parentPath)" class="breadcrumb__arrow" />
 
-    <BreadcrumbNavigation />
+    <BreadcrumbNavigation :second-item="secondItem" />
   </div>
 </template>
 
