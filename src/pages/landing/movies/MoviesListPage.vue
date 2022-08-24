@@ -1,8 +1,8 @@
 <script>
 import { defineComponent } from 'vue';
-import { getAllMoviesData } from '@/services/api.js';
+import { mapState, mapActions } from 'pinia';
+import { useMainStore } from '@/store/index.js';
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
-
 import MovieList from '@/components/movies/MovieList.vue';
 
 export default defineComponent({
@@ -10,20 +10,14 @@ export default defineComponent({
     TheBreadcrumb,
     MovieList,
   },
-  data() {
-    return {
-      isLoading: true,
-      storedMovies: [],
-    };
+  mounted() {
+    if (this.allMovies.length === 0) this.storeAllMovies();
   },
-  async mounted() {
-    try {
-      this.storedMovies = await getAllMoviesData();
-    } catch {
-      this.$router.push({ name: '404Page' });
-    } finally {
-      this.isLoading = false;
-    }
+  computed: {
+    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
+  },
+  methods: {
+    ...mapActions(useMainStore, ['storeAllMovies']),
   },
 });
 </script>
@@ -31,7 +25,7 @@ export default defineComponent({
 <template>
   <TheBreadcrumb />
   <section class="movie-list-page">
-    <div v-if="isLoading">Loading...</div>
-    <MovieList v-else :movies="storedMovies" />
+    <div v-if="areMoviesLoading">Loading...</div>
+    <MovieList v-else :movies="allMovies" />
   </section>
 </template>
