@@ -12,17 +12,27 @@ export default defineComponent({
     HeaderNavigation,
     HeaderActions,
   },
+  computed: {
+    isNotAuthPanel() {
+      return !['LoginPage', 'RegisterPage'].includes(this.$route.name);
+    },
+  },
 });
 </script>
 
 <template>
   <header class="header">
-    <a href="#">
+    <router-link :to="{ name: 'HomePage' }">
       <LogoImage />
-    </a>
-    <HeaderNavigation class="header__navigation" />
-    <HeaderActions class="header__actions" />
-    <HamburgerButton class="header__hamburger" />
+    </router-link>
+
+    <template v-if="isNotAuthPanel">
+      <HeaderNavigation class="header__navigation" />
+      <HeaderActions class="header__actions" />
+      <HamburgerButton class="header__hamburger" />
+    </template>
+
+    <span v-else class="header__description">Developed with ❤️ by Monterail</span>
   </header>
 </template>
 
@@ -32,11 +42,11 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 2.4rem;
+  padding: $page-padding-small;
 
   background-color: $white;
 
-  height: 9.8rem;
+  height: $header-height-small;
   width: 100%;
 
   &__navigation,
@@ -44,9 +54,9 @@ export default defineComponent({
     display: none;
   }
 
-  @include screen-medium {
-    padding: 0 4.8rem;
-    height: 11.2rem;
+  @include screen-min-medium {
+    padding: $page-padding-regular;
+    height: $header-height-regular;
 
     &__navigation,
     &__actions {
@@ -55,6 +65,20 @@ export default defineComponent({
 
     &__hamburger {
       display: none;
+    }
+  }
+
+  &__description {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: $font-weight-medium;
+    font-size: 1.6rem;
+    line-height: 2.1rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    display: none;
+    @include screen-min-medium {
+      display: initial;
     }
   }
 }
