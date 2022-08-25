@@ -17,7 +17,7 @@ const routes = [
     ],
   },
   {
-    path: '/',
+    path: '/auth',
     component: () => import('@/pages/AuthPanel.vue'),
     children: [...auth],
   },

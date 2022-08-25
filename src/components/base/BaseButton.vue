@@ -12,7 +12,6 @@ export default defineComponent({
     to: {
       type: [Object, String],
       default: null,
-      required: false,
     },
     size: {
       type: String,
@@ -77,7 +76,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('btnClick')">
+  <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('click')">
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />

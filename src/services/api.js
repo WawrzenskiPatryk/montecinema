@@ -26,6 +26,6 @@ export async function getAllMoviesData() {
 }
 
 export async function getMovieData(movieId) {
-  const movieResponse = await getDataFromApi(endpoint.MOVIES + '/' + movieId);
+  const movieResponse = await getDataFromApi(`${endpoint.MOVIES}/${movieId}`);
   return movieResponse.data;
 }

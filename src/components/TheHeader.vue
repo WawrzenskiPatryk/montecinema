@@ -26,9 +26,11 @@ export default defineComponent({
       <LogoImage />
     </router-link>
 
-    <HeaderNavigation v-if="isNotAuthPanel" class="header__navigation" />
-    <HeaderActions v-if="isNotAuthPanel" class="header__actions" />
-    <HamburgerButton v-if="isNotAuthPanel" class="header__hamburger" />
+    <template v-if="isNotAuthPanel">
+      <HeaderNavigation class="header__navigation" />
+      <HeaderActions class="header__actions" />
+      <HamburgerButton class="header__hamburger" />
+    </template>
 
     <span v-else class="header__description">Developed with ❤️ by Monterail</span>
   </header>

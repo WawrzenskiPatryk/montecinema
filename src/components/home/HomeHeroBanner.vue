@@ -33,7 +33,7 @@ export default defineComponent({
     align-items: center;
     gap: $padding-large;
     padding: $padding-large $padding-regular;
-    height: calc($fullscreen-height - $header-height-small);
+    height: calc(100vh - $header-height-small);
     max-height: 56.2rem;
     width: 100%;
     background-color: $red-wisppink;

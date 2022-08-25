@@ -14,9 +14,7 @@ export default defineComponent({
       const allMinutes = this.movieData.length;
       const hours = Math.floor(allMinutes / 60);
       const minutes = allMinutes - hours * 60;
-      if (minutes === 0) return `${hours}h`;
-      if (minutes < 10) return `${hours}h 0${minutes} min`;
-      return `${hours}h ${minutes} min`;
+      return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
   },
 });

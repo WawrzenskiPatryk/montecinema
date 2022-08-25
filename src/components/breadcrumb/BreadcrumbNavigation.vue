@@ -17,14 +17,14 @@ export default defineComponent({
     capitalizeFirstCharacter(string) {
       return string[0].toUpperCase() + string.slice(1);
     },
-    formatRouteName(name) {
-      const routeName = name.split('-').join(' ');
-      return this.capitalizeFirstCharacter(routeName);
-    },
   },
   computed: {
     firstRouteElement() {
       return this.$route.fullPath.slice(1).split('/')[0];
+    },
+    formattedRouteName() {
+      const routeName = this.firstRouteElement.split('-').join(' ');
+      return this.capitalizeFirstCharacter(routeName);
     },
   },
 });
@@ -36,7 +36,7 @@ export default defineComponent({
       :to="`/${firstRouteElement}`"
       class="breadcrumb-navigation__link breadcrumb-navigation__link--available"
     >
-      {{ formatRouteName(firstRouteElement) }}
+      {{ formattedRouteName }}
     </router-link>
 
     <ArrowheadRight class="breadcrumb-navigation__arrowhead" />
@@ -48,7 +48,7 @@ export default defineComponent({
 
   <nav v-else class="breadcrumb-navigation">
     <span class="breadcrumb-navigation__link breadcrumb-navigation__link--exact">
-      {{ formatRouteName(firstRouteElement) }}
+      {{ formattedRouteName }}
     </span>
   </nav>
 </template>

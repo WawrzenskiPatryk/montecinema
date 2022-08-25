@@ -15,6 +15,5 @@ export default defineComponent({});
   display: flex;
   flex-direction: column;
   gap: 6.4rem;
-  // min-height: calc(100vh + 1px);
 }
 </style>

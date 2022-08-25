@@ -37,8 +37,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .movie-list {
-  // border: 1px solid blue;
-
   display: grid;
   grid-gap: 4rem;
   justify-items: center;

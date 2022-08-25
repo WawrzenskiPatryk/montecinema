@@ -22,17 +22,19 @@ export default defineComponent({
     return {
       isLoading: true,
       storedMovie: null,
-      movieTitle: null,
     };
   },
   mounted() {
     if (this.allMovies.length > 0) {
       this.findMovieInAllMovies();
     } else {
-      this.storeSingleMovie();
+      this.loadSingleMovie();
     }
   },
   computed: {
+    movieTitle() {
+      return this.isLoading ? '' : this.storedMovie.title;
+    },
     ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
   },
   methods: {
@@ -40,14 +42,12 @@ export default defineComponent({
       const filteredMovie = this.allMovies.find(movie => movie.id == this.movieId);
 
       this.storedMovie = filteredMovie;
-      this.movieTitle = filteredMovie.title;
       this.isLoading = false;
     },
 
-    async storeSingleMovie() {
+    async loadSingleMovie() {
       try {
         this.storedMovie = await getMovieData(this.movieId);
-        this.movieTitle = this.storedMovie.title;
       } catch {
         this.$router.push({ name: '404Page' });
       } finally {

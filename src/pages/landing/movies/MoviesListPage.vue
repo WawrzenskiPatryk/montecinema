@@ -12,13 +12,13 @@ export default defineComponent({
     MovieList,
   },
   mounted() {
-    if (this.allMovies.length === 0) this.storeAllMovies();
+    if (this.allMovies.length === 0) this.loadAllMovies();
   },
   computed: {
     ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
   },
   methods: {
-    ...mapActions(useMainStore, ['storeAllMovies']),
+    ...mapActions(useMainStore, ['loadAllMovies']),
   },
 });
 </script>

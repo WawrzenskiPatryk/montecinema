@@ -10,7 +10,7 @@ export const useMainStore = defineStore('main', {
   },
   getters: {},
   actions: {
-    async storeAllMovies() {
+    async loadAllMovies() {
       this.areMoviesLoading = true;
       try {
         this.allMovies = await getAllMoviesData();
