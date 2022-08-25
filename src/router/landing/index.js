@@ -7,7 +7,6 @@ export default [
   {
     path: '/movies',
     name: 'MoviesPage',
-    component: () => import('@/pages/landing/MoviesPage.vue'),
     children: [
       {
         path: '',
