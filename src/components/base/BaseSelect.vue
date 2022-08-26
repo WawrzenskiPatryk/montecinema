@@ -11,13 +11,9 @@ export default defineComponent({
       type: [String, Number],
       default: '',
     },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    placeholder: {
-      type: String,
-      default: '',
+    options: {
+      type: Array,
+      required: true,
     },
     required: {
       type: Boolean,
@@ -30,14 +26,20 @@ export default defineComponent({
 <template>
   <label class="input-wrapper input-wrapper--label">
     {{ label }}
-    <input
+    <select
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      :type="type"
-      :placeholder="placeholder"
-      :required="required"
-      class="input-wrapper__input"
-    />
+      @change="$emit('update:modelValue', $event.target.value)"
+      class="input-wrapper__select"
+    >
+      <option
+        v-for="option in options"
+        :value="option.id"
+        :key="option.id"
+        :selected="option === modelValue"
+      >
+        {{ option.name }}
+      </option>
+    </select>
   </label>
 </template>
 
@@ -56,7 +58,7 @@ export default defineComponent({
     color: $red-bittersweet;
   }
 
-  &__input {
+  &__select {
     border: none;
 
     width: 100%;
@@ -73,14 +75,6 @@ export default defineComponent({
     line-height: 2.1rem;
 
     color: $gray-tuna;
-
-    &::placeholder {
-      color: $gray-jumbo;
-    }
-
-    &::-webkit-search-cancel-button {
-      display: none;
-    }
   }
 }
 </style>
