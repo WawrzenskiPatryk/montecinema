@@ -37,7 +37,7 @@ export default defineComponent({
   border-radius: 0.8rem;
 
   width: 100%;
-  max-width: 31.1rem;
+  max-width: 32.7rem;
 
   transition: transform 300ms ease;
 

@@ -26,6 +26,8 @@ export default defineComponent({
 .hero-banner {
   display: flex;
 
+  margin-bottom: 6.4rem;
+
   &__wrapper {
     display: flex;
     flex-direction: column;

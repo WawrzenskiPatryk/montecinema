@@ -10,10 +10,4 @@ export default defineComponent({});
   </main>
 </template>
 
-<style lang="scss">
-.landing-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 6.4rem;
-}
-</style>
+<style lang="scss" scoped></style>

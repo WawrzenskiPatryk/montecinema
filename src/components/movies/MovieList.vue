@@ -38,10 +38,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .movie-list {
   display: grid;
-  grid-gap: 4rem;
+  grid-gap: 2.4rem;
   justify-items: center;
 
   @include screen-min-medium {
+    grid-gap: 4rem;
     grid-template-columns: repeat(2, 1fr);
   }
   @include screen-min-large {
