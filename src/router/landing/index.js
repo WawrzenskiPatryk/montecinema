@@ -11,7 +11,7 @@ export default [
       {
         path: '',
         name: 'MoviesListPage',
-        component: () => import('@/pages/landing/movies/MoviesListPage.vue'),
+        component: () => import('@/pages/landing/MoviesPage.vue'),
       },
       {
         path: ':movieId',
