@@ -32,6 +32,7 @@ export default defineComponent({
       const defaultOption = { id: 0, name: 'All categories' };
       return [defaultOption, ...this.allGenres];
     },
+
     displayedMovies() {
       const moviesFilteredByTitle = this.filterMoviesByName(this.allMovies, this.searchFilterValue);
       if (this.categoryFilterValue == 0) return moviesFilteredByTitle;
@@ -62,14 +63,21 @@ export default defineComponent({
     <div class="movies-page__items">
       <h1 class="movies-page__title">All the movies</h1>
 
-      <BaseInput
-        v-model="searchFilterValue"
-        label="Search"
-        placeholder="What are you looking for?"
-        type="search"
-      />
-
-      <BaseSelect v-model="categoryFilterValue" label="Category" :options="categoryOptions" />
+      <div class="movies-page__filter-inputs">
+        <BaseInput
+          v-model="searchFilterValue"
+          label="Search"
+          placeholder="What are you looking for?"
+          type="search"
+          class="movies-page__search-bar"
+        />
+        <BaseSelect
+          v-model="categoryFilterValue"
+          label="Category"
+          :options="categoryOptions"
+          class="movies-page__category-select"
+        />
+      </div>
     </div>
 
     <div class="movies-page__movies-list">
@@ -82,9 +90,19 @@ export default defineComponent({
 <style lang="scss" scoped>
 .movies-page {
   padding: 0 2.4rem;
+  padding-bottom: 10.4rem;
+
+  @include screen-min-medium {
+    padding: 0;
+    padding-bottom: 6.4rem;
+  }
 
   &__items {
     margin-bottom: 3.2rem;
+
+    @include screen-min-medium {
+      margin-bottom: 6.4rem;
+    }
   }
 
   &__title {
@@ -96,6 +114,29 @@ export default defineComponent({
     color: $gray-tuna;
 
     margin: 3.2rem 0;
+
+    @include screen-min-medium {
+      font-size: 8rem;
+    }
+  }
+
+  &__filter-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+
+    @include screen-min-medium {
+      flex-direction: row;
+    }
+  }
+
+  @include screen-min-medium {
+    &__search-bar {
+      flex: 2.1;
+    }
+    &__category-select {
+      flex: 1;
+    }
   }
 }
 </style>

@@ -1,7 +1,10 @@
 <script>
 import { defineComponent } from 'vue';
 
+import ArrowheadDown from '@/assets/icons/arrowhead-down.svg';
+
 export default defineComponent({
+  components: { ArrowheadDown },
   props: {
     label: {
       type: String,
@@ -24,12 +27,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <label class="input-wrapper input-wrapper--label">
+  <label class="select-wrapper select-wrapper--label">
     {{ label }}
     <select
       :value="modelValue"
       @change="$emit('update:modelValue', $event.target.value)"
-      class="input-wrapper__select"
+      class="select-wrapper__select"
     >
       <option
         v-for="option in options"
@@ -40,14 +43,15 @@ export default defineComponent({
         {{ option.name }}
       </option>
     </select>
+    <ArrowheadDown class="select-wrapper__arrow-icon" />
   </label>
 </template>
 
 <style lang="scss" scoped>
-.input-wrapper {
+.select-wrapper {
+  position: relative;
   display: inline-block;
   width: 100%;
-  margin-bottom: 4rem;
 
   &--label {
     font-family: 'Roboto Mono', monospace;
@@ -60,6 +64,7 @@ export default defineComponent({
 
   &__select {
     border: none;
+    outline: none;
 
     width: 100%;
     margin-top: 1.2rem;
@@ -75,6 +80,15 @@ export default defineComponent({
     line-height: 2.1rem;
 
     color: $gray-tuna;
+
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  &__arrow-icon {
+    position: absolute;
+    top: 50%;
+    right: 1.6rem;
   }
 }
 </style>

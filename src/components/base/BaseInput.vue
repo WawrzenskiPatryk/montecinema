@@ -45,7 +45,6 @@ export default defineComponent({
 .input-wrapper {
   display: inline-block;
   width: 100%;
-  margin-bottom: 4rem;
 
   &--label {
     font-family: 'Roboto Mono', monospace;
@@ -58,6 +57,7 @@ export default defineComponent({
 
   &__input {
     border: none;
+    outline: none;
 
     width: 100%;
     margin-top: 1.2rem;

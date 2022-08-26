@@ -46,6 +46,7 @@ export default defineComponent({
     },
 
     async loadSingleMovie() {
+      this.isLoading = true;
       try {
         this.storedMovie = await getMovieData(this.movieId);
       } catch {
