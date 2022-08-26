@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
-import { useMainStore } from '@/store/index.js';
+import { mainStore } from '@/store/index.js';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieList from '@/components/movies/MovieList.vue';
@@ -17,30 +17,20 @@ export default defineComponent({
   },
   mounted() {
     if (this.allMovies.length === 0) this.loadAllMovies();
+    if (this.allGenres.length === 0) this.loadAllGenres();
   },
   data() {
     return {
       searchFilterValue: '',
       categoryFilterValue: 0,
-      tempCategoryOptions: [
-        { id: 1, name: 'Thriller' },
-        { id: 2, name: 'Comedy' },
-        { id: 3, name: 'Fantasy' },
-        { id: 4, name: 'Sci-Fi' },
-        { id: 5, name: 'Romance' },
-        { id: 6, name: 'Family' },
-        { id: 7, name: 'Horror' },
-        { id: 8, name: 'Documentary' },
-        { id: 9, name: 'Action' },
-      ],
     };
   },
   computed: {
-    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
+    ...mapState(mainStore, ['allMovies', 'areMoviesLoading', 'allGenres', 'areGenresLoading']),
 
-    displayedCategoryOptions() {
+    categoryOptions() {
       const defaultOption = { id: 0, name: 'All categories' };
-      return [defaultOption, ...this.tempCategoryOptions];
+      return [defaultOption, ...this.allGenres];
     },
     displayedMovies() {
       const moviesFilteredByTitle = this.filterMoviesByName(this.allMovies, this.searchFilterValue);
@@ -49,7 +39,7 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions(useMainStore, ['loadAllMovies']),
+    ...mapActions(mainStore, ['loadAllMovies', 'loadAllGenres']),
 
     filterMoviesByName(movies, filterValue) {
       const filteredMovies = movies.filter(movie =>
@@ -79,11 +69,7 @@ export default defineComponent({
         type="search"
       />
 
-      <BaseSelect
-        v-model="categoryFilterValue"
-        label="Category"
-        :options="displayedCategoryOptions"
-      />
+      <BaseSelect v-model="categoryFilterValue" label="Category" :options="categoryOptions" />
     </div>
 
     <div class="movies-page__movies-list">

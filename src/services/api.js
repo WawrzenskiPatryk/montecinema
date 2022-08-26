@@ -10,7 +10,7 @@ const endpoint = {
   MOVIES: 'movies',
   TICKET_DESKS: 'ticket_desks',
   HALLS: 'halls',
-  MOVIE_GENRES: 'movie_genres',
+  GENRES: 'movie_genres',
   TICKETS: 'tickets',
   RESERVATIONS: 'reservations',
 };
@@ -28,4 +28,9 @@ export async function getAllMoviesData() {
 export async function getMovieData(movieId) {
   const movieResponse = await getDataFromApi(`${endpoint.MOVIES}/${movieId}`);
   return movieResponse.data;
+}
+
+export async function getMovieGenres() {
+  const genreResponse = await getDataFromApi(`${endpoint.GENRES}`);
+  return genreResponse.data;
 }

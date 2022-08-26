@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
-import { getAllMoviesData } from '@/services/api.js';
+import { getAllMoviesData, getMovieGenres } from '@/services/api.js';
 
-export const useMainStore = defineStore('main', {
+export const mainStore = defineStore('main', {
   state() {
     return {
       areMoviesLoading: false,
+      areGenresLoading: false,
       allMovies: [],
+      allGenres: [],
     };
   },
   getters: {},
@@ -18,6 +20,16 @@ export const useMainStore = defineStore('main', {
         this.$router.push({ name: '404Page' });
       } finally {
         this.areMoviesLoading = false;
+      }
+    },
+    async loadAllGenres() {
+      this.areGenresLoading = true;
+      try {
+        this.allGenres = await getMovieGenres();
+      } catch {
+        this.$router.push({ name: '404Page' });
+      } finally {
+        this.areGenresLoading = false;
       }
     },
   },

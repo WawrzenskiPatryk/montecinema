@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
-import { useMainStore } from '@/store/index.js';
+import { mainStore } from '@/store/index.js';
 
 import MovieList from '@/components/movies/MovieList.vue';
 
@@ -15,10 +15,10 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
+    ...mapState(mainStore, ['allMovies', 'areMoviesLoading']),
   },
   methods: {
-    ...mapActions(useMainStore, ['loadAllMovies']),
+    ...mapActions(mainStore, ['loadAllMovies']),
   },
 });
 </script>
