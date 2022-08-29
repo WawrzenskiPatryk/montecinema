@@ -22,6 +22,7 @@ export const mainStore = defineStore('main', {
         this.areMoviesLoading = false;
       }
     },
+
     async loadAllGenres() {
       this.areGenresLoading = true;
       try {
@@ -31,6 +32,14 @@ export const mainStore = defineStore('main', {
       } finally {
         this.areGenresLoading = false;
       }
+    },
+
+    formatMovieLength(movieLength) {
+      if (!movieLength) return '0h 0 min';
+      const allMinutes = movieLength;
+      const hours = Math.floor(allMinutes / 60);
+      const minutes = allMinutes - hours * 60;
+      return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
   },
 });

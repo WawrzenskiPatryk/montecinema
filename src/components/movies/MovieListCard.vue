@@ -1,5 +1,8 @@
 <script>
 import { defineComponent } from 'vue';
+import { mapActions } from 'pinia';
+import { mainStore } from '@/store/index.js';
+
 import BaseTag from '@/components/base/BaseTag.vue';
 
 export default defineComponent({
@@ -14,12 +17,11 @@ export default defineComponent({
   },
   computed: {
     formattedMovieLength() {
-      if (!this.movieData) return '0h 0 min';
-      const allMinutes = this.movieData.length;
-      const hours = Math.floor(allMinutes / 60);
-      const minutes = allMinutes - hours * 60;
-      return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
+      return this.formatMovieLength(this.movieData.length);
     },
+  },
+  methods: {
+    ...mapActions(mainStore, ['formatMovieLength']),
   },
 });
 </script>
