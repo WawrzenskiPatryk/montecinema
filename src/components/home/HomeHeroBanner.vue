@@ -18,7 +18,7 @@ export default defineComponent({
       </h2>
       <BaseButton size="large" class="hero-banner__button">Book a ticket</BaseButton>
     </div>
-    <div class="hero-banner__image"></div>
+    <div class="hero-banner__image-container"></div>
   </section>
 </template>
 
@@ -69,7 +69,7 @@ export default defineComponent({
     width: 100%;
   }
 
-  &__image {
+  &__image-container {
     display: none;
   }
 
@@ -102,7 +102,7 @@ export default defineComponent({
       width: 66%;
     }
 
-    &__image {
+    &__image-container {
       width: 34%;
       display: initial;
       background: url('../../assets/images/hero-image.png');
