@@ -43,9 +43,12 @@ export default defineComponent({
     ...mapActions(mainStore, ['loadAllMovies', 'loadAllGenres']),
 
     filterMoviesByName(movies, filterValue) {
-      const filteredMovies = movies.filter(movie =>
-        movie.title.toLowerCase().includes(filterValue.toLowerCase())
-      );
+      const filteredMovies = movies.filter(movie => {
+        const allWhitespaces = /\s/g;
+        const formattedTitle = movie.title.toLowerCase().replace(allWhitespaces, '');
+        const formattedFilterValue = filterValue.toLowerCase().replace(allWhitespaces, '');
+        return formattedTitle.includes(formattedFilterValue);
+      });
       return filteredMovies;
     },
 
