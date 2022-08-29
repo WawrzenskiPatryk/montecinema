@@ -1,7 +1,11 @@
 <script>
 import { defineComponent } from 'vue';
+import BaseTag from '@/components/base/BaseTag.vue';
 
 export default defineComponent({
+  components: {
+    BaseTag,
+  },
   props: {
     movieData: {
       type: Object,
@@ -26,7 +30,7 @@ export default defineComponent({
       <h2 class="movie-list-card__title">{{ movieData.title }}</h2>
       <span class="movie-list-card__length">{{ formattedMovieLength }}</span>
       <img :src="movieData.poster_url" :alt="movieData.title" class="movie-list-card__image" />
-      <span class="movie-list-card__genre">{{ movieData.genre.name }}</span>
+      <BaseTag class="movie-list-card__genre">{{ movieData.genre.name }}</BaseTag>
     </router-link>
   </li>
 </template>
