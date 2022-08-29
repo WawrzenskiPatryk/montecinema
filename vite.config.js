@@ -13,6 +13,7 @@ export default defineConfig({
         additionalData: `
           @import '@/assets/stylesheets/variables.scss';
           @import '@/assets/stylesheets/mixins.scss';
+          @import '@/assets/stylesheets/utility.scss';
         `,
       },
     },

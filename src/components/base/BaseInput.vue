@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <label class="input-wrapper input-wrapper--label">
+  <label class="input u-form-label">
     {{ label }}
     <input
       :value="modelValue"
@@ -36,44 +36,14 @@ export default defineComponent({
       :type="type"
       :placeholder="placeholder"
       :required="required"
-      class="input-wrapper__input"
+      class="input__field u-form-field"
     />
   </label>
 </template>
 
 <style lang="scss" scoped>
-.input-wrapper {
-  display: inline-block;
-  width: 100%;
-
-  &--label {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: $font-weight-bold;
-    font-size: 1.4rem;
-    line-height: 1.8rem;
-    text-transform: uppercase;
-    color: $red-bittersweet;
-  }
-
-  &__input {
-    border: none;
-    outline: none;
-
-    width: 100%;
-    margin-top: 1.2rem;
-    padding: 0 2.4rem;
-    height: 5.6rem;
-
-    background-color: $gray-athensgray;
-    border-radius: 0.8rem;
-
-    font-family: 'Roboto', sans-serif;
-    font-weight: $font-weight-regular;
-    font-size: 1.8rem;
-    line-height: 2.1rem;
-
-    color: $gray-tuna;
-
+.input {
+  &__field {
     &::placeholder {
       color: $gray-jumbo;
     }
