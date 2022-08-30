@@ -7,6 +7,7 @@ import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieList from '@/components/movies/MovieList.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseSelect from '@/components/base/BaseSelect.vue';
+import BaseHeading from '@/components/base/BaseHeading.vue';
 
 export default defineComponent({
   components: {
@@ -14,6 +15,7 @@ export default defineComponent({
     MovieList,
     BaseInput,
     BaseSelect,
+    BaseHeading,
   },
   mounted() {
     if (this.allMovies.length === 0) this.loadAllMovies();
@@ -64,7 +66,7 @@ export default defineComponent({
   <TheBreadcrumb />
   <section class="movies-page">
     <div class="movies-page__items">
-      <h1 class="movies-page__title">All the movies</h1>
+      <BaseHeading class="movies-page__title">All the movies</BaseHeading>
 
       <div class="movies-page__filter-inputs">
         <BaseInput
@@ -92,13 +94,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .movies-page {
-  padding: 0 2.4rem;
-  padding-bottom: 10.4rem;
-
-  @include screen-min-medium {
-    padding: 0;
-    padding-bottom: 6.4rem;
-  }
+  @include page-padding;
 
   &__items {
     margin-bottom: 3.2rem;
@@ -109,18 +105,7 @@ export default defineComponent({
   }
 
   &__title {
-    font-family: 'Eczar', serif;
-    font-weight: $font-weight-semibold;
-    font-size: 4.8rem;
-    line-height: 102%;
-    letter-spacing: -0.01em;
-    color: $gray-tuna;
-
     margin: 3.2rem 0;
-
-    @include screen-min-medium {
-      font-size: 8rem;
-    }
   }
 
   &__filter-inputs {

@@ -17,3 +17,13 @@
     }
   }
 }
+
+@mixin page-padding {
+  padding: 0 2.4rem;
+  padding-bottom: 10.4rem;
+
+  @include screen-min-medium {
+    padding: 0;
+    padding-bottom: 6.4rem;
+  }
+}

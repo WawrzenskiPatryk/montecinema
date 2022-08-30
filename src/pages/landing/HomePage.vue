@@ -15,5 +15,3 @@ export default defineComponent({
   <HomeHeroBanner />
   <HomeMoviesPanel />
 </template>
-
-<style lang="scss" scoped></style>

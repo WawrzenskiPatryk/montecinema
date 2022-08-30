@@ -6,16 +6,19 @@ import { getDateObject } from '@/services/dates.js';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import BaseSelect from '@/components/base/BaseSelect.vue';
+import BaseHeading from '@/components/base/BaseHeading.vue';
 
 export default defineComponent({
   components: {
     TheBreadcrumb,
     BaseSelect,
+    BaseHeading,
   },
   data() {
     return {
       movieFilterValue: 0,
       pickedDate: null,
+      // pickedDate: '11 feb 2022',
     };
   },
   beforeMount() {
@@ -24,20 +27,17 @@ export default defineComponent({
   computed: {
     ...mapState(mainStore, ['areScreeningsLoading', 'storedScreenings', 'allMovies']),
 
+    currentDateObject() {
+      return getDateObject(this.pickedDate);
+    },
     hyphenFormattedDate() {
       const { year, month, day } = this.currentDateObject;
       return `${year}-${month}-${day}`;
     },
-
     titleFormattedDate() {
       const { year, month, day, weekday } = this.currentDateObject;
       return `${weekday} ${day}/${month}/${year}`;
     },
-
-    currentDateObject() {
-      return getDateObject(this.pickedDate);
-    },
-
     movieOptions() {
       const defaultOption = { id: 0, name: 'All movies' };
       const options = [defaultOption];
@@ -67,10 +67,10 @@ export default defineComponent({
   <TheBreadcrumb />
   <section class="screenings-page">
     <div class="screenings-page__items">
-      <h1 class="screenings-page__title">
+      <BaseHeading class="screenings-page__title u-heading">
         <span class="screenings-page__title--dark"> Screenings: </span>
         <span class="screenings-page__title--light"> {{ titleFormattedDate }} </span>
-      </h1>
+      </BaseHeading>
 
       <div class="screenings-page__filter-inputs">
         <!-- todo: radio select for date with calendar dropdown -->
@@ -85,7 +85,6 @@ export default defineComponent({
       </div>
     </div>
 
-    <h1>Screenings Page</h1>
     <ul v-if="!areScreeningsLoading">
       <li v-for="screening in storedScreenings" :key="screening.id">
         {{ screening }}
@@ -95,4 +94,18 @@ export default defineComponent({
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.screenings-page {
+  @include page-padding;
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    margin: 3.2rem 0;
+
+    &--light {
+      color: $gray-bombay;
+    }
+  }
+}
+</style>

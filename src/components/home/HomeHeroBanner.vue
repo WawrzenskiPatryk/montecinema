@@ -1,10 +1,12 @@
 <script>
 import { defineComponent } from 'vue';
-import BaseButton from '../base/BaseButton.vue';
+import BaseButton from '@/components/base/BaseButton.vue';
+import BaseHeading from '@/components/base/BaseHeading.vue';
 
 export default defineComponent({
   components: {
     BaseButton,
+    BaseHeading
   },
 });
 </script>
@@ -12,7 +14,7 @@ export default defineComponent({
 <template>
   <section class="hero-banner">
     <div class="hero-banner__wrapper">
-      <h1 class="hero-banner__title">Welcome to the best cinema in Monterail</h1>
+      <BaseHeading class="hero-banner__title">Welcome to the best cinema in Monterail</BaseHeading>
       <h2 class="hero-banner__subtitle">
         Best movies, best experiences, best people. And all that doesn’t exist. Yikes.
       </h2>
@@ -48,15 +50,6 @@ export default defineComponent({
     color: $gray-tuna;
   }
 
-  &__title {
-    font-family: 'Eczar', serif;
-    font-weight: $font-weight-semibold;
-    font-size: 4.8rem;
-    line-height: 102%;
-    letter-spacing: -0.01em;
-    color: $gray-tuna;
-  }
-
   &__subtitle {
     font-family: 'Roboto Mono', monospace;
     font-weight: $font-weight-regular;
@@ -85,11 +78,6 @@ export default defineComponent({
     &__subtitle {
       text-align: left;
       max-width: 60rem;
-    }
-
-    &__title {
-      font-size: 8rem;
-      letter-spacing: -0.01em;
     }
 
     &__button {
