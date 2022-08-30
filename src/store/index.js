@@ -7,50 +7,12 @@ export const mainStore = defineStore('main', {
       areMoviesLoading: false,
       areGenresLoading: false,
       areSeancesLoading: false,
+      areScreeningsLoading: false,
       allMovies: [],
       allGenres: [],
       storedSeances: [],
-      seancesDate: '2022-08-30',
+      storedScreenings: [],
     };
-  },
-
-  getters: {
-    screenings() {
-      // debugging logs are here for now because I've experieced
-      // endless looping while calling the getter in some cases
-      console.log('getter call start');
-      //
-      if (this.allMovies.length === 0) this.loadAllMovies();
-      if (this.storedSeances.length === 0) this.loadSeancesByDate(this.seancesDate);
-
-      const storedScreenings = this.storedSeances.reduce((screenings, seance) => {
-        const screeningIndex = screenings.findIndex(movie => movie.id === seance.movie);
-
-        if (screeningIndex < 0) {
-          const matchingMovieToSeance = this.allMovies.find(movie => movie.id === seance.movie);
-          const newScreening = {
-            ...matchingMovieToSeance,
-            seances: [seance],
-          };
-          screenings.push(newScreening);
-        } else {
-          const matchedScreening = { ...screenings[screeningIndex] };
-          matchedScreening.seances.push(seance);
-          screenings.splice(screeningIndex, 1, matchedScreening);
-        }
-
-        return screenings;
-      }, []);
-      //
-      console.log('getter call end');
-      //
-      return storedScreenings;
-    },
-
-    testGetter() {
-      console.log('wtf');
-      return 'wtf';
-    },
   },
 
   actions: {
@@ -76,15 +38,50 @@ export const mainStore = defineStore('main', {
       }
     },
 
-    async loadSeancesByDate(date) {
+    async loadSeancesByDate(movieId, date) {
       this.areSeancesLoading = true;
       try {
-        this.storedSeances = await getSeancesData(null, date);
+        this.storedSeances = await getSeancesData(movieId, date);
       } catch {
         this.$router.push({ name: '404Page' });
       } finally {
         this.areSeancesLoading = false;
       }
+    },
+
+    async loadScreenings(movieId, date) {
+      this.areScreeningsLoading = true;
+
+      await this.loadSeancesByDate(movieId, date);
+      if (this.allMovies.length === 0) {
+        await this.loadAllMovies();
+      }
+      this.storedScreenings = this.matchSeancesToMovies(this.storedSeances, this.allMovies);
+
+      this.areScreeningsLoading = false;
+    },
+
+    matchSeancesToMovies(seances, movies) {
+      const storedScreenings = seances.reduce((screenings, seance) => {
+        const screeningIndex = screenings.findIndex(screening => screening.id === seance.movie);
+
+        if (screeningIndex < 0) {
+          const matchingMovieToSeance = movies.find(movie => movie.id === seance.movie);
+          const newScreening = {
+            ...matchingMovieToSeance,
+            seances: [seance],
+          };
+          screenings.push(newScreening);
+        } else {
+          const matchedScreening = { ...screenings[screeningIndex] };
+          matchedScreening.seances.push(seance);
+          screenings.splice(screeningIndex, 1, matchedScreening);
+        }
+
+        return screenings;
+      }, []);
+
+      return storedScreenings;
     },
 
     formatMovieLength(movieLength) {
@@ -94,14 +91,5 @@ export const mainStore = defineStore('main', {
       const minutes = allMinutes - hours * 60;
       return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
-
-    // setTodaysDate() {
-    // const today = new Date();
-    // const day = today.getDate();
-
-    // console.log(day);
-
-    // this.seancesDate = '';
-    // },
   },
 });
