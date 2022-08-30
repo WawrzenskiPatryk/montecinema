@@ -4,14 +4,14 @@ import { defineComponent } from 'vue';
 import MovieListCard from '@/components/movies/MovieListCard.vue';
 
 export default defineComponent({
+  components: {
+    MovieListCard,
+  },
   props: {
     movies: {
       type: Array,
       required: true,
     },
-  },
-  components: {
-    MovieListCard,
   },
   computed: {
     movieCardClasses() {
