@@ -17,6 +17,7 @@ export default defineComponent({
     <div>{{ screeningData.title }}</div>
     <div>{{ screeningData.genre.name }}</div>
     <div>{{ screeningData.length }}</div>
+    <div>{{ screeningData.poster_url }}</div>
     <div>
       <div v-for="seance in screeningData.seances" :key="seance.id">{{ seance }}</div>
     </div>
