@@ -63,18 +63,23 @@ export const mainStore = defineStore('main', {
 
     matchSeancesToMovies(seances, movies) {
       const storedScreenings = seances.reduce((screenings, seance) => {
+        const currentSeance = {
+          id: seance.id,
+          datetime: seance.datetime,
+        };
+
         const screeningIndex = screenings.findIndex(screening => screening.id === seance.movie);
 
         if (screeningIndex < 0) {
           const matchingMovieToSeance = movies.find(movie => movie.id === seance.movie);
           const newScreening = {
             ...matchingMovieToSeance,
-            seances: [seance],
+            seances: [currentSeance],
           };
           screenings.push(newScreening);
         } else {
           const matchedScreening = { ...screenings[screeningIndex] };
-          matchedScreening.seances.push(seance);
+          matchedScreening.seances.push(currentSeance);
           screenings.splice(screeningIndex, 1, matchedScreening);
         }
 
