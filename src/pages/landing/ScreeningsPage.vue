@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
-import { mapState } from 'pinia';
+import { mapActions, mapState, mapWritableState } from 'pinia';
 import { mainStore } from '@/store/index.js';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
@@ -10,17 +10,18 @@ export default defineComponent({
     TheBreadcrumb,
   },
   mounted() {
-    // setTimeout(() => {
-    //   this.seancesDate = '2022-08-30';
-    // }, 5000);
+    setTimeout(() => {
+      this.seancesDate = '2022-09-12';
+      this.loadSeancesByDate(this.seancesDate);
+    }, 2000);
   },
   computed: {
-    ...mapState(mainStore, [
-      'screenings',
-      // 'seancesDate'
-    ]),
+    ...mapState(mainStore, ['screenings', 'testGetter']),
+    ...mapWritableState(mainStore, ['seancesDate']),
   },
-  methods: {},
+  methods: {
+    ...mapActions(mainStore, ['loadSeancesByDate']),
+  },
 });
 </script>
 

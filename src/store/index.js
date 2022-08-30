@@ -10,20 +10,46 @@ export const mainStore = defineStore('main', {
       allMovies: [],
       allGenres: [],
       storedSeances: [],
-      seancesDate: '2022-08-29',
+      seancesDate: '2022-08-30',
     };
   },
 
   getters: {
     screenings() {
+      // debugging logs are here for now because I've experieced
+      // endless looping while calling the getter in some cases
+      console.log('getter call start');
+      //
       if (this.allMovies.length === 0) this.loadAllMovies();
-      this.loadSeancesByDate(this.seancesDate);
+      if (this.storedSeances.length === 0) this.loadSeancesByDate(this.seancesDate);
 
-      const screeningsData = this.allMovies.map(movie =>
-        this.createScreening(movie, this.storedSeances)
-      );
+      const storedScreenings = this.storedSeances.reduce((screenings, seance) => {
+        const screeningIndex = screenings.findIndex(movie => movie.id === seance.movie);
 
-      return screeningsData.filter(screening => screening !== null);
+        if (screeningIndex < 0) {
+          const matchingMovieToSeance = this.allMovies.find(movie => movie.id === seance.movie);
+          const newScreening = {
+            ...matchingMovieToSeance,
+            seances: [seance],
+          };
+          screenings.push(newScreening);
+        } else {
+          const matchedScreening = { ...screenings[screeningIndex] };
+          matchedScreening.seances.push(seance);
+          screenings.splice(screeningIndex, 1, matchedScreening);
+        }
+
+        return screenings;
+      }, []);
+      //
+      console.log('getter call end');
+      //
+      return storedScreenings;
+    },
+
+    testGetter() {
+      console.log('wtf');
+      return 'wtf';
     },
   },
 
@@ -69,24 +95,13 @@ export const mainStore = defineStore('main', {
       return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
 
-    createScreening(movie, seances) {
-      const formattedMovieLength = this.formatMovieLength(movie.length);
+    // setTodaysDate() {
+    // const today = new Date();
+    // const day = today.getDate();
 
-      const screeningData = {
-        id: movie.id,
-        title: movie.title,
-        genre: movie.genre,
-        posterUrl: movie.poster_url,
-        length: formattedMovieLength,
-        seances: [],
-      };
+    // console.log(day);
 
-      seances.forEach(seance => {
-        if (seance.movie === movie.id) screeningData.seances.push(seance);
-      });
-
-      if (screeningData.seances.length === 0) return null;
-      else return screeningData;
-    },
+    // this.seancesDate = '';
+    // },
   },
 });
