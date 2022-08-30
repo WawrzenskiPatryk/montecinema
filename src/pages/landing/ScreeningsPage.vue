@@ -7,12 +7,14 @@ import { getDateObject } from '@/services/dates.js';
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import BaseSelect from '@/components/base/BaseSelect.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
+import ScreeningsList from '@/components/screenings/ScreeningsList.vue';
 
 export default defineComponent({
   components: {
     TheBreadcrumb,
     BaseSelect,
     BaseHeading,
+    ScreeningsList,
   },
   data() {
     return {
@@ -85,12 +87,10 @@ export default defineComponent({
       </div>
     </div>
 
-    <ul v-if="!areScreeningsLoading">
-      <li v-for="screening in storedScreenings" :key="screening.id">
-        {{ screening }}
-        <br /><br />
-      </li>
-    </ul>
+    <div class="screenings-page__screenings-list">
+      <div v-if="areScreeningsLoading">Loading...</div>
+      <ScreeningsList v-else :screenings="storedScreenings" />
+    </div>
   </section>
 </template>
 
