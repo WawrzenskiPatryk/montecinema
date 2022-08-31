@@ -17,7 +17,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <ul v-if="!areScreeningsLoading" class="screenings-list">
+  <ul class="screenings-list">
     <ScreeningsListCard
       v-for="screeningData in screenings"
       :key="screeningData.id"
@@ -27,4 +27,10 @@ export default defineComponent({
   </ul>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.screenings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+</style>
