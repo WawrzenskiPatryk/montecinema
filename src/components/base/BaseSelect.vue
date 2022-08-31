@@ -50,16 +50,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 .select {
   position: relative;
-
+  
   &__field {
     -webkit-appearance: none;
     appearance: none;
+    cursor: pointer;
   }
 
   &__arrow-icon {
     position: absolute;
     top: 50%;
     right: 1.6rem;
+    pointer-events: none;
   }
 }
 </style>
