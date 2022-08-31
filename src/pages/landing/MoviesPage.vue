@@ -66,7 +66,7 @@ export default defineComponent({
   <TheBreadcrumb />
   <section class="movies-page">
     <div class="movies-page__items">
-      <BaseHeading class="movies-page__title">All the movies</BaseHeading>
+      <BaseHeading class="movies-page__title" heading-size="large">All the movies</BaseHeading>
 
       <div class="movies-page__filter-inputs">
         <BaseInput

@@ -6,11 +6,13 @@ import { mainStore } from '@/store/index.js';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieDetail from '@/components/movies/MovieDetail.vue';
+import ScreeningsPanel from '@/components/screenings/ScreeningsPanel.vue';
 
 export default defineComponent({
   components: {
-    MovieDetail,
     TheBreadcrumb,
+    MovieDetail,
+    ScreeningsPanel,
   },
   props: {
     movieId: {
@@ -63,6 +65,19 @@ export default defineComponent({
   <TheBreadcrumb :second-item="movieTitle" />
   <section class="movie-detail-page">
     <div v-if="isLoading">Loading...</div>
-    <MovieDetail v-else :movie="storedMovie" />
+    <MovieDetail v-else :movie="storedMovie" class="movie-detail-page__details" />
+    <ScreeningsPanel
+      heading-size="small"
+      :movie-id="movieId"
+      class="movie-detail-page__screenings"
+    />
   </section>
 </template>
+
+<style lang="scss" scoped>
+.movie-detail-page {
+  &__details {
+    margin-bottom: 6.4rem;
+  }
+}
+</style>

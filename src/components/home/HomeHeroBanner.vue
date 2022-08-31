@@ -6,7 +6,7 @@ import BaseHeading from '@/components/base/BaseHeading.vue';
 export default defineComponent({
   components: {
     BaseButton,
-    BaseHeading
+    BaseHeading,
   },
 });
 </script>
@@ -14,7 +14,9 @@ export default defineComponent({
 <template>
   <section class="hero-banner">
     <div class="hero-banner__wrapper">
-      <BaseHeading class="hero-banner__title">Welcome to the best cinema in Monterail</BaseHeading>
+      <BaseHeading class="hero-banner__title" heading-size="large">
+        Welcome to the best cinema in Monterail
+      </BaseHeading>
       <h2 class="hero-banner__subtitle">
         Best movies, best experiences, best people. And all that doesn’t exist. Yikes.
       </h2>
@@ -27,8 +29,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .hero-banner {
   display: flex;
-
-  margin-bottom: 6.4rem;
 
   &__wrapper {
     display: flex;
