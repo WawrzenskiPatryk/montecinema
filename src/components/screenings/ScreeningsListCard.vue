@@ -84,6 +84,9 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    @include screen-min-medium {
+      overflow: initial;
+    }
   }
 
   &__title {
@@ -119,7 +122,7 @@ export default defineComponent({
 
     overflow-x: scroll;
     @include screen-min-medium {
-      overflow: hidden;
+      overflow-x: initial;
     }
     //
     // TODO:

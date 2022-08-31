@@ -76,7 +76,7 @@ export default defineComponent({
 
       <div class="screenings-page__filter-inputs">
         <!-- todo: radio select for date with calendar dropdown -->
-        <div class="screenings-page__date-select"></div>
+        <div class="screenings-page__date-select">TODO: Date picker</div>
         <!-- todo ------------------------------------------------>
         <BaseSelect
           v-model="movieFilterValue"
@@ -88,7 +88,12 @@ export default defineComponent({
     </div>
 
     <div class="screenings-page__screenings-list">
-      <div v-if="areScreeningsLoading">Loading...</div>
+      <div v-if="areScreeningsLoading">
+        <h1>Loading...</h1>
+      </div>
+      <div v-else-if="storedScreenings.length === 0">
+        <h1>No seances found, pick another date.</h1>
+      </div>
       <ScreeningsList v-else :screenings="storedScreenings" />
     </div>
   </section>
@@ -106,6 +111,25 @@ export default defineComponent({
     &--light {
       color: $gray-bombay;
     }
+  }
+
+  &__filter-inputs {
+    display: flex;
+    gap: 5vw;
+
+    margin-bottom: 4.8rem;
+    @include screen-min-medium {
+      margin-bottom: 6.4rem;
+    }
+  }
+
+  &__date-select {
+    border: 1px dashed red;
+    flex: 5;
+  }
+
+  &__movie-select {
+    flex: 3;
   }
 }
 </style>
