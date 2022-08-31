@@ -13,20 +13,7 @@ function getWeekdayName(dayId) {
   else throw new Error(errorMessage);
 }
 
-export function getDateObject(date) {
-  let now;
-
-  if (!date || date.trim().length === 0 || typeof date !== 'string') {
-    now = new Date();
-  } else {
-    now = new Date(date);
-  }
-
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const day = now.getDate();
-  const weekdayIndex = now.getDay();
-  const weekday = getWeekdayName(weekdayIndex);
+function getFollowingDays(year, month, day, weekdayIndex) {
   const followingDays = [];
 
   for (let i = 1; i <= 5; i++) {
@@ -48,17 +35,39 @@ export function getDateObject(date) {
     followingDays.push(followingDay);
   }
 
+  return followingDays;
+}
+
+export function getDateObject(date) {
+  let now;
+
+  if (!date || date.trim().length === 0 || typeof date !== 'string') {
+    now = new Date();
+  } else {
+    now = new Date(date);
+  }
+
+  const year = now.getFullYear();
+  const formattedYear = year.toString();
+  const month = now.getMonth();
+  const formattedMonth = (month + 1).toString().padStart(2, '0');
+  const day = now.getDate();
+  const formattedDay = day.toString().padStart(2, '0');
+  const weekdayIndex = now.getDay();
+  const weekday = getWeekdayName(weekdayIndex);
+  const followingDays = getFollowingDays(year, month, day, weekdayIndex);
+
   const dateObject = {
-    year: year.toString(),
-    month: (month + 1).toString().padStart(2, '0'),
-    day: day.toString().padStart(2, '0'),
+    //
+    // switch use from that to apiDate and displayDate in ScreeningsPanel component
+    year: formattedYear,
+    month: formattedMonth,
+    day: formattedDay,
+    // then delete those properties
+    //
     weekday: weekday,
-    apidate: `${year}-${(month + 1).toString().padStart(2, '0')}-${day
-      .toString()
-      .padStart(2, '0')}`,
-    displayDate: `${day.toString().padStart(2, '0')}/${(month + 1)
-      .toString()
-      .padStart(2, '0')}/${year}`,
+    apiDate: `${year}-${formattedMonth}-${formattedDay}`,
+    displayDate: `${formattedDay}/${formattedMonth}/${year}`,
     followingDays: followingDays,
   };
 
