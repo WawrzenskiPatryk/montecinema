@@ -4,10 +4,12 @@ import { mapActions } from 'pinia';
 import { mainStore } from '@/store/index.js';
 
 import BaseTag from '@/components/base/BaseTag.vue';
+import ScreeningsListSeance from '@/components/screenings/ScreeningsListSeance.vue';
 
 export default defineComponent({
   components: {
     BaseTag,
+    ScreeningsListSeance,
   },
   props: {
     screeningData: {
@@ -43,13 +45,14 @@ export default defineComponent({
         <BaseTag class="screenings-list-card__genre">{{ screeningData.genre.name }}</BaseTag>
         <span class="screenings-list-card__length">{{ formattedMovieLength }}</span>
       </div>
-      <!-- TODO: seances list -->
+
       <ul class="screenings-list-card__seances">
-        <li v-for="seance in screeningData.seances" :key="seance.id">
-          <router-link :to="'#'"> {{ seance.datetime }} </router-link>
-        </li>
+        <ScreeningsListSeance
+          v-for="seance in screeningData.seances"
+          :key="seance.id"
+          :seance-data="seance"
+        />
       </ul>
-      <!-- TODO -->
     </div>
   </li>
 </template>
@@ -80,6 +83,7 @@ export default defineComponent({
   &__info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
   &__title {
@@ -108,12 +112,29 @@ export default defineComponent({
   }
 
   &__seances {
-    // TODO
     display: flex;
     gap: 2rem;
     padding: 0;
     margin-top: auto;
+
+    overflow-x: scroll;
+    @include screen-min-medium {
+      overflow: hidden;
+    }
     //
+    // TODO:
+    // Lines below cause scrollbar of the seances list to be not displayed due to designs.
+    // It is to be considered if draggable horizontal scroll logic should be implemented
+    // for non-touch devices. For now you can use [shift + scroll-wheel] to scroll list
+    // horizontally or just use touchpad, but it has it's limitations, like devices
+    // without touchpads or just user not knowing the combination with the shift key.
+    //
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    // -------------------------------
   }
 }
 </style>
