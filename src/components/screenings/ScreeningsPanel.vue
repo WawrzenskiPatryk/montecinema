@@ -31,7 +31,6 @@ export default defineComponent({
     return {
       movieFilterValue: 0,
       pickedDate: null,
-      // pickedDate: '11 feb 2022',
     };
   },
   beforeMount() {
@@ -96,7 +95,12 @@ export default defineComponent({
 
       <div class="screenings-panel__filter-inputs">
         <!-- todo: radio select for date with calendar dropdown -->
-        <div class="screenings-panel__date-select">TODO: Date picker</div>
+        <div class="screenings-panel__date-select">
+          Today |
+          <span v-for="day in currentDateObject.followingDays" :key="day.name">
+            {{ day.name }} |
+          </span>
+        </div>
         <!-- todo ------------------------------------------------>
         <BaseSelect
           v-if="hasMovieId"
