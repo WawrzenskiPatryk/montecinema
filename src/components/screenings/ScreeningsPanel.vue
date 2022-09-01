@@ -6,12 +6,14 @@ import { getDateObject } from '@/services/dates.js';
 
 import BaseSelect from '@/components/base/BaseSelect.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
+import BaseButton from '@/components/base/BaseButton.vue';
 import ScreeningsList from '@/components/screenings/ScreeningsList.vue';
 
 export default defineComponent({
   components: {
     BaseSelect,
     BaseHeading,
+    BaseButton,
     ScreeningsList,
   },
   props: {
@@ -36,9 +38,9 @@ export default defineComponent({
     };
   },
   beforeMount() {
-    this.loadFilteredScreenings(this.dateObject.apiDate);
-    this.displayDate = this.dateObject.displayDate;
-    this.displayWeekday = this.dateObject.weekday;
+    const { apiDate, displayDate, weekday } = this.dateObject;
+    this.loadFilteredScreenings(apiDate);
+    this.updateDateState(apiDate, displayDate, weekday);
   },
   computed: {
     ...mapState(mainStore, ['areScreeningsLoading', 'storedScreenings', 'allMovies']),
@@ -73,11 +75,13 @@ export default defineComponent({
       this.loadScreenings(movieId, date);
     },
 
-    weekdayButtonHandler(apiDate, displayDate, displayWeekday) {
+    updateDateState(apiDate, displayDate, displayWeekday) {
       this.apiDate = apiDate;
       this.displayDate = displayDate;
       this.displayWeekday = displayWeekday;
-      // console.log(this.apiDate);
+    },
+    getButtonType(date) {
+      return this.apiDate === date.apiDate ? 'filled-dark' : 'hollow-dark';
     },
   },
   watch: {
@@ -100,25 +104,27 @@ export default defineComponent({
       </BaseHeading>
 
       <div class="screenings-panel__filter-inputs">
-        <!-- todo: date select with calendar dropdown -->
-        <div class="screenings-panel__date-select">
-          <button
-            @click="
-              weekdayButtonHandler(dateObject.apiDate, dateObject.displayDate, dateObject.weekday)
-            "
+        <div class="screenings-panel__weekday-buttons">
+          <BaseButton
+            @click="updateDateState(dateObject.apiDate, dateObject.displayDate, dateObject.weekday)"
+            :button-type="getButtonType(dateObject)"
+            size="large"
+            class="screenings-panel__weekday-button"
           >
             Today
-          </button>
+          </BaseButton>
 
-          <button
+          <BaseButton
             v-for="day in dateObject.followingDays"
             :key="day.weekday"
-            @click="weekdayButtonHandler(day.apiDate, day.displayDate, day.weekday)"
+            :button-type="getButtonType(day)"
+            size="large"
+            @click="updateDateState(day.apiDate, day.displayDate, day.weekday)"
+            class="screenings-panel__weekday-button"
           >
             {{ day.shortWeekday }}
-          </button>
+          </BaseButton>
         </div>
-        <!-- todo ------------------------------------------------>
         <BaseSelect
           v-if="hasMovieId"
           v-model="movieFilterValue"
@@ -165,13 +171,27 @@ export default defineComponent({
     }
   }
 
-  &__date-select {
-    border: 1px dashed red;
+  &__weekday-buttons {
     flex: 5;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 0.8rem;
   }
 
   &__movie-select {
     flex: 3;
+  }
+
+  &__weekday-button {
+    &:nth-last-child(1),
+    &:nth-last-child(2) {
+      display: none;
+
+      @include screen-min-large {
+        display: initial;
+      }
+    }
   }
 }
 </style>
