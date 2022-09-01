@@ -13,6 +13,14 @@ function getWeekdayName(dayId) {
   else throw new Error(errorMessage);
 }
 
+export function getApiDateFormat(yearString, monthString, dayString) {
+  return `${yearString}-${monthString}-${dayString}`;
+}
+
+export function getDisplayDateFormat(yearString, monthString, dayString) {
+  return `${dayString}/${monthString}/${yearString}`;
+}
+
 function getFollowingDays(year, month, day, weekdayIndex) {
   const followingDays = [];
 
@@ -27,8 +35,8 @@ function getFollowingDays(year, month, day, weekdayIndex) {
     const resultDay = followingDayInstance.getDate().toString().padStart(2, '0');
 
     const followingDay = {
-      apiDate: `${resultYear}-${resultMonth}-${resultDay}`,
-      displayDate: `${resultDay}/${resultMonth}/${resultYear}`,
+      apiDate: getApiDateFormat(resultYear, resultMonth, resultDay),
+      displayDate: getDisplayDateFormat(resultYear, resultMonth, resultDay),
       weekday: getWeekdayName(followingDayIndex),
       shortWeekday: getWeekdayName(followingDayIndex).slice(0, 3),
     };
@@ -39,33 +47,23 @@ function getFollowingDays(year, month, day, weekdayIndex) {
   return followingDays;
 }
 
-export function getDateObject(date) {
-  let now;
-
-  if (!date || date.trim().length === 0 || typeof date !== 'string') {
-    now = new Date();
-  } else {
-    now = new Date(date);
-  }
-
+export function getDateObject() {
+  const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
-  const formattedMonth = (month + 1).toString().padStart(2, '0');
   const day = now.getDate();
+  const formattedYear = year.toString();
+  const formattedMonth = (month + 1).toString().padStart(2, '0');
   const formattedDay = day.toString().padStart(2, '0');
   const weekdayIndex = now.getDay();
-  const weekday = getWeekdayName(weekdayIndex);
-  const shortWeekday = weekday.slice(0, 3);
-  const followingDays = getFollowingDays(year, month, day, weekdayIndex);
 
   const dateObject = {
-    apiDate: `${year}-${formattedMonth}-${formattedDay}`,
-    displayDate: `${formattedDay}/${formattedMonth}/${year}`,
-    weekday,
-    shortWeekday,
-    followingDays,
+    apiDate: getApiDateFormat(formattedYear, formattedMonth, formattedDay),
+    displayDate: getDisplayDateFormat(formattedYear, formattedMonth, formattedDay),
+    weekday: getWeekdayName(weekdayIndex),
+    shortWeekday: getWeekdayName(weekdayIndex).slice(0, 3),
+    followingDays: getFollowingDays(year, month, day, weekdayIndex),
   };
 
-  console.log(dateObject);
   return dateObject;
 }
