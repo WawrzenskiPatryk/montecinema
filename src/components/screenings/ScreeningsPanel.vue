@@ -8,6 +8,7 @@ import BaseSelect from '@/components/base/BaseSelect.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import ScreeningsList from '@/components/screenings/ScreeningsList.vue';
+import CalendarIcon from '@/assets/icons/calendar.svg';
 
 export default defineComponent({
   components: {
@@ -15,6 +16,7 @@ export default defineComponent({
     BaseHeading,
     BaseButton,
     ScreeningsList,
+    CalendarIcon,
   },
   props: {
     movieId: {
@@ -128,6 +130,16 @@ export default defineComponent({
             >
               {{ day.shortWeekday }}
             </BaseButton>
+
+            <BaseButton
+              size="large"
+              button-type="hollow-dark"
+              class="screenings-panel__calendar-button"
+            >
+              <!-- TODO: Fully functional calendar component -->
+              <CalendarIcon class="screenings-panel__calendar-icon" />
+              <!-- TODO --------------------------------------->
+            </BaseButton>
           </div>
         </div>
         <BaseSelect
@@ -209,6 +221,19 @@ export default defineComponent({
 
       @include screen-min-large {
         display: initial;
+      }
+    }
+  }
+
+  &__calendar-button {
+    width: 5.6rem;
+    padding: 0;
+    svg {
+      stroke: currentColor;
+    }
+    @include hover {
+      svg {
+        stroke: currentColor;
       }
     }
   }
