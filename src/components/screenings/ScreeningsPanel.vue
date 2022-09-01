@@ -66,7 +66,7 @@ export default defineComponent({
       return options;
     },
     hasMovieId() {
-      return !this.movieId.trim();
+      return this.movieId.trim();
     },
   },
   methods: {
@@ -107,7 +107,7 @@ export default defineComponent({
 
       <div class="screenings-panel__filter-inputs">
         <div class="screenings-panel__weekday-buttons-container">
-          <span class="screenings-panel__weekday-buttons-label"> Day </span>
+          <span v-if="!hasMovieId" class="screenings-panel__weekday-buttons-label"> Day </span>
           <div class="screenings-panel__weekday-buttons">
             <BaseButton
               @click="
@@ -143,7 +143,7 @@ export default defineComponent({
           </div>
         </div>
         <BaseSelect
-          v-if="hasMovieId"
+          v-if="!hasMovieId"
           v-model="movieFilterValue"
           label="Movie"
           :options="movieOptions"
@@ -212,6 +212,7 @@ export default defineComponent({
     line-height: 1.8rem;
     text-transform: uppercase;
     color: $red-bittersweet;
+    margin-bottom: 1.2rem;
   }
 
   &__weekday-button {
