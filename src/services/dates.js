@@ -22,14 +22,15 @@ function getFollowingDays(year, month, day, weekdayIndex) {
     let followingDayIndex = weekdayIndex + i;
     if (followingDayIndex > 6) followingDayIndex = followingDayIndex - 7;
 
-    const currentYear = followingDayInstance.getFullYear();
-    const currentMonth = (followingDayInstance.getMonth() + 1).toString().padStart(2, '0');
-    const currentDay = followingDayInstance.getDate().toString().padStart(2, '0');
+    const resultYear = followingDayInstance.getFullYear();
+    const resultMonth = (followingDayInstance.getMonth() + 1).toString().padStart(2, '0');
+    const resultDay = followingDayInstance.getDate().toString().padStart(2, '0');
 
     const followingDay = {
-      fulldate: `${currentYear}-${currentMonth}-${currentDay}`,
-      name: getWeekdayName(followingDayIndex),
-      shortname: getWeekdayName(followingDayIndex).slice(0, 3),
+      apiDate: `${resultYear}-${resultMonth}-${resultDay}`,
+      displayDate: `${resultDay}/${resultMonth}/${resultYear}`,
+      weekday: getWeekdayName(followingDayIndex),
+      shortWeekday: getWeekdayName(followingDayIndex).slice(0, 3),
     };
 
     followingDays.push(followingDay);
@@ -48,27 +49,21 @@ export function getDateObject(date) {
   }
 
   const year = now.getFullYear();
-  const formattedYear = year.toString();
   const month = now.getMonth();
   const formattedMonth = (month + 1).toString().padStart(2, '0');
   const day = now.getDate();
   const formattedDay = day.toString().padStart(2, '0');
   const weekdayIndex = now.getDay();
   const weekday = getWeekdayName(weekdayIndex);
+  const shortWeekday = weekday.slice(0, 3);
   const followingDays = getFollowingDays(year, month, day, weekdayIndex);
 
   const dateObject = {
-    //
-    // switch use from that to apiDate and displayDate in ScreeningsPanel component
-    year: formattedYear,
-    month: formattedMonth,
-    day: formattedDay,
-    // then delete those properties
-    //
-    weekday: weekday,
     apiDate: `${year}-${formattedMonth}-${formattedDay}`,
     displayDate: `${formattedDay}/${formattedMonth}/${year}`,
-    followingDays: followingDays,
+    weekday,
+    shortWeekday,
+    followingDays,
   };
 
   console.log(dateObject);

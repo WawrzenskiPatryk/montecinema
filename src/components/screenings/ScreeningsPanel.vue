@@ -30,11 +30,15 @@ export default defineComponent({
   data() {
     return {
       movieFilterValue: 0,
-      pickedDate: null,
+      apiDate: null,
+      displayDate: '',
+      displayWeekday: '',
     };
   },
   beforeMount() {
-    this.loadFilteredScreenings();
+    this.loadFilteredScreenings(this.dateObject.apiDate);
+    this.displayDate = this.dateObject.displayDate;
+    this.displayWeekday = this.dateObject.weekday;
   },
   computed: {
     ...mapState(mainStore, ['areScreeningsLoading', 'storedScreenings', 'allMovies']),
@@ -46,16 +50,8 @@ export default defineComponent({
         return this.storedScreenings;
       }
     },
-    currentDateObject() {
-      return getDateObject(this.pickedDate);
-    },
-    hyphenFormattedDate() {
-      const { year, month, day } = this.currentDateObject;
-      return `${year}-${month}-${day}`;
-    },
-    titleFormattedDate() {
-      const { year, month, day, weekday } = this.currentDateObject;
-      return `${weekday} ${day}/${month}/${year}`;
+    dateObject() {
+      return getDateObject();
     },
     movieOptions() {
       const defaultOption = { id: 0, name: 'All movies' };
@@ -72,14 +68,24 @@ export default defineComponent({
   methods: {
     ...mapActions(mainStore, ['loadScreenings']),
 
-    loadFilteredScreenings() {
+    loadFilteredScreenings(date) {
       const movieId = this.movieFilterValue == 0 ? null : this.movieFilterValue;
-      this.loadScreenings(movieId, this.hyphenFormattedDate);
+      this.loadScreenings(movieId, date);
+    },
+
+    weekdayButtonHandler(apiDate, displayDate, displayWeekday) {
+      this.apiDate = apiDate;
+      this.displayDate = displayDate;
+      this.displayWeekday = displayWeekday;
+      // console.log(this.apiDate);
     },
   },
   watch: {
     movieFilterValue() {
-      this.loadFilteredScreenings();
+      this.loadFilteredScreenings(this.apiDate);
+    },
+    apiDate() {
+      this.loadFilteredScreenings(this.apiDate);
     },
   },
 });
@@ -90,16 +96,27 @@ export default defineComponent({
     <div class="screenings-panel__items">
       <BaseHeading class="screenings-panel__title" :heading-size="headingSize">
         <span class="screenings-panel__title--dark"> Screenings: </span>
-        <span class="screenings-panel__title--light"> {{ titleFormattedDate }} </span>
+        <span class="screenings-panel__title--light"> {{ displayWeekday }} {{ displayDate }} </span>
       </BaseHeading>
 
       <div class="screenings-panel__filter-inputs">
-        <!-- todo: radio select for date with calendar dropdown -->
+        <!-- todo: date select with calendar dropdown -->
         <div class="screenings-panel__date-select">
-          Today |
-          <span v-for="day in currentDateObject.followingDays" :key="day.name">
-            {{ day.name }} |
-          </span>
+          <button
+            @click="
+              weekdayButtonHandler(dateObject.apiDate, dateObject.displayDate, dateObject.weekday)
+            "
+          >
+            Today
+          </button>
+
+          <button
+            v-for="day in dateObject.followingDays"
+            :key="day.weekday"
+            @click="weekdayButtonHandler(day.apiDate, day.displayDate, day.weekday)"
+          >
+            {{ day.shortWeekday }}
+          </button>
         </div>
         <!-- todo ------------------------------------------------>
         <BaseSelect
