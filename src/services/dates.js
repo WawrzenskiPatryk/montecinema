@@ -26,13 +26,10 @@ function getFollowingDays(year, month, day, weekdayIndex) {
 
   for (let i = 1; i <= 5; i++) {
     const followingDayInstance = new Date(year, month, day + i);
-
-    let followingDayIndex = weekdayIndex + i;
-    if (followingDayIndex > 6) followingDayIndex = followingDayIndex - 7;
-
     const resultYear = followingDayInstance.getFullYear();
     const resultMonth = (followingDayInstance.getMonth() + 1).toString().padStart(2, '0');
     const resultDay = followingDayInstance.getDate().toString().padStart(2, '0');
+    const followingDayIndex = (weekdayIndex + i) % 7;
 
     const followingDay = {
       apiDate: getApiDateFormat(resultYear, resultMonth, resultDay),
