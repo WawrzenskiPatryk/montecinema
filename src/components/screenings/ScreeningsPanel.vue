@@ -104,26 +104,31 @@ export default defineComponent({
       </BaseHeading>
 
       <div class="screenings-panel__filter-inputs">
-        <div class="screenings-panel__weekday-buttons">
-          <BaseButton
-            @click="updateDateState(dateObject.apiDate, dateObject.displayDate, dateObject.weekday)"
-            :button-type="getButtonType(dateObject)"
-            size="large"
-            class="screenings-panel__weekday-button"
-          >
-            Today
-          </BaseButton>
+        <div class="screenings-panel__weekday-buttons-container">
+          <span class="screenings-panel__weekday-buttons-label"> Day </span>
+          <div class="screenings-panel__weekday-buttons">
+            <BaseButton
+              @click="
+                updateDateState(dateObject.apiDate, dateObject.displayDate, dateObject.weekday)
+              "
+              :button-type="getButtonType(dateObject)"
+              size="large"
+              class="screenings-panel__weekday-button"
+            >
+              Today
+            </BaseButton>
 
-          <BaseButton
-            v-for="day in dateObject.followingDays"
-            :key="day.weekday"
-            :button-type="getButtonType(day)"
-            size="large"
-            @click="updateDateState(day.apiDate, day.displayDate, day.weekday)"
-            class="screenings-panel__weekday-button"
-          >
-            {{ day.shortWeekday }}
-          </BaseButton>
+            <BaseButton
+              v-for="day in dateObject.followingDays"
+              :key="day.weekday"
+              :button-type="getButtonType(day)"
+              size="large"
+              @click="updateDateState(day.apiDate, day.displayDate, day.weekday)"
+              class="screenings-panel__weekday-button"
+            >
+              {{ day.shortWeekday }}
+            </BaseButton>
+          </div>
         </div>
         <BaseSelect
           v-if="hasMovieId"
@@ -136,7 +141,7 @@ export default defineComponent({
     </div>
 
     <div class="screenings-panel__screenings-list">
-      <div v-if="areScreeningsLoading">
+      <div v-if="areScreeningsLoading" class="screenings-panel__loader">
         <h1>Loading...</h1>
       </div>
       <div v-else-if="displayedScreenings.length === 0">
@@ -150,6 +155,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .screenings-panel {
   padding-bottom: 6.4rem;
+
+  &__loader {
+    min-height: 100vh;
+  }
 
   &__title {
     display: flex;
@@ -174,13 +183,23 @@ export default defineComponent({
   &__weekday-buttons {
     flex: 5;
     display: flex;
-    justify-content: flex-start;
     align-items: flex-end;
     gap: 0.8rem;
   }
 
-  &__movie-select {
+  &__weekday-buttons-container {
     flex: 3;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__weekday-buttons-label {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    text-transform: uppercase;
+    color: $red-bittersweet;
   }
 
   &__weekday-button {
