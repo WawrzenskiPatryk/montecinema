@@ -27,9 +27,18 @@ function getDisplayDateFormat(year, month, day) {
   return `${padStartFormat(day)}/${padStartFormat(month)}/${year}`;
 }
 
-export function getDateObjectData(year, month, day, weekdayIndex) {
+export function getDateObjectData(newDateInstance) {
+  const year = newDateInstance.getFullYear();
+  const month = newDateInstance.getMonth();
   const actualMonth = month + 1;
+  const day = newDateInstance.getDate();
+  const weekdayIndex = newDateInstance.getDay();
   return {
+    meta: {
+      year,
+      month,
+      day,
+    },
     apiDate: getApiDateFormat(year, actualMonth, day),
     displayDate: getDisplayDateFormat(year, actualMonth, day),
     weekday: getWeekdayName(weekdayIndex),
@@ -37,37 +46,22 @@ export function getDateObjectData(year, month, day, weekdayIndex) {
   };
 }
 
-function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex) {
+function getFollowingDays(todaysYear, todaysMonth, todaysDay) {
   const followingDays = [];
-
   for (let i = 1; i <= 5; i++) {
     const followingDayInstance = new Date(todaysYear, todaysMonth, todaysDay + i);
-    const year = followingDayInstance.getFullYear();
-    const month = followingDayInstance.getMonth();
-    const actualMonth = month;
-    const day = followingDayInstance.getDate();
-    const weekdayIndex = (todaysWeekdayIndex + i) % 7;
-
-    const followingDay = getDateObjectData(year, actualMonth, day, weekdayIndex);
+    const followingDay = getDateObjectData(followingDayInstance);
     followingDays.push(followingDay);
   }
-
   return followingDays;
 }
 
 export function getTodaysDateObject() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const actualMonth = month;
-  const day = now.getDate();
-  const weekdayIndex = now.getDay();
-
-  const todaysDayObject = {
-    ...getDateObjectData(year, actualMonth, day, weekdayIndex),
-    followingDays: getFollowingDays(year, month, day, weekdayIndex),
+  const currentMomentInstance = new Date();
+  const todaysDateObject = getDateObjectData(currentMomentInstance);
+  const { year, month, day } = todaysDateObject.meta;
+  return {
+    ...todaysDateObject,
+    followingDays: getFollowingDays(year, month, day),
   };
-
-  console.log(todaysDayObject);
-  return todaysDayObject;
 }

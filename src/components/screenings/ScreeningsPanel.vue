@@ -100,14 +100,8 @@ export default defineComponent({
       this.loadFilteredScreenings(this.apiDate);
     },
     datepickerDate(value) {
-      const newDate = new Date(value);
-      const year = newDate.getFullYear();
-      const month = newDate.getMonth();
-      const day = newDate.getDate();
-      const weekdayIndex = newDate.getDay();
-
-      const { apiDate, displayDate, weekday } = getDateObjectData(year, month, day, weekdayIndex);
-
+      const pickedDateInstance = new Date(value);
+      const { apiDate, displayDate, weekday } = getDateObjectData(pickedDateInstance);
       this.loadFilteredScreenings(apiDate);
       this.updateDateState(apiDate, displayDate, weekday);
     },
