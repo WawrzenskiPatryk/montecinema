@@ -1,4 +1,4 @@
-function getWeekdayName(dayId) {
+export function getWeekdayName(dayId) {
   const errorMessage = `
     No matching ID to weekday. 
     Used ID: ${dayId}, while possible IDs are from 0 to 6.

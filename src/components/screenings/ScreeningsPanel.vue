@@ -2,13 +2,20 @@
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { mainStore } from '@/store/index.js';
-import { getDateObject } from '@/services/dates.js';
+import {
+  getDateObject,
+  getApiDateFormat,
+  getDisplayDateFormat,
+  getWeekdayName,
+} from '@/services/dates.js';
 
 import BaseSelect from '@/components/base/BaseSelect.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import ScreeningsList from '@/components/screenings/ScreeningsList.vue';
 import CalendarIcon from '@/assets/icons/calendar.svg';
+import DatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
 
 export default defineComponent({
   components: {
@@ -17,6 +24,7 @@ export default defineComponent({
     BaseButton,
     ScreeningsList,
     CalendarIcon,
+    DatePicker,
   },
   props: {
     movieId: {
@@ -35,6 +43,7 @@ export default defineComponent({
     return {
       movieFilterValue: 0,
       apiDate: null,
+      datepickerDate: null,
       displayDate: '',
       displayWeekday: '',
     };
@@ -81,6 +90,7 @@ export default defineComponent({
       this.apiDate = apiDate;
       this.displayDate = displayDate;
       this.displayWeekday = displayWeekday;
+      this.datepickerDate = apiDate;
     },
     getButtonType(date) {
       return this.apiDate === date.apiDate ? 'filled-dark' : 'hollow-dark';
@@ -92,6 +102,20 @@ export default defineComponent({
     },
     apiDate() {
       this.loadFilteredScreenings(this.apiDate);
+    },
+    datepickerDate(value) {
+      const pickedDate = new Date(value);
+      const year = pickedDate.getFullYear().toString();
+      const month = (pickedDate.getMonth() + 1).toString().padStart(2, '0');
+      const day = pickedDate.getDate().toString().padStart(2, '0');
+      const weekdayIndex = pickedDate.getDay();
+
+      const apiDate = getApiDateFormat(year, month, day);
+      const displayDate = getDisplayDateFormat(year, month, day);
+      const displayWeekday = getWeekdayName(weekdayIndex);
+
+      this.loadFilteredScreenings(apiDate);
+      this.updateDateState(apiDate, displayDate, displayWeekday);
     },
   },
 });
@@ -138,6 +162,13 @@ export default defineComponent({
             >
               <!-- TODO: Fully functional calendar component -->
               <CalendarIcon class="screenings-panel__calendar-icon" />
+              <date-picker
+                autoApply
+                format="yyyy-mm-dd"
+                hideInputIcon
+                v-model="datepickerDate"
+                class="screenings-panel__calendar-datepicker"
+              />
               <!-- TODO --------------------------------------->
             </BaseButton>
           </div>
@@ -215,8 +246,8 @@ export default defineComponent({
   }
 
   &__weekday-button {
-    &:nth-last-child(1),
-    &:nth-last-child(2) {
+    &:nth-last-child(2),
+    &:nth-last-child(3) {
       display: none;
 
       @include screen-min-large {
@@ -236,6 +267,15 @@ export default defineComponent({
         stroke: currentColor;
       }
     }
+  }
+
+  &__calendar-icon {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &__calendar-datepicker {
+    opacity: 0.5;
   }
 }
 </style>
