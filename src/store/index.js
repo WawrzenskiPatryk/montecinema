@@ -78,9 +78,7 @@ export const mainStore = defineStore('main', {
           };
           screenings.push(newScreening);
         } else {
-          const matchedScreening = { ...screenings[screeningIndex] };
-          matchedScreening.seances.push(currentSeance);
-          screenings.splice(screeningIndex, 1, matchedScreening);
+          screenings[screeningIndex].seances.push(currentSeance);
         }
 
         return screenings;
