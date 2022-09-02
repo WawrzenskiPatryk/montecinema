@@ -153,7 +153,10 @@ export default defineComponent({
     </div>
 
     <div class="screenings-panel__screenings-list">
-      <div v-if="areScreeningsLoading" class="screenings-panel__loader">
+      <div
+        v-if="areScreeningsLoading && displayedScreenings.length === 0"
+        class="screenings-panel__loader"
+      >
         <h1>Loading...</h1>
       </div>
       <div v-else-if="displayedScreenings.length === 0">
@@ -167,10 +170,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .screenings-panel {
   padding-bottom: 6.4rem;
-
-  &__loader {
-    min-height: 100vh;
-  }
 
   &__title {
     display: flex;
