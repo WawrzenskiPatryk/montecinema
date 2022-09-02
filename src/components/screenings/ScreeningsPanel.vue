@@ -152,7 +152,6 @@ export default defineComponent({
               button-type="hollow-dark"
               class="screenings-panel__calendar-button"
             >
-              <!-- TODO: Fully functional calendar component -->
               <CalendarIcon class="screenings-panel__calendar-icon" />
               <date-picker
                 format="yyyy-mm-dd"
@@ -170,7 +169,6 @@ export default defineComponent({
                   <button class="screenings-panel__datepicker-trigger-button"></button>
                 </template>
               </date-picker>
-              <!-- TODO --------------------------------------->
             </BaseButton>
           </div>
         </div>
