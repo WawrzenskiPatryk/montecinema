@@ -1,4 +1,6 @@
-export function getWeekdayName(dayId) {
+export const weekdayShortNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+function getWeekdayName(dayId) {
   const errorMessage = `
     No matching ID to weekday. 
     Used ID: ${dayId}, while possible IDs are from 0 to 6.
@@ -13,12 +15,12 @@ export function getWeekdayName(dayId) {
   else throw new Error(errorMessage);
 }
 
-export function getApiDateFormat(yearString, monthString, dayString) {
-  return `${yearString}-${monthString}-${dayString}`;
+function getApiDateFormat(year, month, day) {
+  return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 }
 
-export function getDisplayDateFormat(yearString, monthString, dayString) {
-  return `${dayString}/${monthString}/${yearString}`;
+function getDisplayDateFormat(year, month, day) {
+  return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
 }
 
 function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex) {
@@ -26,16 +28,16 @@ function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex
 
   for (let i = 1; i <= 5; i++) {
     const followingDayInstance = new Date(todaysYear, todaysMonth, todaysDay + i);
-    const resultYear = followingDayInstance.getFullYear();
-    const resultMonth = (followingDayInstance.getMonth() + 1).toString().padStart(2, '0');
-    const resultDay = followingDayInstance.getDate().toString().padStart(2, '0');
-    const followingDayIndex = (todaysWeekdayIndex + i) % 7;
+    const year = followingDayInstance.getFullYear();
+    const month = followingDayInstance.getMonth().toString().padStart(2, '0');
+    const day = followingDayInstance.getDate().toString().padStart(2, '0');
+    const weekdayIndex = (todaysWeekdayIndex + i) % 7;
 
     const followingDay = {
-      apiDate: getApiDateFormat(resultYear, resultMonth, resultDay),
-      displayDate: getDisplayDateFormat(resultYear, resultMonth, resultDay),
-      weekday: getWeekdayName(followingDayIndex),
-      shortWeekday: getWeekdayName(followingDayIndex).slice(0, 3),
+      apiDate: getApiDateFormat(year, month, day),
+      displayDate: getDisplayDateFormat(year, month, day),
+      weekday: getWeekdayName(weekdayIndex),
+      shortWeekday: getWeekdayName(weekdayIndex).slice(0, 3),
     };
 
     followingDays.push(followingDay);
@@ -44,21 +46,33 @@ function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex
   return followingDays;
 }
 
-export function getDateObject() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const day = now.getDate();
-  const formattedYear = year.toString();
-  const formattedMonth = (month + 1).toString().padStart(2, '0');
-  const formattedDay = day.toString().padStart(2, '0');
-  const weekdayIndex = now.getDay();
+export function getDateObjectData(newDate) {
+  const year = newDate.getFullYear();
+  const month = newDate.getMonth() + 1;
+  const day = newDate.getDate();
+  const weekdayIndex = newDate.getDay();
 
-  const dateObject = {
-    apiDate: getApiDateFormat(formattedYear, formattedMonth, formattedDay),
-    displayDate: getDisplayDateFormat(formattedYear, formattedMonth, formattedDay),
+  const dateObjectData = {
+    year,
+    month,
+    day,
+    weekdayIndex,
+    apiDate: getApiDateFormat(year, month, day),
+    displayDate: getDisplayDateFormat(year, month, day),
     weekday: getWeekdayName(weekdayIndex),
     shortWeekday: getWeekdayName(weekdayIndex).slice(0, 3),
+  };
+
+  return dateObjectData;
+}
+
+export function getTodaysDateObject() {
+  const now = new Date();
+  const dateObjectData = getDateObjectData(now);
+  const { year, month, day, weekdayIndex } = dateObjectData;
+
+  const dateObject = {
+    ...dateObjectData,
     followingDays: getFollowingDays(year, month, day, weekdayIndex),
   };
 

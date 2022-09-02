@@ -2,12 +2,7 @@
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { mainStore } from '@/store/index.js';
-import {
-  getDateObject,
-  getApiDateFormat,
-  getDisplayDateFormat,
-  getWeekdayName,
-} from '@/services/dates.js';
+import { getTodaysDateObject, getDateObjectData, weekdayShortNames } from '@/services/dates.js';
 
 import BaseSelect from '@/components/base/BaseSelect.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
@@ -46,6 +41,7 @@ export default defineComponent({
       datepickerDate: null,
       displayDate: '',
       displayWeekday: '',
+      weekdayNames: weekdayShortNames,
     };
   },
   beforeMount() {
@@ -64,7 +60,7 @@ export default defineComponent({
       }
     },
     dateObject() {
-      return getDateObject();
+      return getTodaysDateObject();
     },
     movieOptions() {
       const defaultOption = { id: 0, name: 'All movies' };
@@ -104,18 +100,10 @@ export default defineComponent({
       this.loadFilteredScreenings(this.apiDate);
     },
     datepickerDate(value) {
-      const pickedDate = new Date(value);
-      const year = pickedDate.getFullYear().toString();
-      const month = (pickedDate.getMonth() + 1).toString().padStart(2, '0');
-      const day = pickedDate.getDate().toString().padStart(2, '0');
-      const weekdayIndex = pickedDate.getDay();
-
-      const apiDate = getApiDateFormat(year, month, day);
-      const displayDate = getDisplayDateFormat(year, month, day);
-      const displayWeekday = getWeekdayName(weekdayIndex);
-
+      const newDate = new Date(value)
+      const { apiDate, displayDate, weekday } = getDateObjectData(newDate);
       this.loadFilteredScreenings(apiDate);
-      this.updateDateState(apiDate, displayDate, displayWeekday);
+      this.updateDateState(apiDate, displayDate, weekday);
     },
   },
 });
@@ -163,12 +151,21 @@ export default defineComponent({
               <!-- TODO: Fully functional calendar component -->
               <CalendarIcon class="screenings-panel__calendar-icon" />
               <date-picker
-                autoApply
                 format="yyyy-mm-dd"
+                autoApply
                 hideInputIcon
+                closeOnScroll
+                :minDate="new Date()"
+                :enableTimePicker="false"
+                :transitions="false"
+                :dayNames="weekdayNames"
                 v-model="datepickerDate"
-                class="screenings-panel__calendar-datepicker"
-              />
+                class="screenings-panel__datepicker"
+              >
+                <template #trigger>
+                  <button class="screenings-panel__datepicker-trigger-button"></button>
+                </template>
+              </date-picker>
               <!-- TODO --------------------------------------->
             </BaseButton>
           </div>
@@ -176,6 +173,7 @@ export default defineComponent({
         <BaseSelect
           v-if="!hasMovieId"
           v-model="movieFilterValue"
+          :clearable="false"
           label="Movie"
           :options="movieOptions"
           class="screenings-panel__movie-select"
@@ -271,11 +269,14 @@ export default defineComponent({
 
   &__calendar-icon {
     position: absolute;
-    pointer-events: none;
   }
 
-  &__calendar-datepicker {
-    opacity: 0.5;
+  &__datepicker-trigger-button {
+    height: 5.2rem;
+    width: 5.2rem;
+    border-radius: 100%;
+    opacity: 0;
+    cursor: pointer;
   }
 }
 </style>
