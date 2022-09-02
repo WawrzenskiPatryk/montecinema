@@ -21,15 +21,15 @@ export function getDisplayDateFormat(yearString, monthString, dayString) {
   return `${dayString}/${monthString}/${yearString}`;
 }
 
-function getFollowingDays(year, month, day, weekdayIndex) {
+function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex) {
   const followingDays = [];
 
   for (let i = 1; i <= 5; i++) {
-    const followingDayInstance = new Date(year, month, day + i);
+    const followingDayInstance = new Date(todaysYear, todaysMonth, todaysDay + i);
     const resultYear = followingDayInstance.getFullYear();
     const resultMonth = (followingDayInstance.getMonth() + 1).toString().padStart(2, '0');
     const resultDay = followingDayInstance.getDate().toString().padStart(2, '0');
-    const followingDayIndex = (weekdayIndex + i) % 7;
+    const followingDayIndex = (todaysWeekdayIndex + i) % 7;
 
     const followingDay = {
       apiDate: getApiDateFormat(resultYear, resultMonth, resultDay),
