@@ -2,7 +2,11 @@
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
 import { mainStore } from '@/store/index.js';
-import { getTodaysDateObject, getDateObjectData, weekdayShortNames } from '@/services/dates.js';
+import {
+  getTodaysDateObject,
+  getFormattedDateObject,
+  weekdayShortNames,
+} from '@/services/dates.js';
 
 import BaseSelect from '@/components/base/BaseSelect.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
@@ -101,7 +105,7 @@ export default defineComponent({
     },
     datepickerDate(value) {
       const pickedDateInstance = new Date(value);
-      const { apiDate, displayDate, weekday } = getDateObjectData(pickedDateInstance);
+      const { apiDate, displayDate, weekday } = getFormattedDateObject(pickedDateInstance);
       this.loadFilteredScreenings(apiDate);
       this.updateDateState(apiDate, displayDate, weekday);
     },

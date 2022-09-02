@@ -27,7 +27,7 @@ function getDisplayDateFormat(year, month, day) {
   return `${padStartFormat(day)}/${padStartFormat(month)}/${year}`;
 }
 
-export function getDateObjectData(newDateInstance) {
+export function getFormattedDateObject(newDateInstance) {
   const year = newDateInstance.getFullYear();
   const month = newDateInstance.getMonth();
   const actualMonth = month + 1;
@@ -50,7 +50,7 @@ function getFollowingDays(todaysYear, todaysMonth, todaysDay) {
   const followingDays = [];
   for (let i = 1; i <= 5; i++) {
     const followingDayInstance = new Date(todaysYear, todaysMonth, todaysDay + i);
-    const followingDay = getDateObjectData(followingDayInstance);
+    const followingDay = getFormattedDateObject(followingDayInstance);
     followingDays.push(followingDay);
   }
   return followingDays;
@@ -58,7 +58,7 @@ function getFollowingDays(todaysYear, todaysMonth, todaysDay) {
 
 export function getTodaysDateObject() {
   const currentMomentInstance = new Date();
-  const todaysDateObject = getDateObjectData(currentMomentInstance);
+  const todaysDateObject = getFormattedDateObject(currentMomentInstance);
   const { year, month, day } = todaysDateObject.meta;
   return {
     ...todaysDateObject,
