@@ -102,7 +102,7 @@ export default defineComponent({
     datepickerDate(value) {
       const newDate = new Date(value);
       const year = newDate.getFullYear();
-      const month = newDate.getMonth() + 1;
+      const month = newDate.getMonth();
       const day = newDate.getDate();
       const weekdayIndex = newDate.getDay();
 

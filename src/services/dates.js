@@ -28,14 +28,13 @@ function getDisplayDateFormat(year, month, day) {
 }
 
 export function getDateObjectData(year, month, day, weekdayIndex) {
-  const dateObjectData = {
-    apiDate: getApiDateFormat(year, month, day),
-    displayDate: getDisplayDateFormat(year, month, day),
+  const actualMonth = month + 1;
+  return {
+    apiDate: getApiDateFormat(year, actualMonth, day),
+    displayDate: getDisplayDateFormat(year, actualMonth, day),
     weekday: getWeekdayName(weekdayIndex),
     shortWeekday: getWeekdayName(weekdayIndex).slice(0, 3),
   };
-
-  return dateObjectData;
 }
 
 function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex) {
@@ -45,7 +44,7 @@ function getFollowingDays(todaysYear, todaysMonth, todaysDay, todaysWeekdayIndex
     const followingDayInstance = new Date(todaysYear, todaysMonth, todaysDay + i);
     const year = followingDayInstance.getFullYear();
     const month = followingDayInstance.getMonth();
-    const actualMonth = month + 1;
+    const actualMonth = month;
     const day = followingDayInstance.getDate();
     const weekdayIndex = (todaysWeekdayIndex + i) % 7;
 
@@ -60,7 +59,7 @@ export function getTodaysDateObject() {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
-  const actualMonth = month + 1;
+  const actualMonth = month;
   const day = now.getDate();
   const weekdayIndex = now.getDay();
 
