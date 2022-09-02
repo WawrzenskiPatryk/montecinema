@@ -84,9 +84,9 @@ export default defineComponent({
 
     updateDateState(apiDate, displayDate, displayWeekday) {
       this.apiDate = apiDate;
+      this.datepickerDate = apiDate;
       this.displayDate = displayDate;
       this.displayWeekday = displayWeekday;
-      this.datepickerDate = apiDate;
     },
     getButtonType(date) {
       return this.apiDate === date.apiDate ? 'filled-dark' : 'hollow-dark';
@@ -100,8 +100,14 @@ export default defineComponent({
       this.loadFilteredScreenings(this.apiDate);
     },
     datepickerDate(value) {
-      const newDate = new Date(value)
-      const { apiDate, displayDate, weekday } = getDateObjectData(newDate);
+      const newDate = new Date(value);
+      const year = newDate.getFullYear();
+      const month = newDate.getMonth() + 1;
+      const day = newDate.getDate();
+      const weekdayIndex = newDate.getDay();
+
+      const { apiDate, displayDate, weekday } = getDateObjectData(year, month, day, weekdayIndex);
+
       this.loadFilteredScreenings(apiDate);
       this.updateDateState(apiDate, displayDate, weekday);
     },
