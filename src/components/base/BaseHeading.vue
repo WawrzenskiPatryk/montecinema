@@ -32,6 +32,7 @@ export default defineComponent({
   line-height: 102%;
   letter-spacing: -0.01em;
   color: $gray-tuna;
+  margin: 0;
 
   &--small {
     font-size: 3.2rem;
