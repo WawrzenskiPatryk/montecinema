@@ -191,7 +191,9 @@ export default defineComponent({
         <h1>Loading...</h1>
       </div>
       <div v-else-if="displayedScreenings.length === 0">
-        <h1>No seances found, pick another date.</h1>
+        <BaseHeading heading-size="small">
+          No seances found. Please pick another date.
+        </BaseHeading>
       </div>
       <ScreeningsList v-else :screenings="displayedScreenings" />
     </div>
