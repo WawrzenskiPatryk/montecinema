@@ -66,13 +66,13 @@ export default defineComponent({
       </div>
 
       <div class="contact-page__media">
-        <TwitterIcon />
-        <FacebookIcon />
-        <LinkedinIcon />
-        <InstagramIcon />
-        <GithubIcon />
-        <BehanceIcon />
-        <DribbbleIcon />
+        <a href="https://www.monterail.com/" target="_blank"><TwitterIcon /></a>
+        <a href="https://www.monterail.com/" target="_blank"><FacebookIcon /></a>
+        <a href="https://www.monterail.com/" target="_blank"><LinkedinIcon /></a>
+        <a href="https://www.monterail.com/" target="_blank"><InstagramIcon /></a>
+        <a href="https://www.monterail.com/" target="_blank"><GithubIcon /></a>
+        <a href="https://www.monterail.com/" target="_blank"><BehanceIcon /></a>
+        <a href="https://www.monterail.com/" target="_blank"><DribbbleIcon /></a>
       </div>
     </div>
   </section>
@@ -81,6 +81,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .contact-page {
   @include page-padding;
+
+  &__title {
+    margin-bottom: 2.4rem;
+    @include screen-min-medium {
+      margin-bottom: 6.4rem;
+    }
+  }
 
   &__items {
     display: flex;
