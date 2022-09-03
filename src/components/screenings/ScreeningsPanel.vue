@@ -201,6 +201,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+// TODO: MOBILE VIEW
 .screenings-panel {
   padding-bottom: 6.4rem;
 
