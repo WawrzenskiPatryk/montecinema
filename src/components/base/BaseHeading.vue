@@ -5,7 +5,6 @@ export default defineComponent({
   props: {
     headingSize: {
       type: String,
-      default: 'large',
       required: true,
       validator(value) {
         return ['small', 'medium', 'large'].includes(value);

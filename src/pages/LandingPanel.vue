@@ -10,8 +10,4 @@ export default defineComponent({});
   </main>
 </template>
 
-<style lang="scss" scoped>
-  .landing-panel {
-    min-height: calc(100vh + 1px);
-  }
-</style>
+<style lang="scss" scoped></style>

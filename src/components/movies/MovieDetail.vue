@@ -2,12 +2,15 @@
 import { defineComponent } from 'vue';
 import { mapActions } from 'pinia';
 import { mainStore } from '@/store/index.js';
+import { movieImagePositioning } from '@/services/images.js';
 
 import BaseTag from '@/components/base/BaseTag.vue';
+import BaseHeading from '@/components/base/BaseHeading.vue';
 
 export default defineComponent({
   components: {
     BaseTag,
+    BaseHeading,
   },
   props: {
     movie: {
@@ -17,27 +20,16 @@ export default defineComponent({
   },
   computed: {
     imageStyles() {
-      let backgroundPosition;
-
-      if (this.movie.id === 1) backgroundPosition = '50% 30%';
-      else if (this.movie.id === 2 || this.movie.id === 8) backgroundPosition = '50% 65%';
-      else if (this.movie.id === 3) backgroundPosition = '50% 85%';
-      else if (this.movie.id === 4) backgroundPosition = '50% 55%';
-      else if (this.movie.id === 5) backgroundPosition = '50% 60%';
-      else if (this.movie.id === 6 || this.movie.id === 9) backgroundPosition = '50% 15%';
-      else if (this.movie.id === 7) backgroundPosition = '50% 93%';
-      else if (this.movie.id === 10) backgroundPosition = '50% 45%';
-      else if (this.movie.id === 11) backgroundPosition = '50% 25%';
-      else backgroundPosition = '50% 50%';
-
       return {
         'background-image': `url(${this.movie.poster_url})`,
-        'background-position': backgroundPosition,
+        'background-position': movieImagePositioning[this.movie.id]
+          ? movieImagePositioning[this.movie.id]
+          : movieImagePositioning[0],
       };
     },
     movieReleaseYear() {
-      const indexOfFirstHyphen = this.movie.release_date.indexOf('-');
-      return this.movie.release_date.slice(0, indexOfFirstHyphen);
+      const date = new Date(this.movie.release_date);
+      return date.getFullYear();
     },
     formattedMovieLength() {
       return this.formatMovieLength(this.movie.length);
@@ -52,7 +44,7 @@ export default defineComponent({
 <template>
   <div class="movie-detail">
     <div class="movie-detail__info-container">
-      <h1 class="movie-detail__title">{{ movie.title }}</h1>
+      <BaseHeading heading-size="large" class="movie-detail__title">{{ movie.title }}</BaseHeading>
 
       <div class="movie-detail__details">
         <BaseTag>{{ movie.genre.name }}</BaseTag>
@@ -93,14 +85,7 @@ export default defineComponent({
 
   &__title {
     margin: 0;
-
-    font-family: 'Eczar', serif;
-    font-weight: $font-weight-semibold;
-    font-size: 8rem;
-    line-height: 102%;
-    letter-spacing: -0.01em;
-
-    color: $gray-tuna;
+    margin-bottom: 3.2rem;
   }
 
   &__details {
@@ -116,10 +101,6 @@ export default defineComponent({
     line-height: 1.6rem;
 
     color: $gray-jumbo;
-  }
-
-  &__title,
-  &__details {
     margin-bottom: 3.2rem;
   }
 

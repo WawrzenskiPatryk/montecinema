@@ -15,9 +15,8 @@ export default defineComponent({
   },
   computed: {
     seanceTime() {
-      const datetime = this.seanceData.datetime;
-      const timePoint = datetime.indexOf('T') + 1;
-      return datetime.slice(timePoint).slice(0, 5);
+      const date = new Date(this.seanceData.datetime);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     },
   },
 });
