@@ -1,7 +1,14 @@
 <script>
 import { defineComponent } from 'vue';
+import { mapActions } from 'pinia';
+import { mainStore } from '@/store/index.js';
+
+import BaseTag from '@/components/base/BaseTag.vue';
 
 export default defineComponent({
+  components: {
+    BaseTag,
+  },
   props: {
     movieData: {
       type: Object,
@@ -10,12 +17,11 @@ export default defineComponent({
   },
   computed: {
     formattedMovieLength() {
-      if (!this.movieData) return '0h 0 min';
-      const allMinutes = this.movieData.length;
-      const hours = Math.floor(allMinutes / 60);
-      const minutes = allMinutes - hours * 60;
-      return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
+      return this.formatMovieLength(this.movieData.length);
     },
+  },
+  methods: {
+    ...mapActions(mainStore, ['formatMovieLength']),
   },
 });
 </script>
@@ -26,7 +32,7 @@ export default defineComponent({
       <h2 class="movie-list-card__title">{{ movieData.title }}</h2>
       <span class="movie-list-card__length">{{ formattedMovieLength }}</span>
       <img :src="movieData.poster_url" :alt="movieData.title" class="movie-list-card__image" />
-      <span class="movie-list-card__genre">{{ movieData.genre.name }}</span>
+      <BaseTag class="movie-list-card__genre">{{ movieData.genre.name }}</BaseTag>
     </router-link>
   </li>
 </template>
@@ -37,7 +43,7 @@ export default defineComponent({
   border-radius: 0.8rem;
 
   width: 100%;
-  max-width: 31.1rem;
+  max-width: 32.7rem;
 
   transition: transform 300ms ease;
 

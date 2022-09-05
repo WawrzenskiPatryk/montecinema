@@ -4,14 +4,14 @@ import { defineComponent } from 'vue';
 import MovieListCard from '@/components/movies/MovieListCard.vue';
 
 export default defineComponent({
+  components: {
+    MovieListCard,
+  },
   props: {
     movies: {
       type: Array,
       required: true,
     },
-  },
-  components: {
-    MovieListCard,
   },
   computed: {
     movieCardClasses() {
@@ -38,10 +38,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .movie-list {
   display: grid;
-  grid-gap: 4rem;
+  grid-gap: 2.4rem;
   justify-items: center;
 
   @include screen-min-medium {
+    grid-gap: 4rem;
     grid-template-columns: repeat(2, 1fr);
   }
   @include screen-min-large {

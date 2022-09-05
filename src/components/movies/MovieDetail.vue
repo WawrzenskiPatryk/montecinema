@@ -1,26 +1,117 @@
 <script>
 import { defineComponent } from 'vue';
+import { mapActions } from 'pinia';
+import { mainStore } from '@/store/index.js';
+import { movieImagePositioning } from '@/services/images.js';
+
+import BaseTag from '@/components/base/BaseTag.vue';
+import BaseHeading from '@/components/base/BaseHeading.vue';
 
 export default defineComponent({
+  components: {
+    BaseTag,
+    BaseHeading,
+  },
   props: {
     movie: {
       type: Object,
       required: true,
     },
   },
+  computed: {
+    imageStyles() {
+      return {
+        'background-image': `url(${this.movie.poster_url})`,
+        'background-position': movieImagePositioning[this.movie.id]
+          ? movieImagePositioning[this.movie.id]
+          : movieImagePositioning[0],
+      };
+    },
+    movieReleaseYear() {
+      const date = new Date(this.movie.release_date);
+      return date.getFullYear();
+    },
+    formattedMovieLength() {
+      return this.formatMovieLength(this.movie.length);
+    },
+  },
+  methods: {
+    ...mapActions(mainStore, ['formatMovieLength']),
+  },
 });
 </script>
 
 <template>
   <div class="movie-detail">
-    <div>Movie ID: {{ movie.id }}</div>
-    <div>Movie title: {{ movie.title }}</div>
-    <div>Movie genre.name: {{ movie.genre.name }}</div>
-    <div>Movie poster_url: {{ movie.poster_url }}</div>
-    <div>Movie length: {{ movie.length }}</div>
-    <div>Movie release_date: {{ movie.release_date }}</div>
-    <div>Movie description: {{ movie.description }}</div>
+    <div class="movie-detail__info-container">
+      <BaseHeading heading-size="large" class="movie-detail__title">{{ movie.title }}</BaseHeading>
+
+      <div class="movie-detail__details">
+        <BaseTag>{{ movie.genre.name }}</BaseTag>
+        <span>{{ movieReleaseYear }}</span>
+        <span>{{ formattedMovieLength }}</span>
+      </div>
+
+      <span class="movie-detail__description">
+        {{ movie.description }}
+      </span>
+    </div>
+    <div class="movie-detail__image-container" :style="imageStyles"></div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.movie-detail {
+  display: flex;
+  flex-direction: row;
+  gap: 3.2rem;
+
+  &__info-container {
+    width: 66%;
+    @include screen-min-large {
+      width: 55%;
+    }
+  }
+
+  &__image-container {
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width: 34%;
+    @include screen-min-large {
+      width: 45%;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    margin-bottom: 3.2rem;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 1.6rem;
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+
+    color: $gray-jumbo;
+    margin-bottom: 3.2rem;
+  }
+
+  &__description {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: $font-weight-regular;
+    font-size: 2.2rem;
+    line-height: 170%;
+    letter-spacing: 0.015em;
+
+    color: $gray-tuna;
+  }
+}
+</style>

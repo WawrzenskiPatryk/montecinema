@@ -1,19 +1,24 @@
 <script>
 import { defineComponent } from 'vue';
+
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
+import ScreeningsPanel from '@/components/screenings/ScreeningsPanel.vue';
 
 export default defineComponent({
   components: {
     TheBreadcrumb,
+    ScreeningsPanel,
   },
 });
 </script>
 
 <template>
   <TheBreadcrumb />
-  <section class="screenings-page">
-    <h1>Screenings Page</h1>
-  </section>
+  <ScreeningsPanel/>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.screenings-page {
+  @include page-padding;
+}
+</style>
