@@ -90,7 +90,9 @@ export default defineComponent({
         <h1>Loading...</h1>
       </div>
       <div v-else-if="displayedMovies.length === 0">
-        <h1>No movies found, pick another category.</h1>
+        <BaseHeading heading-size="small">
+          No movies found. Please change your filtering settings.
+        </BaseHeading>
       </div>
       <MovieList v-else :movies="displayedMovies" />
     </div>

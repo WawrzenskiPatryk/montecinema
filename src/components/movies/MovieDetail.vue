@@ -61,6 +61,7 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+// TODO: MOBILE VIEW
 .movie-detail {
   display: flex;
   flex-direction: row;
