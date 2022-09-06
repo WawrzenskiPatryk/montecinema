@@ -29,6 +29,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .hero-banner {
   display: flex;
+  margin-bottom: 6.4rem;
 
   &__wrapper {
     display: flex;

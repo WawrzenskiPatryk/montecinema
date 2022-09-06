@@ -45,12 +45,14 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   padding: 0 2.4rem;
+  margin-bottom: 8.8rem;
   gap: 2.4rem;
 
   width: 100%;
 
   @include screen-min-medium {
     padding: 0;
+    margin-bottom: 6.4rem;
   }
 
   &__heading {

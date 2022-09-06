@@ -16,20 +16,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <HomeHeroBanner class="hero" />
-  <HomeMoviesPanel class="movies" />
-  <ScreeningsPanel heading-size="medium" class="screenings" />
-  <HomeContactPanel class="contact" />
+  <HomeHeroBanner />
+  <HomeMoviesPanel />
+  <ScreeningsPanel heading-size="medium" />
+  <HomeContactPanel />
 </template>
 
-<style lang="scss" scoped>
-.hero {
-  margin-bottom: 6.4rem;
-}
-.movies {
-  margin-bottom: 8.8rem;
-  @include screen-min-medium {
-    margin-bottom: 6.4rem;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

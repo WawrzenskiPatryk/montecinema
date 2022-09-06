@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
+import ExternalLink from '@/components/ExternalLink.vue';
 import LocationPinIcon from '@/assets/icons/location-pin.svg';
 import EnvelopeIcon from '@/assets/icons/envelope.svg';
 import PhoneIcon from '@/assets/icons/phone.svg';
@@ -18,6 +19,7 @@ export default defineComponent({
   components: {
     TheBreadcrumb,
     BaseHeading,
+    ExternalLink,
     LocationPinIcon,
     EnvelopeIcon,
     PhoneIcon,
@@ -28,6 +30,19 @@ export default defineComponent({
     GithubIcon,
     BehanceIcon,
     DribbbleIcon,
+  },
+  data() {
+    return {
+      mediaLinks: [
+        { id: 0, href: 'https://www.monterail.com/', icon: 'TwitterIcon' },
+        { id: 1, href: 'https://www.monterail.com/', icon: 'FacebookIcon' },
+        { id: 2, href: 'https://www.monterail.com/', icon: 'LinkedinIcon' },
+        { id: 3, href: 'https://www.monterail.com/', icon: 'InstagramIcon' },
+        { id: 4, href: 'https://www.monterail.com/', icon: 'GithubIcon' },
+        { id: 5, href: 'https://www.monterail.com/', icon: 'BehanceIcon' },
+        { id: 6, href: 'https://www.monterail.com/', icon: 'DribbbleIcon' },
+      ],
+    };
   },
 });
 </script>
@@ -66,13 +81,9 @@ export default defineComponent({
       </div>
 
       <div class="contact-page__media">
-        <a href="https://www.monterail.com/" target="_blank"><TwitterIcon /></a>
-        <a href="https://www.monterail.com/" target="_blank"><FacebookIcon /></a>
-        <a href="https://www.monterail.com/" target="_blank"><LinkedinIcon /></a>
-        <a href="https://www.monterail.com/" target="_blank"><InstagramIcon /></a>
-        <a href="https://www.monterail.com/" target="_blank"><GithubIcon /></a>
-        <a href="https://www.monterail.com/" target="_blank"><BehanceIcon /></a>
-        <a href="https://www.monterail.com/" target="_blank"><DribbbleIcon /></a>
+        <ExternalLink v-for="media in mediaLinks" :key="media.id" :href="media.href">
+          <component :is="media.icon" />
+        </ExternalLink>
       </div>
     </div>
   </section>
