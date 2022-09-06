@@ -17,8 +17,5 @@
   &:active {
     color: $red-totempole;
   }
-  &:focus {
-    outline: 0.2rem $red-totempole solid;
-  }
 }
 </style>

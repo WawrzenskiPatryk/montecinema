@@ -1,7 +1,11 @@
 <script>
 import { defineComponent } from 'vue';
+import PasswordVisibilityButton from '@/components/auth/PasswordVisibilityButton.vue';
 
 export default defineComponent({
+  components: {
+    PasswordVisibilityButton,
+  },
   props: {
     label: {
       type: String,
@@ -24,6 +28,30 @@ export default defineComponent({
       default: false,
     },
   },
+  data() {
+    return {
+      isPasswordVisible: false,
+    };
+  },
+  computed: {
+    computedType() {
+      if (this.type === 'password' && this.isPasswordVisible) {
+        return 'text';
+      } else {
+        return this.type;
+      }
+    },
+    inputClass() {
+      return {
+        'input__field--password': this.type === 'password',
+      };
+    },
+  },
+  methods: {
+    togglePasswordVisibility() {
+      this.isPasswordVisible = !this.isPasswordVisible;
+    },
+  },
 });
 </script>
 
@@ -33,10 +61,17 @@ export default defineComponent({
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
-      :type="type"
+      :type="computedType"
       :placeholder="placeholder"
       :required="required"
       class="input__field"
+      :class="inputClass"
+    />
+    <PasswordVisibilityButton
+      v-if="type === 'password'"
+      @click.prevent="togglePasswordVisibility"
+      :is-password-visible="isPasswordVisible"
+      class="input__password-visibility-button"
     />
   </label>
 </template>
@@ -44,6 +79,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .input {
   display: inline-block;
+  position: relative;
   font-family: 'Roboto Mono', monospace;
   font-weight: $font-weight-bold;
   font-size: 1.4rem;
@@ -77,6 +113,16 @@ export default defineComponent({
     &::-webkit-search-cancel-button {
       display: none;
     }
+
+    &--password {
+      padding-right: 6rem;
+    }
+  }
+
+  &__password-visibility-button {
+    position: absolute;
+    right: 1.6rem;
+    top: 50%;
   }
 }
 </style>

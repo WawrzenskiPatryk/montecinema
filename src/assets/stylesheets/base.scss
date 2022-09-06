@@ -19,12 +19,28 @@ body {
   height: 100%;
   font-size: 1.6rem;
   line-height: 1.5;
+  font-family: 'Roboto', sans-serif;
+  font-weight: $font-weight-regular;
 }
 
 ul {
   padding: 0;
   margin: 0;
   list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  color: $red-cherryred;
+  font-weight: $font-weight-medium;
+  @include hover {
+    color: $red-totempole;
+  }
+  &:focus-visible,
+  &:active {
+    color: $red-totempole;
+  }
 }
 
 #app {

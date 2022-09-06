@@ -44,12 +44,20 @@ export default defineComponent({
         class="login-page__form-input"
       />
       <div class="login-page__form-buttons">
-        <BaseButton size="large" button-type="borderless-red" class="login-page__form-button">
+        <BaseButton size="large" class="login-page__form-button"> Log in </BaseButton>
+        <BaseButton
+          :to="{ name: 'RegisterPage' }"
+          size="large"
+          button-type="borderless-red"
+          class="login-page__form-button"
+        >
           Register instead
         </BaseButton>
-        <BaseButton size="large" class="login-page__form-button"> Log in</BaseButton>
       </div>
     </AuthFormCard>
+    <span class="login-page__reset">
+      Did you forget your password? <a href="#">Reset it now</a>
+    </span>
   </section>
 </template>
 
@@ -57,15 +65,24 @@ export default defineComponent({
 .login-page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   padding: 0;
   gap: 4rem;
+  margin: 8rem 0;
+
+  @include screen-min-medium {
+    align-items: flex-start;
+  }
 
   &__heading {
+    text-align: center;
     display: flex;
     flex-direction: column;
     &--light {
       color: $gray-jumbo;
+    }
+    @include screen-min-medium {
+      text-align: left;
     }
   }
 
@@ -75,6 +92,7 @@ export default defineComponent({
 
   &__form-buttons {
     display: flex;
+    flex-direction: row-reverse;
     gap: 1.6rem;
     min-width: 100%;
   }
@@ -82,6 +100,10 @@ export default defineComponent({
   &__form-button {
     flex: 1;
     padding: 0;
+  }
+
+  &__reset {
+    color: $gray-tuna;
   }
 }
 </style>

@@ -6,10 +6,13 @@
 
 <style lang="scss" scoped>
 .auth-form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 4.8rem;
+
   @include screen-min-medium {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     padding: 6.4rem;
     gap: 4rem;
 
