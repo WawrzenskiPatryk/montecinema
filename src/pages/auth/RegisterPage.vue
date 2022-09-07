@@ -24,10 +24,12 @@ export default defineComponent({
   },
   methods: {
     async onSubmit() {
+      // TODO: validation logic
       this.step++;
       if (this.step > 1) {
         // TODO: submitting form to API logic
         // TODO: redirect to login page OR just login with this data
+        // for hints check file: LoginPage.vue
       }
     },
   },

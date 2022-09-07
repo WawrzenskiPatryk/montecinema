@@ -31,6 +31,8 @@ export default defineComponent({
         email: this.email,
         password: this.password,
       });
+      // TODO: router push to previous page if we ended up here because of error 401
+      this.$router.push({ name: 'HomePage' });
     },
     logout() {
       this.auth.logout();
