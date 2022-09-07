@@ -76,7 +76,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('click')">
+  <component :is="componentType" :class="buttonClasses" :to="to">
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />
