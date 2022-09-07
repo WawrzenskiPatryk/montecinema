@@ -1,18 +1,22 @@
 import axios from 'axios';
 
-const api = import.meta.env.VITE_API;
-
-export const endpoint = {
-  MOVIES: 'movies',
-  GENRES: 'movie_genres',
-  SEANCES: 'seances',
-  USER: 'user',
-};
-
 export const defaultClient = axios.create({
-  baseURL: api,
+  baseURL: import.meta.env.VITE_API,
   headers: { 'Content-Type': 'application/json' },
 });
+
+export const endpoint = {
+  MOVIES: '/movies',
+  GENRES: '/movie_genres',
+  SEANCES: '/seances',
+  USER: '/user',
+  LOGIN: '/login',
+  REGISTER: '/register',
+};
+
+export function setAuthHeader(authHeader) {
+  defaultClient.defaults.headers.common['Authorization'] = authHeader;
+}
 
 export async function getAllMoviesData() {
   const moviesResponse = await defaultClient.get(endpoint.MOVIES);
@@ -24,7 +28,7 @@ export async function getMovieData(movieId) {
   return movieResponse.data;
 }
 
-export async function getMovieGenres() {
+export async function getMovieGenresData() {
   const genreResponse = await defaultClient.get(`${endpoint.GENRES}`);
   return genreResponse.data;
 }
@@ -51,7 +55,28 @@ export async function getSeancesData(movieId = null, date = null) {
   return screeningsResponse.data;
 }
 
-export async function getUser() {
+export async function getUserData() {
   const userResponse = await defaultClient.get(endpoint.USER);
   return userResponse.data;
+}
+
+export async function login(credentials) {
+  const loginResponse = await defaultClient.post(endpoint.LOGIN, {
+    user: {
+      email: credentials.email,
+      password: credentials.password,
+    },
+  });
+  return loginResponse;
+}
+
+export async function register(credentials) {
+  const registerResponse = await defaultClient.post(endpoint.REGISTER, {
+    user: {
+      email: credentials.email,
+      password: credentials.password,
+      date_of_birth: '1990-01-01',
+    },
+  });
+  return registerResponse;
 }

@@ -1,5 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
+import { getUserData } from '@/services/api.js';
+import { useAuthStore } from '@/store/auth.js';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import AuthFormCard from '@/components/auth/AuthFormCard.vue';
@@ -13,22 +15,50 @@ export default defineComponent({
     BaseInput,
     BaseButton,
   },
+  setup() {
+    const auth = useAuthStore();
+    return { auth };
+  },
   data() {
     return {
-      email: '',
-      password: '',
+      email: 'user3@test.com',
+      password: 'monterail',
+      user: null,
     };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.auth.isLoggedIn;
+    },
+  },
+  methods: {
+    async onSubmit() {
+      await this.auth.login({
+        email: this.email,
+        password: this.password,
+      });
+      console.log('Are you logged in?', this.isLoggedIn);
+    },
+    async getSecretData() {
+      this.user = await getUserData();
+      console.log('Your secret data:');
+      console.table(this.user);
+    },
+    logout() {
+      // TODO
+    },
   },
 });
 </script>
 
 <template>
   <section class="login-page">
+    <button v-if="isLoggedIn" @click="getSecretData">Get secret data</button>
     <BaseHeading heading-size="large" class="login-page__heading">
       <span class="login-page__heading--dark"> Hi there! </span>
       <span class="login-page__heading--light"> Care to log in? </span>
     </BaseHeading>
-    <AuthFormCard class="login-page__form">
+    <AuthFormCard @submit.prevent="onSubmit" class="login-page__form">
       <BaseInput
         v-model="email"
         type="email"
@@ -44,7 +74,7 @@ export default defineComponent({
         class="login-page__form-input"
       />
       <div class="login-page__form-buttons">
-        <BaseButton size="large" class="login-page__form-button"> Log in </BaseButton>
+        <BaseButton size="large" class="login-page__form-button" type="submit"> Log in </BaseButton>
         <BaseButton
           :to="{ name: 'RegisterPage' }"
           size="large"

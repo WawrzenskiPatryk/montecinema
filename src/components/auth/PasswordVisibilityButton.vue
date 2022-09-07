@@ -16,12 +16,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <button
+  <div
     class="password-visibility-button"
     :class="{ 'password-visibility-button--shown': isPasswordVisible }"
   >
     <VisibilityIcon />
-  </button>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getAllMoviesData, getMovieGenres, getSeancesData } from '@/services/api.js';
+import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api.js';
 
 export const mainStore = defineStore('main', {
   state() {
@@ -30,7 +30,7 @@ export const mainStore = defineStore('main', {
     async loadAllGenres() {
       this.areGenresLoading = true;
       try {
-        this.allGenres = await getMovieGenres();
+        this.allGenres = await getMovieGenresData();
       } catch {
         this.$router.push({ name: '404Page' });
       } finally {
