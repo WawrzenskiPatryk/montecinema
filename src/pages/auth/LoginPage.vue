@@ -20,11 +20,6 @@ export default defineComponent({
       password: '',
     };
   },
-  computed: {
-    isLoggedIn() {
-      return this.auth.isLoggedIn;
-    },
-  },
   methods: {
     async onSubmit() {
       await this.auth.login({
@@ -34,18 +29,12 @@ export default defineComponent({
       // TODO: router push to previous page if we ended up here because of error 401
       this.$router.push({ name: 'HomePage' });
     },
-    logout() {
-      this.auth.logout();
-    },
   },
 });
 </script>
 
 <template>
   <section class="login-page">
-    <!-- for testing only -->
-    <button v-if="isLoggedIn" @click="logout">Log out</button>
-    <!---------------------->
     <BaseHeading heading-size="large" class="login-page__heading">
       <span class="login-page__heading--dark"> Hi there! </span>
       <span class="login-page__heading--light"> Care to log in? </span>
