@@ -60,10 +60,7 @@ export default defineComponent({
     flex-direction: column;
     height: 100%;
     justify-content: space-evenly;
-
     text-decoration: none;
-    font-family: 'Roboto', sans-serif;
-
     padding: 2.4rem;
 
     @include screen-min-medium {

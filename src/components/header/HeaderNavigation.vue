@@ -30,14 +30,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header-navigation {
-  font-family: 'Roboto', sans-serif;
-  font-weight: $font-weight-regular;
-  font-size: $font-size-large;
-
-  height: 100%;
   margin: 0;
   padding: 0;
+  height: 100%;
 
+  font-size: $font-size-large;
   user-select: none;
 
   &__item {

@@ -6,7 +6,6 @@
 
 <style lang="scss" scoped>
 .tag {
-  font-family: 'Roboto', sans-serif;
   font-weight: $font-weight-bold;
   font-size: 1.4rem;
   line-height: 1.6rem;

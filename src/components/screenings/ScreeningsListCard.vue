@@ -92,8 +92,6 @@ export default defineComponent({
   &__title {
     margin: 0;
     margin-bottom: 0.8rem;
-
-    font-family: 'Roboto', sans-serif;
     font-weight: $font-weight-bold;
     font-size: 2.4rem;
     line-height: 2.8rem;
@@ -107,7 +105,6 @@ export default defineComponent({
   }
 
   &__length {
-    font-family: 'Roboto', sans-serif;
     font-weight: $font-weight-bold;
     font-size: 1.4rem;
     line-height: 1.6rem;
