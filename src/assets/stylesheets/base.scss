@@ -33,7 +33,6 @@ a {
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   color: $red-cherryred;
-  font-weight: $font-weight-medium;
   @include hover {
     color: $red-totempole;
   }

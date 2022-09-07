@@ -59,7 +59,7 @@ export default defineComponent({
     />
 
     <span class="login-page__reset">
-      Did you forget your password? <a href="#">Reset it now</a>
+      Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
     </span>
   </section>
 </template>
@@ -91,6 +91,9 @@ export default defineComponent({
 
   &__reset {
     color: $gray-tuna;
+    &--link {
+      font-weight: $font-weight-medium;
+    }
   }
 }
 </style>
