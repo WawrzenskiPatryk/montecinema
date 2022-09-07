@@ -1,6 +1,5 @@
 <script>
 import { defineComponent } from 'vue';
-import { getUserData } from '@/services/api.js';
 import { useAuthStore } from '@/store/auth.js';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
@@ -21,8 +20,8 @@ export default defineComponent({
   },
   data() {
     return {
-      email: 'user3@test.com',
-      password: 'monterail',
+      email: '',
+      password: '',
       user: null,
     };
   },
@@ -37,15 +36,9 @@ export default defineComponent({
         email: this.email,
         password: this.password,
       });
-      console.log('Are you logged in?', this.isLoggedIn);
-    },
-    async getSecretData() {
-      this.user = await getUserData();
-      console.log('Your secret data:');
-      console.table(this.user);
     },
     logout() {
-      // TODO
+      this.auth.logout();
     },
   },
 });
@@ -53,11 +46,16 @@ export default defineComponent({
 
 <template>
   <section class="login-page">
-    <button v-if="isLoggedIn" @click="getSecretData">Get secret data</button>
+    <!-- for testing only -->
+    <button v-if="isLoggedIn" @click="logout">Log out</button>
+    <!---------------------->
     <BaseHeading heading-size="large" class="login-page__heading">
       <span class="login-page__heading--dark"> Hi there! </span>
       <span class="login-page__heading--light"> Care to log in? </span>
     </BaseHeading>
+
+    <!-- TODO: Make this login form-card as an independent component -------------------->
+    <!-- todo c.d.: it will make things easier when implementing registration this way -->
     <AuthFormCard @submit.prevent="onSubmit" class="login-page__form">
       <BaseInput
         v-model="email"
@@ -85,6 +83,7 @@ export default defineComponent({
         </BaseButton>
       </div>
     </AuthFormCard>
+    <!-- todo --------------------------------------------------------------------------->
     <span class="login-page__reset">
       Did you forget your password? <a href="#">Reset it now</a>
     </span>

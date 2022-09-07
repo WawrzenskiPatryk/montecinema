@@ -1,9 +1,23 @@
 import axios from 'axios';
+import router from '@/router';
+import { useAuthStore } from '../store/auth';
 
 export const defaultClient = axios.create({
   baseURL: import.meta.env.VITE_API,
   headers: { 'Content-Type': 'application/json' },
 });
+
+defaultClient.interceptors.response.use(
+  response => response,
+  async error => {
+    if (error.response.status === 401) {
+      const auth = useAuthStore();
+      await auth.logout();
+      router.push({ name: 'LoginPage' });
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const endpoint = {
   MOVIES: '/movies',
@@ -16,6 +30,10 @@ export const endpoint = {
 
 export function setAuthHeader(authHeader) {
   defaultClient.defaults.headers.common['Authorization'] = authHeader;
+}
+
+export function removeAuthHeader() {
+  delete defaultClient.defaults.headers.common['Authorization'];
 }
 
 export async function getAllMoviesData() {
