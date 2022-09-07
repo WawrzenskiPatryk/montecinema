@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
+
 import AuthFormCard from '@/components/auth/AuthFormCard.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
@@ -28,7 +29,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- <AuthFormCard @submit.prevent="onSubmit" class="login-form"> -->
   <AuthFormCard class="login-form">
     <BaseInput
       v-model="email"

@@ -3,17 +3,11 @@ import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth.js';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
-// import AuthFormCard from '@/components/auth/AuthFormCard.vue';
-// import BaseInput from '@/components/base/BaseInput.vue';
-// import BaseButton from '@/components/base/BaseButton.vue';
 import LoginForm from '@/components/auth/login/LoginForm.vue';
 
 export default defineComponent({
   components: {
     BaseHeading,
-    // AuthFormCard,
-    // BaseInput,
-    // BaseButton,
     LoginForm,
   },
   setup() {
