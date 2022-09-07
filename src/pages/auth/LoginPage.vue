@@ -20,6 +20,23 @@ export default defineComponent({
       password: '',
     };
   },
+  //
+  // TODO: Ask someone for help with guarding this page
+  // from entering while being already logged in:
+  //
+  // beforeRouteEnter(_, from, next) {
+  //   next(vm => {
+  //     if (vm.isLoggedIn) {
+  //       vm.$router.replace(from.path);
+  //     }
+  //   });
+  // },
+  // computed: {
+  //   isLoggedIn() {
+  //     return this.auth.isLoggedIn;
+  //   },
+  // },
+  //
   methods: {
     async onSubmit() {
       await this.auth.login({
