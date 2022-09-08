@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
+import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import RegisterFirstForm from '@/components/auth/register/RegisterFirstForm.vue';
@@ -10,6 +11,9 @@ export default defineComponent({
     BaseHeading,
     RegisterFirstForm,
     RegisterSecondForm,
+  },
+  setup() {
+    useMeta({ title: 'Register' });
   },
   data() {
     return {

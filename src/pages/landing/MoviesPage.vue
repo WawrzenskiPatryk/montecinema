@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
 import { mainStore } from '@/store/index.js';
+import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieList from '@/components/movies/MovieList.vue';
@@ -16,6 +17,9 @@ export default defineComponent({
     BaseInput,
     BaseSelect,
     BaseHeading,
+  },
+  setup() {
+    useMeta({ title: 'Movies' });
   },
   mounted() {
     if (this.allMovies.length === 0) this.loadAllMovies();

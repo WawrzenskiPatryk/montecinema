@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
 import { mapState } from 'pinia';
 import { mainStore } from '@/store/index.js';
+import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieDetail from '@/components/movies/MovieDetail.vue';
@@ -20,17 +21,23 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    // MovieDetailPage title should be dynamic, but we have some errors here
+    // please check the comments below
+    useMeta({ title: 'Movie Details' });
+    //
+  },
   data() {
     return {
       isLoading: true,
       storedMovie: null,
     };
   },
-  mounted() {
+  async mounted() {
     if (this.allMovies.length > 0) {
       this.findMovieInAllMovies();
     } else {
-      this.loadSingleMovie();
+      await this.loadSingleMovie();
     }
   },
   computed: {
@@ -45,6 +52,11 @@ export default defineComponent({
 
       this.storedMovie = filteredMovie;
       this.isLoading = false;
+
+      // This works:
+      //
+      // useMeta({ title: this.storedMovie.title });
+      //
     },
 
     async loadSingleMovie() {
@@ -55,6 +67,11 @@ export default defineComponent({
         this.$router.push({ name: '404Page' });
       } finally {
         this.isLoading = false;
+
+        // But this line throws error: No manager or current instance at useMeta
+        //
+        // useMeta({ title: this.storedMovie.title });
+        //
       }
     },
   },

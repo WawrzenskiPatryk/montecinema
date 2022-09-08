@@ -1,6 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth.js';
+import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import LoginForm from '@/components/auth/login/LoginForm.vue';
@@ -12,6 +13,7 @@ export default defineComponent({
   },
   setup() {
     const auth = useAuthStore();
+    useMeta({ title: 'Log in' });
     return { auth };
   },
   data() {

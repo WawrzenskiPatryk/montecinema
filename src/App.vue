@@ -9,8 +9,9 @@ export default defineComponent({
     TheHeader,
   },
   setup() {
+    const appTitle = import.meta.env.VITE_APP_TITLE;
     const auth = useAuthStore();
-    return { auth };
+    return { auth, appTitle };
   },
   created() {
     this.auth.restoreAuth();
@@ -19,6 +20,11 @@ export default defineComponent({
 </script>
 
 <template>
+  <metainfo>
+    <template #title="{ content }">
+      {{ content ? `${content} | ${appTitle}` : `${appTitle}` }}
+    </template>
+  </metainfo>
   <div class="app">
     <TheHeader class="app__header" />
     <router-view class="app__content" />
