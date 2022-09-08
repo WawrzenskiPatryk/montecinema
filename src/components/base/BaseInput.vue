@@ -18,6 +18,9 @@ export default defineComponent({
     type: {
       type: String,
       default: 'text',
+      validator(value) {
+        return ['text', 'email', 'password', 'date'].join(' ').includes(value);
+      },
     },
     placeholder: {
       type: String,
@@ -31,15 +34,17 @@ export default defineComponent({
   data() {
     return {
       isPasswordVisible: false,
+      isdateInputFocused: false,
     };
   },
   computed: {
     computedType() {
-      if (this.type === 'password' && this.isPasswordVisible) {
+      if (
+        (this.type === 'date' && !this.isdateInputFocused) ||
+        (this.type === 'password' && this.isPasswordVisible)
+      ) {
         return 'text';
-      } else {
-        return this.type;
-      }
+      } else return this.type;
     },
     inputClass() {
       return {
@@ -51,6 +56,17 @@ export default defineComponent({
     togglePasswordVisibility() {
       this.isPasswordVisible = !this.isPasswordVisible;
     },
+    touchHandler(event) {
+      const isdateInputFocused = this.type === 'date' && event.type === 'focus';
+      const isDateInputBlured = this.type === 'date' && event.type === 'blur';
+      const isInputEmpty = !event.target.value;
+
+      if (isdateInputFocused) {
+        this.isdateInputFocused = true;
+      } else if (isDateInputBlured && isInputEmpty) {
+        this.isdateInputFocused = false;
+      }
+    },
   },
 });
 </script>
@@ -61,6 +77,8 @@ export default defineComponent({
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
+      @focus="touchHandler"
+      @blur="touchHandler"
       :type="computedType"
       :placeholder="placeholder"
       :required="required"

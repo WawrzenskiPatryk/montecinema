@@ -4,12 +4,14 @@ import { defineComponent } from 'vue';
 import AuthFormCard from '@/components/auth/AuthFormCard.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseCheckbox from '../../base/BaseCheckbox.vue';
 
 export default defineComponent({
   components: {
     AuthFormCard,
     BaseInput,
     BaseButton,
+    BaseCheckbox,
   },
   data() {
     return {
@@ -49,9 +51,24 @@ export default defineComponent({
       placeholder="e.g. Walton"
       class="register-form__input"
     />
-    <!-- TODO: date-picker and its v-model -->
-    <!-- TODO: checkbox and its v-model -->
-    <div class="register-form__buttons">
+    <BaseInput
+      v-model="dateOfBirth"
+      type="date"
+      label="Date of Birth"
+      placeholder="DD / MM / YYYY"
+      class="register-form__input"
+    />
+    <BaseCheckbox
+      v-model="privacyPolicyCheck"
+      checkbox-id="privacy-policy-check"
+      class="register-form__checkbox"
+    >
+      <span class="register-form__checkbox-label">
+        I accept <a href="#" class="register-form__checkbox-label--link">Privacy Policy</a>
+      </span>
+    </BaseCheckbox>
+
+    <div class="register-form__buttons-wrapper">
       <BaseButton size="large" class="register-form__button" type="submit"> Register </BaseButton>
       <BaseButton
         :to="{ name: 'LoginPage' }"
@@ -71,7 +88,18 @@ export default defineComponent({
     width: 100%;
   }
 
-  &__buttons {
+  &__checkbox-label {
+    color: $gray-charade;
+    &--link {
+      color: inherit;
+      text-decoration: underline;
+      @include hover {
+        color: $gray-jumbo;
+      }
+    }
+  }
+
+  &__buttons-wrapper {
     display: flex;
     flex-direction: row-reverse;
     gap: 1.6rem;
