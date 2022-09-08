@@ -17,19 +17,20 @@ export default defineComponent({
       password: '',
     };
   },
-  watch: {
-    email() {
-      this.$emit('emailUpdate', this.email);
-    },
-    password() {
-      this.$emit('passwordUpdate', this.password);
+  methods: {
+    onSubmit() {
+      const userData = {
+        email: this.email,
+        password: this.password,
+      };
+      this.$emit('registerStepSubmit', userData);
     },
   },
 });
 </script>
 
 <template>
-  <AuthFormCard class="register-form">
+  <AuthFormCard @submit.prevent="onSubmit" class="register-form">
     <BaseInput
       v-model="email"
       type="email"

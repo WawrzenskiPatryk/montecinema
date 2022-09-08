@@ -19,25 +19,22 @@ export default defineComponent({
       privacyPolicyCheck: false,
     };
   },
-  watch: {
-    firstName() {
-      this.$emit('firstNameUpdate', this.firstName);
-    },
-    lastName() {
-      this.$emit('lastNameUpdate', this.lastName);
-    },
-    dateOfBirth() {
-      this.$emit('birthDateUpdate', this.dateOfBirth);
-    },
-    privacyPolicyCheck() {
-      this.$emit('privacyPolicyUpdate', this.privacyPolicyCheck);
+  methods: {
+    onSubmit() {
+      const userData = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        dateOfBirth: this.dateOfBirth,
+        privacyPolicyCheck: this.privacyPolicyCheck,
+      };
+      this.$emit('registerStepSubmit', userData);
     },
   },
 });
 </script>
 
 <template>
-  <AuthFormCard class="register-form">
+  <AuthFormCard @submit.prevent="onSubmit" class="register-form">
     <BaseInput
       v-model="firstName"
       type="text"

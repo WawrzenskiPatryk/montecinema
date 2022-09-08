@@ -18,22 +18,44 @@ export default defineComponent({
   data() {
     return {
       step: 0,
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: '',
-      privacyPolicyCheck: false,
+      firstStepData: {
+        email: '',
+        password: '',
+      },
+      secondStepData: {
+        firstName: '',
+        lastName: '',
+        dateOfBirth: '',
+        privacyPolicyCheck: false,
+      },
     };
   },
   methods: {
-    async onSubmit() {
+    async onStepSubmit(userData) {
       // TODO: validation logic
+
+      if (this.step === 0) {
+        this.firstStepData = userData;
+      } else if (this.step === 1) {
+        this.secondStepData = userData;
+      }
+
       this.step++;
+
       if (this.step > 1) {
         // TODO: submitting form to API logic
+
+        const credentials = {
+          ...this.firstStepData,
+          ...this.secondStepData,
+        };
+
+        console.log('creds: ', credentials);
+
+        // await this.auth.register(credentials);
+
         // TODO: redirect to login page OR just login with this data
-        // for hints check file: LoginPage.vue
+        // this.$router.push({ name: 'LoginPage' });
       }
     },
   },
@@ -49,19 +71,12 @@ export default defineComponent({
 
     <RegisterFirstForm
       v-if="step === 0"
-      @submit.prevent="onSubmit"
-      @email-update="value => (email = value)"
-      @password-update="value => (password = value)"
+      @register-step-submit="onStepSubmit"
       class="register-page__form"
     />
-
     <RegisterSecondForm
-      v-if="step === 1"
-      @submit.prevent="onSubmit"
-      @first-name-update="value => (firstName = value)"
-      @last-name-update="value => (lastName = value)"
-      @birth-date-update="value => (dateOfBirth = value)"
-      @privacy-policy-update="value => (privacyPolicyCheck = value)"
+      v-else-if="step === 1"
+      @register-step-submit="onStepSubmit"
       class="register-page__form"
     />
   </section>

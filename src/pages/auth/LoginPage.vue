@@ -40,11 +40,8 @@ export default defineComponent({
   // },
   //
   methods: {
-    async onSubmit() {
-      await this.auth.login({
-        email: this.email,
-        password: this.password,
-      });
+    async onLoginSubmit(credentials) {
+      await this.auth.login(credentials);
       // TODO: router push to previous page if we ended up here because of error 401
       this.$router.push({ name: 'HomePage' });
     },
@@ -59,12 +56,7 @@ export default defineComponent({
       <span class="login-page__heading--light"> Care to log in? </span>
     </BaseHeading>
 
-    <LoginForm
-      @submit.prevent="onSubmit"
-      @email-update="value => (email = value)"
-      @password-update="value => (password = value)"
-      class="login-page__form"
-    />
+    <LoginForm @login-submit="onLoginSubmit" class="login-page__form" />
 
     <span class="login-page__reset">
       Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
