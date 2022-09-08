@@ -27,7 +27,6 @@ export default defineComponent({
         firstName: this.firstName,
         lastName: this.lastName,
         dateOfBirth: this.dateOfBirth,
-        privacyPolicyCheck: this.privacyPolicyCheck,
       };
       this.$emit('registerStepSubmit', userData);
     },

@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
+import { useAuthStore } from '@/store/auth.js';
 import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
@@ -13,7 +14,9 @@ export default defineComponent({
     RegisterSecondForm,
   },
   setup() {
+    const auth = useAuthStore();
     useMeta({ title: 'Register' });
+    return { auth };
   },
   data() {
     return {
@@ -43,19 +46,12 @@ export default defineComponent({
       this.step++;
 
       if (this.step > 1) {
-        // TODO: submitting form to API logic
-
         const credentials = {
           ...this.firstStepData,
           ...this.secondStepData,
         };
-
-        console.log('creds: ', credentials);
-
-        // await this.auth.register(credentials);
-
-        // TODO: redirect to login page OR just login with this data
-        // this.$router.push({ name: 'LoginPage' });
+        await this.auth.register(credentials);
+        this.$router.push({ name: 'HomePage' });
       }
     },
   },

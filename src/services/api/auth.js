@@ -22,10 +22,11 @@ export async function login(credentials) {
 export async function register(credentials) {
   const registerResponse = await defaultClient.post(endpoint.REGISTER, {
     user: {
-      // TODO
       email: credentials.email,
       password: credentials.password,
-      date_of_birth: '1990-01-01',
+      first_name: credentials.firstName,
+      last_name: credentials.lastName,
+      date_of_birth: credentials.dateOfBirth,
     },
   });
   return registerResponse;
