@@ -38,6 +38,7 @@ export default defineComponent({
   <AuthFormCard @submit.prevent="onSubmit" class="register-form">
     <BaseInput
       v-model="firstName"
+      required
       type="text"
       label="First Name"
       placeholder="e.g. Jessica"
@@ -45,6 +46,7 @@ export default defineComponent({
     />
     <BaseInput
       v-model="lastName"
+      required
       type="text"
       label="Last Name"
       placeholder="e.g. Walton"
@@ -52,12 +54,13 @@ export default defineComponent({
     />
     <BaseInput
       v-model="dateOfBirth"
+      required
       type="date"
       label="Date of Birth"
       placeholder="DD / MM / YYYY"
       class="register-form__input"
     />
-    <BaseCheckbox v-model="privacyPolicyCheck" class="register-form__checkbox">
+    <BaseCheckbox v-model="privacyPolicyCheck" required class="register-form__checkbox">
       <span class="register-form__checkbox-label">
         I accept <a href="#" class="register-form__checkbox-label--link">Privacy Policy</a>
       </span>

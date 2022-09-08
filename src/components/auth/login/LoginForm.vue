@@ -33,6 +33,7 @@ export default defineComponent({
   <AuthFormCard @submit.prevent="onSubmit" class="login-form">
     <BaseInput
       v-model="email"
+      required
       type="email"
       label="Email"
       placeholder="Something ending with monterail.com"
@@ -40,6 +41,7 @@ export default defineComponent({
     />
     <BaseInput
       v-model="password"
+      required
       type="password"
       label="Password"
       placeholder="Enter your password"
