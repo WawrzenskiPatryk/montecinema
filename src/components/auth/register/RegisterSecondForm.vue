@@ -58,11 +58,7 @@ export default defineComponent({
       placeholder="DD / MM / YYYY"
       class="register-form__input"
     />
-    <BaseCheckbox
-      v-model="privacyPolicyCheck"
-      checkbox-id="privacy-policy-check"
-      class="register-form__checkbox"
-    >
+    <BaseCheckbox v-model="privacyPolicyCheck" class="register-form__checkbox">
       <span class="register-form__checkbox-label">
         I accept <a href="#" class="register-form__checkbox-label--link">Privacy Policy</a>
       </span>

@@ -7,10 +7,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    checkboxId: {
-      type: String,
-      required: true,
-    },
     required: {
       type: Boolean,
       default: false,
@@ -26,10 +22,9 @@ export default defineComponent({
       :checked="modelValue"
       @change="$emit('update:modelValue', $event.target.checked)"
       :required="required"
-      :id="checkboxId"
       class="checkbox__field"
     />
-    <label class="checkbox__label" :for="checkboxId">
+    <label class="checkbox__label">
       <slot>checkbox_label</slot>
     </label>
   </div>
@@ -37,9 +32,58 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .checkbox {
-  // border: 1px solid red;
+  position: relative;
+
   &__label {
     user-select: none;
+    padding-left: 3.6rem;
+
+    &::before {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2.4rem;
+      height: 2.4rem;
+      background-color: $white;
+      border: 0.75px solid $gray-bombay;
+      border-radius: 0.8rem;
+    }
+  }
+
+  &__field {
+    position: absolute;
+    top: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+    opacity: 0;
+  }
+
+  @media (hover: hover) {
+    &__field:hover + &__label::before {
+      background-color: $gray-athensgray;
+    }
+
+    &__field:checked:hover + &__label::before {
+      background-color: $gray-jumbo;
+    }
+  }
+
+  &__field:focus-visible + &__label::before {
+    background-color: $gray-athensgray;
+    outline: $red-bittersweet solid 2px;
+  }
+
+  &__field:checked + &__label::before {
+    content: '\002714';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $gray-midgray;
+    border-color: $gray-midgray;
+    color: $white;
+    font-size: 2rem;
   }
 }
 </style>
