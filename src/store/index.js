@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api.js';
+import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api/data.js';
 
 export const mainStore = defineStore('main', {
   state() {

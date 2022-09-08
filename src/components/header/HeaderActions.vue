@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth.js';
-import { getUserData } from '@/services/api.js'; // <<< for testing only
+import { getUserData } from '@/services/api/data.js'; // <<< for testing only
 
 import BaseButton from '@/components/base/BaseButton.vue';
 

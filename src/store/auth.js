@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { login, setAuthHeader, removeAuthHeader } from '@/services/api.js';
+import { login, setAuthHeader, removeAuthHeader } from '@/services/api/auth.js';
 
 const TOKEN_STORAGE_KEY = 'auth-token';
 
