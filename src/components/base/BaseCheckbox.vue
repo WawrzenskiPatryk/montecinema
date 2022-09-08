@@ -54,7 +54,6 @@ export default defineComponent({
 
   &__field {
     position: absolute;
-    top: 0;
     width: 2.4rem;
     height: 2.4rem;
     opacity: 0;
@@ -72,7 +71,7 @@ export default defineComponent({
 
   &__field:focus-visible + &__label::before {
     background-color: $gray-athensgray;
-    outline: $red-bittersweet solid 2px;
+    outline: $red-bittersweet solid 0.2rem;
   }
 
   &__field:checked + &__label::before {
