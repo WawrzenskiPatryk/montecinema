@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
-import { getMovieData } from '@/services/api.js';
+import { getMovieData } from '@/services/api/data.js';
 import { mapState } from 'pinia';
 import { mainStore } from '@/store/index.js';
 
