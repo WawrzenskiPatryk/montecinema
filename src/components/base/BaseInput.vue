@@ -19,7 +19,7 @@ export default defineComponent({
       type: String,
       default: 'text',
       validator(value) {
-        return ['text', 'email', 'password', 'date'].join(' ').includes(value);
+        return ['text', 'email', 'password', 'date', 'search'].join(' ').includes(value);
       },
     },
     placeholder: {
