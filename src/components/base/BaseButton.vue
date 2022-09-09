@@ -105,27 +105,29 @@ export default defineComponent({
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
-  transition: transform ease 75ms;
+  &:not(:disabled) {
+    transition: transform ease 75ms;
+  }
 
   svg {
     stroke: currentColor;
   }
 
-  &:focus-visible,
-  &:active {
+  &:focus-visible:not(:disabled),
+  &:active:not(:disabled) {
     transform: translateY(0.1rem);
   }
 
   &--right {
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       transform: translateX(0.1rem);
     }
   }
 
   &--left {
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       transform: translateX(-0.1rem);
     }
   }
@@ -140,8 +142,8 @@ export default defineComponent({
       background-color: $red-totempole;
       border-color: $red-totempole;
     }
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       background-color: $red-totempole;
       border-color: $red-totempole;
     }
@@ -157,8 +159,8 @@ export default defineComponent({
       color: $red-totempole;
       border-color: $red-totempole;
     }
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       color: $red-totempole;
       border-color: $red-totempole;
     }
@@ -174,8 +176,8 @@ export default defineComponent({
       color: $red-bittersweet;
       border-color: $red-bittersweet;
     }
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       color: $red-bittersweet;
       border-color: $red-bittersweet;
     }
@@ -191,8 +193,8 @@ export default defineComponent({
       background-color: $gray-midgray;
       border-color: $gray-midgray;
     }
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       background-color: $gray-midgray;
       border-color: $gray-midgray;
     }
@@ -208,8 +210,8 @@ export default defineComponent({
       color: $gray-jumbo;
       border-color: $gray-jumbo;
     }
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       color: $gray-jumbo;
       border-color: $gray-jumbo;
     }
@@ -224,8 +226,8 @@ export default defineComponent({
     @include hover {
       color: $red-totempole;
     }
-    &:focus-visible,
-    &:active {
+    &:focus-visible:not(:disabled),
+    &:active:not(:disabled) {
       color: $red-totempole;
     }
   }
@@ -258,6 +260,11 @@ export default defineComponent({
     &--left {
       margin-left: -0.8rem;
     }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    transform: none;
   }
 }
 </style>

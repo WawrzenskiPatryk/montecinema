@@ -36,7 +36,6 @@ export default defineComponent({
   methods: {
     async onStepSubmit(userData) {
       // TODO: validation logic
-
       if (this.step === 0) {
         this.firstStepData = userData;
       } else if (this.step === 1) {
@@ -46,12 +45,16 @@ export default defineComponent({
       this.step++;
 
       if (this.step > 1) {
-        const credentials = {
+        await this.auth.register({
           ...this.firstStepData,
           ...this.secondStepData,
-        };
-        await this.auth.register(credentials);
-        this.$router.push({ name: 'HomePage' });
+        });
+        
+        if (this.$route.query.redirect) {
+          this.$router.push({ name: this.$route.query.redirect });
+        } else {
+          this.$router.push({ name: 'HomePage' });
+        }
       }
     },
   },
@@ -65,16 +68,22 @@ export default defineComponent({
       <span class="register-page__heading--light"> Care to register? </span>
     </BaseHeading>
 
-    <RegisterFirstForm
-      v-if="step === 0"
-      @register-step-submit="onStepSubmit"
-      class="register-page__form"
-    />
-    <RegisterSecondForm
-      v-else-if="step === 1"
-      @register-step-submit="onStepSubmit"
-      class="register-page__form"
-    />
+    <template v-if="step <= 1">
+      <RegisterFirstForm
+        v-if="step === 0"
+        @register-step-submit="onStepSubmit"
+        class="register-page__form"
+      />
+      <RegisterSecondForm
+        v-else-if="step === 1"
+        @register-step-submit="onStepSubmit"
+        class="register-page__form"
+      />
+    </template>
+    <div v-else>
+      <!-- todo -->
+      <h1>Loading spinner...</h1>
+    </div>
   </section>
 </template>
 

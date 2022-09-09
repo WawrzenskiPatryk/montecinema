@@ -18,32 +18,18 @@ export default defineComponent({
   },
   data() {
     return {
-      email: '',
-      password: '',
+      isSubmitted: false,
     };
   },
-  //
-  // TODO: Ask someone for help with guarding this page
-  // from entering while being already logged in:
-  //
-  // beforeRouteEnter(_, from, next) {
-  //   next(vm => {
-  //     if (vm.isLoggedIn) {
-  //       vm.$router.replace(from.path);
-  //     }
-  //   });
-  // },
-  // computed: {
-  //   isLoggedIn() {
-  //     return this.auth.isLoggedIn;
-  //   },
-  // },
-  //
   methods: {
     async onLoginSubmit(credentials) {
+      this.isSubmitted = true;
       await this.auth.login(credentials);
-      // TODO: router push to previous page if we ended up here because of error 401
-      this.$router.push({ name: 'HomePage' });
+      if (this.$route.query.redirect) {
+        this.$router.push({ name: this.$route.query.redirect });
+      } else {
+        this.$router.push({ name: 'HomePage' });
+      }
     },
   },
 });
@@ -56,11 +42,17 @@ export default defineComponent({
       <span class="login-page__heading--light"> Care to log in? </span>
     </BaseHeading>
 
-    <LoginForm @login-submit="onLoginSubmit" class="login-page__form" />
+    <template v-if="!isSubmitted">
+      <LoginForm @login-submit="onLoginSubmit" class="login-page__form" />
+      <span class="login-page__reset">
+        Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
+      </span>
+    </template>
 
-    <span class="login-page__reset">
-      Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
-    </span>
+    <div v-else>
+      <!-- todo -->
+      <h1>Loading spinner...</h1>
+    </div>
   </section>
 </template>
 
