@@ -12,7 +12,7 @@
 
 @mixin hover {
   @media (hover: hover) {
-    &:hover:not(:disabled) {
+    &:hover {
       @content;
     }
   }

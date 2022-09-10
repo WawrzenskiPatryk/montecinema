@@ -105,29 +105,27 @@ export default defineComponent({
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 
-  &:not(:disabled) {
-    transition: transform ease 75ms;
-  }
+  transition: transform ease 75ms;
 
   svg {
     stroke: currentColor;
   }
 
-  &:focus-visible:not(:disabled),
-  &:active:not(:disabled) {
+  &:focus-visible,
+  &:active {
     transform: translateY(0.1rem);
   }
 
   &--right {
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
+    &:focus-visible,
+    &:active {
       transform: translateX(0.1rem);
     }
   }
 
   &--left {
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
+    &:focus-visible,
+    &:active {
       transform: translateX(-0.1rem);
     }
   }
@@ -138,14 +136,16 @@ export default defineComponent({
     border-color: $red-cherryred;
     font-weight: $font-weight-regular;
 
-    @include hover {
-      background-color: $red-totempole;
-      border-color: $red-totempole;
-    }
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
-      background-color: $red-totempole;
-      border-color: $red-totempole;
+    &:not(:disabled) {
+      @include hover {
+        background-color: $red-totempole;
+        border-color: $red-totempole;
+      }
+      &:focus-visible,
+      &:active {
+        background-color: $red-totempole;
+        border-color: $red-totempole;
+      }
     }
   }
 
@@ -155,14 +155,16 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @include hover {
-      color: $red-totempole;
-      border-color: $red-totempole;
-    }
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
-      color: $red-totempole;
-      border-color: $red-totempole;
+    &:not(:disabled) {
+      @include hover {
+        color: $red-totempole;
+        border-color: $red-totempole;
+      }
+      &:focus-visible,
+      &:active {
+        color: $red-totempole;
+        border-color: $red-totempole;
+      }
     }
   }
 
@@ -172,14 +174,16 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @include hover {
-      color: $red-bittersweet;
-      border-color: $red-bittersweet;
-    }
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
-      color: $red-bittersweet;
-      border-color: $red-bittersweet;
+    &:not(:disabled) {
+      @include hover {
+        color: $red-bittersweet;
+        border-color: $red-bittersweet;
+      }
+      &:focus-visible,
+      &:active {
+        color: $red-bittersweet;
+        border-color: $red-bittersweet;
+      }
     }
   }
 
@@ -189,14 +193,16 @@ export default defineComponent({
     border-color: $gray-tuna;
     font-weight: $font-weight-regular;
 
-    @include hover {
-      background-color: $gray-midgray;
-      border-color: $gray-midgray;
-    }
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
-      background-color: $gray-midgray;
-      border-color: $gray-midgray;
+    &:not(:disabled) {
+      @include hover {
+        background-color: $gray-midgray;
+        border-color: $gray-midgray;
+      }
+      &:focus-visible,
+      &:active {
+        background-color: $gray-midgray;
+        border-color: $gray-midgray;
+      }
     }
   }
 
@@ -206,14 +212,16 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @include hover {
-      color: $gray-jumbo;
-      border-color: $gray-jumbo;
-    }
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
-      color: $gray-jumbo;
-      border-color: $gray-jumbo;
+    &:not(:disabled) {
+      @include hover {
+        color: $gray-jumbo;
+        border-color: $gray-jumbo;
+      }
+      &:focus-visible,
+      &:active {
+        color: $gray-jumbo;
+        border-color: $gray-jumbo;
+      }
     }
   }
 
@@ -223,12 +231,14 @@ export default defineComponent({
     background: none;
     font-weight: $font-weight-medium;
 
-    @include hover {
-      color: $red-totempole;
-    }
-    &:focus-visible:not(:disabled),
-    &:active:not(:disabled) {
-      color: $red-totempole;
+    &:not(:disabled) {
+      @include hover {
+        color: $red-totempole;
+      }
+      &:focus-visible,
+      &:active {
+        color: $red-totempole;
+      }
     }
   }
 
@@ -264,7 +274,13 @@ export default defineComponent({
 
   &:disabled {
     cursor: not-allowed;
-    transform: none;
+    transition: none;
+    opacity: 0.4;
+
+    &:focus-visible,
+    &:active {
+      transform: none;
+    }
   }
 }
 </style>
