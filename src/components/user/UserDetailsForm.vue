@@ -30,6 +30,21 @@ export default defineComponent({
       isPasswordTriggered: false,
     };
   },
+  methods: {
+    onSubmit() {
+      this.$emit('user-data-update', {
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        dateOfBirth: this.dateOfBirth,
+        currentPassword: this.currentPassword,
+        newPassword: this.newPassword,
+      });
+      this.isPasswordTriggered = false;
+      this.newPassword = '';
+      this.currentPassword = '';
+    },
+  },
   computed: {
     isSubmitDisabled() {
       return (
@@ -46,7 +61,8 @@ export default defineComponent({
 
 <template>
   <!-- todo -->
-  <form @submit.prevent> <!-- <UserDetailsFormCard>  -->
+  <form @submit.prevent="onSubmit">
+    <!-- <UserDetailsFormCard>  -->
     <BaseInput
       required
       type="email"
@@ -54,22 +70,21 @@ export default defineComponent({
       label="Email"
       v-model="email"
     />
-    <template v-if="isPasswordTriggered">
-      <BaseInput
-        required
-        v-model="currentPassword"
-        type="password"
-        label="Current password"
-        placeholder="Enter your password"
-      />
-      <BaseInput
-        required
-        v-model="newPassword"
-        type="password"
-        label="New password"
-        placeholder="Enter new password"
-      />
-    </template>
+    <BaseInput
+      required
+      v-model="currentPassword"
+      type="password"
+      label="Current password"
+      placeholder="Enter your password"
+    />
+    <BaseInput
+      v-if="isPasswordTriggered"
+      required
+      v-model="newPassword"
+      type="password"
+      label="New password"
+      placeholder="Enter new password"
+    />
     <BaseButton
       v-else
       @click="isPasswordTriggered = true"
@@ -104,7 +119,8 @@ export default defineComponent({
     <BaseButton :disabled="isSubmitDisabled" type="submit" button-type="hollow-red" size="large">
       Save changes
     </BaseButton>
-  </form> <!-- </UserDetailsFormCard> -->
+  </form>
+  <!-- </UserDetailsFormCard> -->
 </template>
 
 <style lang="scss" scoped></style>

@@ -31,3 +31,17 @@ export async function register(credentials) {
   });
   return registerResponse;
 }
+
+export async function updateUser(credentials) {
+  const updateResponse = await defaultClient.patch(endpoint.USER, {
+    user: {
+      email: credentials.email,
+      password: credentials.newPassword,
+      first_name: credentials.firstName,
+      last_name: credentials.lastName,
+      date_of_birth: credentials.dateOfBirth,
+      current_password: credentials.currentPassword,
+    },
+  });
+  return updateResponse;
+}

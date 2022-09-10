@@ -34,13 +34,18 @@ export default defineComponent({
   data() {
     return {
       isPasswordVisible: false,
-      isdateInputFocused: false,
+      isdateInputText: false,
     };
+  },
+  updated() {
+    if (this.type === 'date' && this.modelValue.length > 0) {
+      this.isdateInputText = true;
+    }
   },
   computed: {
     computedType() {
       if (
-        (this.type === 'date' && !this.isdateInputFocused) ||
+        (this.type === 'date' && !this.isdateInputText) ||
         (this.type === 'password' && this.isPasswordVisible)
       ) {
         return 'text';
@@ -62,9 +67,9 @@ export default defineComponent({
       const isInputEmpty = !event.target.value;
 
       if (isdateInputFocused) {
-        this.isdateInputFocused = true;
+        this.isdateInputText = true;
       } else if (isDateInputBlured && isInputEmpty) {
-        this.isdateInputFocused = false;
+        this.isdateInputText = false;
       }
     },
   },

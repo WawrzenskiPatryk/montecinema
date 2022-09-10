@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
+import { useAuthStore } from '@/store/auth.js';
 import { getUserData } from '@/services/api/data.js';
 import { useMeta } from 'vue-meta';
 
@@ -10,10 +11,12 @@ export default defineComponent({
     UserDetailsForm,
   },
   setup() {
+    const auth = useAuthStore();
     useMeta({ title: 'My account' });
+    return { auth };
   },
   mounted() {
-    this.getUserData();
+    this.getCurrentUserData();
   },
   data() {
     return {
@@ -22,7 +25,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async getUserData() {
+    async getCurrentUserData() {
       try {
         this.isLoading = true;
         this.userData = await getUserData();
@@ -33,6 +36,10 @@ export default defineComponent({
       }
       console.table(this.userData);
     },
+    async onUpdateSubmit(credentials) {
+      await this.auth.updateUser(credentials);
+      this.userData = await getUserData();
+    },
   },
 });
 </script>
@@ -42,8 +49,8 @@ export default defineComponent({
     <div v-if="isLoading">
       <h1>Loading...</h1>
     </div>
-    <!-- probably should be a router-link -->
-    <UserDetailsForm v-else :user-data="userData" />
+    <!-- probably should be a router-view -->
+    <UserDetailsForm v-else @user-data-update="onUpdateSubmit" :user-data="userData" />
     <!--  -->
   </section>
 </template>
