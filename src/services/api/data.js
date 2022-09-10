@@ -17,21 +17,20 @@ export async function getMovieGenresData() {
 }
 
 export async function getSeancesData(movieId = null, date = null) {
-  const hasNoQuery = movieId === null && date === null;
-  const hasMovieIdQuery = movieId !== null && date === null;
-  const hasDateQuery = movieId === null && date !== null;
-  const hasAllPossibleQueries = movieId !== null && date !== null;
+  const hasMovieIdQuery = movieId !== null;
+  const hasDateQuery = date !== null;
+  const hasAllPossibleQueries = hasMovieIdQuery && hasDateQuery;
 
   let exactEndpoint;
 
-  if (hasNoQuery) {
-    exactEndpoint = `${endpoint.SEANCES}`;
+  if (hasAllPossibleQueries) {
+    exactEndpoint = `${endpoint.SEANCES}?movie_id=${movieId}&date=${date}`;
   } else if (hasMovieIdQuery) {
     exactEndpoint = `${endpoint.SEANCES}?movie_id=${movieId}`;
   } else if (hasDateQuery) {
     exactEndpoint = `${endpoint.SEANCES}?date=${date}`;
-  } else if (hasAllPossibleQueries) {
-    exactEndpoint = `${endpoint.SEANCES}?movie_id=${movieId}&date=${date}`;
+  } else {
+    exactEndpoint = `${endpoint.SEANCES}`;
   }
 
   const screeningsResponse = await defaultClient.get(exactEndpoint);
