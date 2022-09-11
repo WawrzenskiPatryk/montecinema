@@ -1,11 +1,5 @@
 import { defineStore } from 'pinia';
-import {
-  login,
-  register,
-  updateUser,
-  setAuthHeader,
-  removeAuthHeader,
-} from '@/services/api/auth.js';
+import { login, register, setAuthHeader, removeAuthHeader } from '@/services/api/auth.js';
 
 const TOKEN_STORAGE_KEY = 'auth-token';
 
@@ -38,12 +32,6 @@ export const useAuthStore = defineStore('auth', {
       const response = await register(credentials);
       const token = response.headers.authorization;
       this.setToken(token);
-    },
-    async updateUser(credentials) {
-      await updateUser(credentials);
-      // const response = await updateUser(credentials);
-      // const token = response.headers.authorization;
-      // this.setToken(token);
     },
     logout() {
       // TODO: logout in API

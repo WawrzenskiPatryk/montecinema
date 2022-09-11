@@ -27,7 +27,7 @@ export default defineComponent({
       dateOfBirth: '',
       currentPassword: '',
       newPassword: '',
-      isPasswordTriggered: false,
+      isNewPasswordTriggered: false,
     };
   },
   methods: {
@@ -40,20 +40,21 @@ export default defineComponent({
         currentPassword: this.currentPassword,
         newPassword: this.newPassword,
       });
-      this.isPasswordTriggered = false;
+      this.isNewPasswordTriggered = false;
       this.newPassword = '';
       this.currentPassword = '';
     },
   },
   computed: {
     isSubmitDisabled() {
-      return (
+      const isNoDataChanged =
         this.email === this.userData.email &&
         this.firstName === this.userData.first_name &&
         this.lastName === this.userData.last_name &&
         this.dateOfBirth === this.userData.date_of_birth &&
-        this.isPasswordTriggered === false
-      );
+        this.newPassword.length === 0;
+
+      return isNoDataChanged || this.currentPassword.length === 0;
     },
   },
 });
@@ -61,8 +62,7 @@ export default defineComponent({
 
 <template>
   <!-- todo -->
-  <form @submit.prevent="onSubmit">
-    <!-- <UserDetailsFormCard>  -->
+  <form @submit.prevent="onSubmit" class="user-details-form">
     <BaseInput
       required
       type="email"
@@ -74,11 +74,13 @@ export default defineComponent({
       required
       v-model="currentPassword"
       type="password"
-      label="Current password"
-      placeholder="Enter your password"
+      :label="isNewPasswordTriggered ? 'Current password' : 'Password'"
+      :placeholder="
+        isNewPasswordTriggered ? 'Enter current password' : 'Enter password to confirm changes'
+      "
     />
     <BaseInput
-      v-if="isPasswordTriggered"
+      v-if="isNewPasswordTriggered"
       required
       v-model="newPassword"
       type="password"
@@ -86,8 +88,8 @@ export default defineComponent({
       placeholder="Enter new password"
     />
     <BaseButton
-      v-else
-      @click="isPasswordTriggered = true"
+      v-if="!isNewPasswordTriggered"
+      @click="isNewPasswordTriggered = true"
       button-type="hollow-red"
       size="regular"
       type="button"
@@ -115,12 +117,28 @@ export default defineComponent({
       label="Date of Birth"
       placeholder="DD / MM / YYYY"
     />
-
-    <BaseButton :disabled="isSubmitDisabled" type="submit" button-type="hollow-red" size="large">
+    <BaseButton
+      :disabled="isSubmitDisabled"
+      type="submit"
+      button-type="hollow-red"
+      size="large"
+      class="user-details-form__submit-button"
+    >
       Save changes
     </BaseButton>
   </form>
-  <!-- </UserDetailsFormCard> -->
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.user-details-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  max-width: 47.2rem;
+
+  &__submit-button {
+    margin-top: 4rem;
+    width: 100%;
+  }
+}
+</style>

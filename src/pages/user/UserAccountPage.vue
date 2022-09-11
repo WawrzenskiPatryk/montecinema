@@ -1,19 +1,19 @@
 <script>
 import { defineComponent } from 'vue';
-import { useAuthStore } from '@/store/auth.js';
 import { getUserData } from '@/services/api/data.js';
+import { updateUser } from '@/services/api/auth.js';
 import { useMeta } from 'vue-meta';
 
 import UserDetailsForm from '@/components/user/UserDetailsForm.vue';
+import UserDetailsCard from '@/components/user/UserDetailsCard.vue';
 
 export default defineComponent({
   components: {
     UserDetailsForm,
+    UserDetailsCard,
   },
   setup() {
-    const auth = useAuthStore();
     useMeta({ title: 'My account' });
-    return { auth };
   },
   mounted() {
     this.getCurrentUserData();
@@ -34,11 +34,17 @@ export default defineComponent({
       } finally {
         this.isLoading = false;
       }
-      console.table(this.userData);
     },
     async onUpdateSubmit(credentials) {
-      await this.auth.updateUser(credentials);
-      this.userData = await getUserData();
+      try {
+        this.isLoading = true;
+        await updateUser(credentials);
+        this.userData = await getUserData();
+      } catch (error) {
+        alert(error);
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 });
@@ -46,13 +52,19 @@ export default defineComponent({
 
 <template>
   <section class="user-account-page">
-    <div v-if="isLoading">
-      <h1>Loading...</h1>
-    </div>
-    <!-- probably should be a router-view -->
-    <UserDetailsForm v-else @user-data-update="onUpdateSubmit" :user-data="userData" />
-    <!--  -->
+    <UserDetailsCard class="user-account-page__card">
+      <div v-if="isLoading">
+        <!-- todo spinner -->
+        <h1>Loading...</h1>
+      </div>
+      <!-- todo: probably should be a router-view -->
+      <UserDetailsForm v-else @user-data-update="onUpdateSubmit" :user-data="userData" />
+    </UserDetailsCard>
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.user-account-page {
+  padding: 6.4rem 0;
+}
+</style>
