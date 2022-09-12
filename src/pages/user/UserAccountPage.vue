@@ -20,6 +20,7 @@ export default defineComponent({
   },
   data() {
     return {
+      isError401: false,
       isLoading: true,
       userData: null,
     };
@@ -29,8 +30,12 @@ export default defineComponent({
       try {
         this.isLoading = true;
         this.userData = await getUserData();
-      } catch {
-        this.$router.push({ name: '404Page' });
+      } catch (error) {
+        if (error.response.status === 401) {
+          this.isError401 = true;
+        } else {
+          alert('Sorry, an unexpected error occured.');
+        }
       } finally {
         this.isLoading = false;
       }
@@ -41,7 +46,13 @@ export default defineComponent({
         await updateUser(credentials);
         this.userData = await getUserData();
       } catch (error) {
-        alert(error);
+        if (error.response.status === 401) {
+          this.isError401 = true;
+        } else if (error.response.status === 422) {
+          alert('Please provide correct data');
+        } else {
+          alert('Sorry, an unexpected error occured.');
+        }
       } finally {
         this.isLoading = false;
       }
@@ -58,7 +69,11 @@ export default defineComponent({
         <h1>Loading...</h1>
       </div>
       <!-- todo: probably should be a router-view -->
-      <UserDetailsForm v-else @user-data-update="onUpdateSubmit" :user-data="userData" />
+      <UserDetailsForm
+        v-else-if="!isError401"
+        @user-data-update="onUpdateSubmit"
+        :user-data="userData"
+      />
     </UserDetailsCard>
   </section>
 </template>
