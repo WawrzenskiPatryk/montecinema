@@ -1,8 +1,6 @@
 <template>
   <div class="user-details-card">
-    <slot>
-      <h2>Your card here</h2>
-    </slot>
+    <slot />
   </div>
 </template>
 
