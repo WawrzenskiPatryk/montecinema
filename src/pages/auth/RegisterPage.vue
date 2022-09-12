@@ -35,7 +35,7 @@ export default defineComponent({
   },
   methods: {
     async onStepSubmit(userData) {
-      // TODO: validation logic
+      // TODO: validation and error handling logic
       if (this.step === 0) {
         this.firstStepData = userData;
       } else if (this.step === 1) {

@@ -23,6 +23,7 @@ export default defineComponent({
   },
   methods: {
     async onLoginSubmit(credentials) {
+      // TODO: error handling logic
       this.isSubmitted = true;
       await this.auth.login(credentials);
       if (this.$route.query.redirect) {
