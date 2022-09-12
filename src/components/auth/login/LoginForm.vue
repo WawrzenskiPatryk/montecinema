@@ -11,6 +11,12 @@ export default defineComponent({
     BaseInput,
     BaseButton,
   },
+  props: {
+    isSubmitted: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       email: '',
@@ -24,6 +30,8 @@ export default defineComponent({
         password: this.password,
       };
       this.$emit('loginSubmit', credentials);
+      this.email = '';
+      this.password = '';
     },
   },
 });
@@ -31,33 +39,39 @@ export default defineComponent({
 
 <template>
   <AuthFormCard @submit.prevent="onSubmit" class="login-form">
-    <BaseInput
-      v-model="email"
-      required
-      type="email"
-      label="Email"
-      placeholder="Something ending with monterail.com"
-      class="login-form__input"
-    />
-    <BaseInput
-      v-model="password"
-      required
-      type="password"
-      label="Password"
-      placeholder="Enter your password"
-      class="login-form__input"
-    />
-    <div class="login-form__buttons">
-      <BaseButton size="large" class="login-form__button" type="submit"> Log in </BaseButton>
-      <BaseButton
-        :to="{ name: 'RegisterPage' }"
-        size="large"
-        button-type="borderless-red"
-        class="login-form__button"
-      >
-        Register instead
-      </BaseButton>
+    <div v-if="isSubmitted">
+      <!-- todo -->
+      <h1>Loading...</h1>
     </div>
+    <template v-else>
+      <BaseInput
+        v-model="email"
+        required
+        type="email"
+        label="Email"
+        placeholder="Something ending with monterail.com"
+        class="login-form__input"
+      />
+      <BaseInput
+        v-model="password"
+        required
+        type="password"
+        label="Password"
+        placeholder="Enter your password"
+        class="login-form__input"
+      />
+      <div class="login-form__buttons">
+        <BaseButton size="large" class="login-form__button" type="submit"> Log in </BaseButton>
+        <BaseButton
+          :to="{ name: 'RegisterPage' }"
+          size="large"
+          button-type="borderless-red"
+          class="login-form__button"
+        >
+          Register instead
+        </BaseButton>
+      </div>
+    </template>
   </AuthFormCard>
 </template>
 

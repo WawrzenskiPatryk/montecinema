@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue';
 import { getUserData } from '@/services/api/data.js';
 import { updateUser } from '@/services/api/auth.js';
+import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
 
 import UserDetailsForm from '@/components/user/UserDetailsForm.vue';
@@ -13,7 +14,9 @@ export default defineComponent({
     UserDetailsCard,
   },
   setup() {
+    const mainStore = useMainStore();
     useMeta({ title: 'My account' });
+    return { mainStore };
   },
   mounted() {
     this.getCurrentUserData();
@@ -34,7 +37,7 @@ export default defineComponent({
         if (error.response.status === 401) {
           this.isError401 = true;
         } else {
-          alert('Sorry, an unexpected error occured.');
+          throw new Error(error); // todo: to find unhandled scenarios in development
         }
       } finally {
         this.isLoading = false;
@@ -49,9 +52,10 @@ export default defineComponent({
         if (error.response.status === 401) {
           this.isError401 = true;
         } else if (error.response.status === 422) {
-          alert('Please provide correct data');
+          const wrongDataError = new Error('Please provide correct data');
+          this.mainStore.storeErrorToDisplay(wrongDataError);
         } else {
-          alert('Sorry, an unexpected error occured.');
+          throw new Error(error); // todo: to find unhandled scenarios in development
         }
       } finally {
         this.isLoading = false;

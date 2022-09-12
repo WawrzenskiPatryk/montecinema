@@ -4,6 +4,7 @@ import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services
 export const useMainStore = defineStore('main', {
   state() {
     return {
+      error: null,
       areMoviesLoading: false,
       areGenresLoading: false,
       areSeancesLoading: false,
@@ -16,6 +17,15 @@ export const useMainStore = defineStore('main', {
   },
 
   actions: {
+    storeErrorToDisplay(error, clearError = true) {
+      this.error = error;
+      if (clearError) {
+        setTimeout(() => {
+          this.error = null;
+        }, 4000);
+      }
+    },
+
     async loadAllMovies() {
       this.areMoviesLoading = true;
       try {

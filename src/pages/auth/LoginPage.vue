@@ -1,6 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth.js';
+import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
@@ -13,8 +14,9 @@ export default defineComponent({
   },
   setup() {
     const auth = useAuthStore();
+    const mainStore = useMainStore();
     useMeta({ title: 'Log in' });
-    return { auth };
+    return { auth, mainStore };
   },
   data() {
     return {
@@ -23,13 +25,22 @@ export default defineComponent({
   },
   methods: {
     async onLoginSubmit(credentials) {
-      // TODO: error handling logic
-      this.isSubmitted = true;
-      await this.auth.login(credentials);
-      if (this.$route.query.redirect) {
-        this.$router.push({ name: this.$route.query.redirect });
-      } else {
-        this.$router.push({ name: 'HomePage' });
+      try {
+        this.isSubmitted = true;
+        await this.auth.login(credentials);
+        if (this.$route.query.redirect) {
+          this.$router.push({ name: this.$route.query.redirect });
+        } else {
+          this.$router.push({ name: 'HomePage' });
+        }
+      } catch (error) {
+        if (error.response.status === 401) {
+          const loginError = new Error('Incorrect email or password. Please try again.');
+          this.mainStore.storeErrorToDisplay(loginError);
+          this.isSubmitted = false;
+        } else {
+          throw new Error(error); // todo: to find unhandled scenarios in development
+        }
       }
     },
   },
@@ -43,17 +54,14 @@ export default defineComponent({
       <span class="login-page__heading--light"> Care to log in? </span>
     </BaseHeading>
 
-    <template v-if="!isSubmitted">
-      <LoginForm @login-submit="onLoginSubmit" class="login-page__form" />
-      <span class="login-page__reset">
-        Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
-      </span>
-    </template>
+    <LoginForm @login-submit="onLoginSubmit" :is-submitted="isSubmitted" class="login-page__form" />
+    <span class="login-page__reset">
+      Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
+    </span>
 
-    <div v-else>
-      <!-- todo -->
-      <h1>Loading spinner...</h1>
-    </div>
+    <!-- <div v-else>
+      <h1>Loading...</h1>
+    </div> -->
   </section>
 </template>
 
