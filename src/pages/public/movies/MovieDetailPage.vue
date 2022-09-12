@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
 import { mapState } from 'pinia';
-import { mainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
@@ -44,7 +44,7 @@ export default defineComponent({
     movieTitle() {
       return this.isLoading ? '' : this.storedMovie.title;
     },
-    ...mapState(mainStore, ['allMovies', 'areMoviesLoading']),
+    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
   },
   methods: {
     findMovieInAllMovies() {
