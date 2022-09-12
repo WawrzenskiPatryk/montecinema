@@ -49,12 +49,7 @@ export default defineComponent({
           ...this.firstStepData,
           ...this.secondStepData,
         });
-        
-        if (this.$route.query.redirect) {
-          this.$router.push({ name: this.$route.query.redirect });
-        } else {
-          this.$router.push({ name: 'HomePage' });
-        }
+        this.auth.redirectFromAuth();
       }
     },
   },
