@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api/data.js';
 
-export const mainStore = defineStore('main', {
+export const useMainStore = defineStore('main', {
   state() {
     return {
       areMoviesLoading: false,

@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapActions, mapState } from 'pinia';
-import { mainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.js';
 import {
   getTodaysDateObject,
   getFormattedDateObject,
@@ -54,7 +54,7 @@ export default defineComponent({
     this.updateDateState(apiDate, displayDate, weekday);
   },
   computed: {
-    ...mapState(mainStore, ['areScreeningsLoading', 'storedScreenings', 'allMovies']),
+    ...mapState(useMainStore, ['areScreeningsLoading', 'storedScreenings', 'allMovies']),
 
     displayedScreenings() {
       if (this.movieId) {
@@ -79,7 +79,7 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions(mainStore, ['loadScreenings']),
+    ...mapActions(useMainStore, ['loadScreenings']),
 
     loadFilteredScreenings(date) {
       const movieId = this.movieFilterValue == 0 ? null : this.movieFilterValue;

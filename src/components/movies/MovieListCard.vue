@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapActions } from 'pinia';
-import { mainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.js';
 
 import BaseTag from '@/components/base/BaseTag.vue';
 
@@ -21,7 +21,7 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions(mainStore, ['formatMovieLength']),
+    ...mapActions(useMainStore, ['formatMovieLength']),
   },
 });
 </script>
