@@ -49,7 +49,7 @@ export default defineComponent({
           ...this.firstStepData,
           ...this.secondStepData,
         });
-        this.auth.redirectFromAuth();
+        this.$router.push({ name: 'HomePage' });
       }
     },
   },

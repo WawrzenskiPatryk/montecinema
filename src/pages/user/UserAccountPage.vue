@@ -37,7 +37,7 @@ export default defineComponent({
         if (error.response.status === 401) {
           this.isUnauthorized = true;
         } else {
-          throw new Error(error); // to find unhandled scenarios in development
+          throw new Error(error);
         }
       } finally {
         this.isLoading = false;
@@ -55,7 +55,7 @@ export default defineComponent({
           const wrongDataError = new Error('Please provide correct data');
           this.mainStore.storeErrorToDisplay(wrongDataError);
         } else {
-          throw new Error(error); // to find unhandled scenarios in development
+          throw new Error(error);
         }
       } finally {
         this.isLoading = false;

@@ -28,14 +28,18 @@ export default defineComponent({
       try {
         this.isSubmitted = true;
         await this.auth.login(credentials);
-        this.auth.redirectFromAuth();
+        if (this.$route.query.redirect) {
+          this.$router.push({ name: this.$route.query.redirect });
+        } else {
+          this.$router.push({ name: 'HomePage' });
+        }
       } catch (error) {
         if (error.response.status === 401) {
           const loginError = new Error('Incorrect email or password. Please try again.');
           this.mainStore.storeErrorToDisplay(loginError);
           this.isSubmitted = false;
         } else {
-          throw new Error(error); // to find unhandled scenarios in development
+          throw new Error(error);
         }
       }
     },
