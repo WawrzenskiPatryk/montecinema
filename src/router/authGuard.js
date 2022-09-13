@@ -3,11 +3,10 @@ import authRoutes from './auth';
 import userRoutes from './user';
 
 const getRouteNames = routes => {
-  const routeNames = routes.reduce((routeNames, route) => {
+  return routes.reduce((routeNames, route) => {
     if (route.name) routeNames.push(route.name);
     return routeNames;
   }, []);
-  return routeNames;
 };
 
 export const authGuard = (to, _, next) => {

@@ -61,7 +61,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- todo -->
   <form @submit.prevent="onSubmit" class="user-details-form">
     <BaseInput
       required

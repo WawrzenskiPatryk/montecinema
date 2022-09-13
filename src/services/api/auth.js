@@ -10,17 +10,16 @@ export function removeAuthHeader() {
 }
 
 export async function login(credentials) {
-  const loginResponse = await defaultClient.post(endpoint.LOGIN, {
+  return await defaultClient.post(endpoint.LOGIN, {
     user: {
       email: credentials.email,
       password: credentials.password,
     },
   });
-  return loginResponse;
 }
 
 export async function register(credentials) {
-  const registerResponse = await defaultClient.post(endpoint.REGISTER, {
+  return await defaultClient.post(endpoint.REGISTER, {
     user: {
       email: credentials.email,
       password: credentials.password,
@@ -29,11 +28,10 @@ export async function register(credentials) {
       date_of_birth: credentials.dateOfBirth,
     },
   });
-  return registerResponse;
 }
 
 export async function updateUser(credentials) {
-  const updateResponse = await defaultClient.patch(endpoint.USER, {
+  return await defaultClient.patch(endpoint.USER, {
     user: {
       email: credentials.email,
       password: credentials.newPassword,
@@ -43,5 +41,4 @@ export async function updateUser(credentials) {
       current_password: credentials.currentPassword,
     },
   });
-  return updateResponse;
 }
