@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
 import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api/data.js';
+import router from '@/router';
 
 export const useMainStore = defineStore('main', {
   state() {
     return {
       error: null,
+      errorDisplayTime: 4,
       areMoviesLoading: false,
       areGenresLoading: false,
       areSeancesLoading: false,
@@ -17,12 +19,21 @@ export const useMainStore = defineStore('main', {
   },
 
   actions: {
-    storeErrorToDisplay(error, clearError = true) {
+    storeErrorToDisplay(error, errorTime = this.errorDisplayTime) {
       this.error = error;
-      if (clearError) {
+      this.errorDisplayTime = errorTime;
+      if (errorTime !== Infinity) {
         setTimeout(() => {
           this.error = null;
-        }, 4000);
+        }, this.errorDisplayTime * 1000);
+      }
+    },
+
+    showError(error, errorTime) {
+      if (error.message === 'Network Error') {
+        this.storeErrorToDisplay(new Error('CONNECTION TO SERVER LOST'), Infinity);
+      } else {
+        this.storeErrorToDisplay(error, errorTime);
       }
     },
 
@@ -30,8 +41,8 @@ export const useMainStore = defineStore('main', {
       this.areMoviesLoading = true;
       try {
         this.allMovies = await getAllMoviesData();
-      } catch {
-        this.$router.push({ name: '404Page' });
+      } catch (error) {
+        this.showError(error);
       } finally {
         this.areMoviesLoading = false;
       }
@@ -41,8 +52,8 @@ export const useMainStore = defineStore('main', {
       this.areGenresLoading = true;
       try {
         this.allGenres = await getMovieGenresData();
-      } catch {
-        this.$router.push({ name: '404Page' });
+      } catch (error) {
+        this.showError(error);
       } finally {
         this.areGenresLoading = false;
       }
@@ -52,8 +63,8 @@ export const useMainStore = defineStore('main', {
       this.areSeancesLoading = true;
       try {
         this.storedSeances = await getSeancesData(movieId, date);
-      } catch {
-        this.$router.push({ name: '404Page' });
+      } catch (error) {
+        this.showError(error);
       } finally {
         this.areSeancesLoading = false;
       }
@@ -103,6 +114,17 @@ export const useMainStore = defineStore('main', {
       const hours = Math.floor(allMinutes / 60);
       const minutes = allMinutes - hours * 60;
       return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
+    },
+
+    leaveRoute(destinationName = null) {
+      const routeQuery = router.currentRoute.value.query;
+      if (destinationName) {
+        router.push({ name: destinationName });
+      } else if (routeQuery.redirect) {
+        router.push({ name: routeQuery.redirect });
+      } else {
+        router.push({ name: 'HomePage' });
+      }
     },
   },
 });

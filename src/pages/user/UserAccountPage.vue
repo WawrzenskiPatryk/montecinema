@@ -3,6 +3,7 @@ import { defineComponent } from 'vue';
 import { getUserData } from '@/services/api/data.js';
 import { updateUser } from '@/services/api/auth.js';
 import { useMainStore } from '@/store/index.js';
+import { useAuthStore } from '@/store/auth.js';
 import { useMeta } from 'vue-meta';
 
 import UserDetailsForm from '@/components/user/UserDetailsForm.vue';
@@ -15,8 +16,9 @@ export default defineComponent({
   },
   setup() {
     const mainStore = useMainStore();
+    const auth = useAuthStore();
     useMeta({ title: 'My account' });
-    return { mainStore };
+    return { mainStore, auth };
   },
   mounted() {
     this.getCurrentUserData();
@@ -36,8 +38,10 @@ export default defineComponent({
       } catch (error) {
         if (error.response.status === 401) {
           this.isUnauthorized = true;
+          await this.auth.logout();
+          this.$router.push({ name: 'LoginPage' });
         } else {
-          throw new Error(error);
+          this.mainStore.showError(error);
         }
       } finally {
         this.isLoading = false;
@@ -51,11 +55,13 @@ export default defineComponent({
       } catch (error) {
         if (error.response.status === 401) {
           this.isUnauthorized = true;
+          await this.auth.logout();
+          this.$router.push({ name: 'LoginPage' });
         } else if (error.response.status === 422) {
           const wrongDataError = new Error('Please provide correct data');
-          this.mainStore.storeErrorToDisplay(wrongDataError);
+          this.mainStore.showError(wrongDataError);
         } else {
-          throw new Error(error);
+          this.mainStore.showError(error);
         }
       } finally {
         this.isLoading = false;

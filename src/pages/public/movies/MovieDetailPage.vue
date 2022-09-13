@@ -1,7 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
-import { mapState } from 'pinia';
 import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
 
@@ -22,9 +21,11 @@ export default defineComponent({
     },
   },
   setup() {
+    const mainStore = useMainStore();
     // MovieDetailPage title should be dynamic, but we have some errors here
     // please check the comments below
     useMeta({ title: 'Movie Details' });
+    return { mainStore };
     //
   },
   data() {
@@ -34,7 +35,7 @@ export default defineComponent({
     };
   },
   async mounted() {
-    if (this.allMovies.length > 0) {
+    if (this.mainStore.allMovies.length > 0) {
       this.findMovieInAllMovies();
     } else {
       await this.loadSingleMovie();
@@ -44,11 +45,10 @@ export default defineComponent({
     movieTitle() {
       return this.isLoading ? '' : this.storedMovie.title;
     },
-    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading']),
   },
   methods: {
     findMovieInAllMovies() {
-      const filteredMovie = this.allMovies.find(movie => movie.id == this.movieId);
+      const filteredMovie = this.mainStore.allMovies.find(movie => movie.id == this.movieId);
 
       this.storedMovie = filteredMovie;
       this.isLoading = false;
@@ -63,8 +63,8 @@ export default defineComponent({
       this.isLoading = true;
       try {
         this.storedMovie = await getMovieData(this.movieId);
-      } catch {
-        this.$router.push({ name: '404Page' });
+      } catch (error) {
+        this.mainStore.showError(error);
       } finally {
         this.isLoading = false;
 

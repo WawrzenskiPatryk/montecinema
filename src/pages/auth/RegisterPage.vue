@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
+import { useMainStore } from '@/store/index.js';
 import { useAuthStore } from '@/store/auth.js';
 import { useMeta } from 'vue-meta';
 
@@ -14,9 +15,10 @@ export default defineComponent({
     RegisterSecondForm,
   },
   setup() {
+    const mainStore = useMainStore();
     const auth = useAuthStore();
     useMeta({ title: 'Register' });
-    return { auth };
+    return { mainStore, auth };
   },
   data() {
     return {
@@ -49,7 +51,7 @@ export default defineComponent({
           ...this.firstStepData,
           ...this.secondStepData,
         });
-        this.$router.push({ name: 'HomePage' });
+        this.mainStore.leaveRoute();
       }
     },
   },

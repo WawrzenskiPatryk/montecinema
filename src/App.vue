@@ -19,19 +19,21 @@ export default defineComponent({
     this.auth.restoreAuth();
   },
   errorCaptured(error) {
-    if (error.message === 'AxiosError: Network Error') {
-      const networkError = new Error('Connection to internet lost...');
-      this.mainStore.storeErrorToDisplay(networkError, false);
-    } else {
-      this.mainStore.storeErrorToDisplay(error);
-    }
+    this.mainStore.showError(error);
   },
   computed: {
     isError() {
       return !!this.mainStore.error;
     },
     errorMessage() {
-      return this.mainStore.error?.message || 'Sorry, unexpected error occured.';
+      return this.mainStore.error?.message || 'Sorry, unexpected error occured';
+    },
+    errorTime() {
+      if (this.mainStore.errorDisplayTime === Infinity) {
+        return 0;
+      } else {
+        return this.mainStore.errorDisplayTime + 's';
+      }
     },
   },
 });
@@ -44,11 +46,14 @@ export default defineComponent({
     </template>
   </metainfo>
   <div class="app">
-    <TheHeader class="app__header" />
-    <router-view class="app__content" />
     <div v-if="isError" class="app__error">
       <span class="app__error-info">{{ errorMessage }}</span>
+      <button class="app__error-escape-button" @click.prevent="this.mainStore.error = null">
+        X
+      </button>
     </div>
+    <TheHeader class="app__header" />
+    <router-view class="app__content" />
   </div>
 </template>
 
@@ -61,11 +66,13 @@ export default defineComponent({
     }
   }
   &__error {
-    background-color: $red-cherryred;
-    position: fixed;
+    position: sticky;
+    top: 0;
     width: 100%;
-    bottom: 0;
-    animation: error-message-animation ease 4s forwards;
+    z-index: 100;
+    background-color: $red-cherryred;
+    animation: error-message-animation ease;
+    animation-duration: v-bind(errorTime);
   }
   &__error-info {
     display: block;
@@ -73,6 +80,16 @@ export default defineComponent({
     padding: 1.6rem;
     text-align: center;
     color: $white;
+  }
+  &__error-escape-button {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+    background-color: $red-cherryred;
+    border: none;
+    color: $white;
+    cursor: pointer;
   }
 
   @keyframes error-message-animation {
@@ -91,3 +108,8 @@ export default defineComponent({
   }
 }
 </style>
+
+<!-- TypeScript part 2 notatki
+
+
+-->
