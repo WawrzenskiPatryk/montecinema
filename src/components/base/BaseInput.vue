@@ -62,11 +62,11 @@ export default defineComponent({
       this.isPasswordVisible = !this.isPasswordVisible;
     },
     touchHandler(event) {
-      const isdateInputFocused = this.type === 'date' && event.type === 'focus';
+      const isDateInputFocused = this.type === 'date' && event.type === 'focus';
       const isDateInputBlured = this.type === 'date' && event.type === 'blur';
       const isInputEmpty = !event.target.value;
 
-      if (isdateInputFocused) {
+      if (isDateInputFocused) {
         this.isdateInputText = true;
       } else if (isDateInputBlured && isInputEmpty) {
         this.isdateInputText = false;
@@ -77,8 +77,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <label class="input">
-    {{ label }}
+  <div class="input">
+    <label class="input__label">
+      {{ label }}
+    </label>
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
@@ -96,19 +98,22 @@ export default defineComponent({
       :is-password-visible="isPasswordVisible"
       class="input__password-visibility-button"
     />
-  </label>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .input {
   display: inline-block;
   position: relative;
-  font-family: 'Roboto Mono', monospace;
-  font-weight: $font-weight-bold;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-  text-transform: uppercase;
-  color: $red-bittersweet;
+
+  &__label {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    text-transform: uppercase;
+    color: $red-bittersweet;
+  }
 
   &__field {
     border: none;
@@ -122,14 +127,25 @@ export default defineComponent({
     background-color: $gray-athensgray;
     border-radius: 0.8rem;
 
-    font-family: 'Roboto', sans-serif;
     font-size: 1.8rem;
     line-height: 2.1rem;
 
     color: $gray-tuna;
 
+    @include hover {
+      background-color: $gray-basic;
+    }
+
+    &:focus-visible,
+    &:active {
+      background-color: $white-blue;
+      border: 1px solid $blue-dodger;
+      padding: 0 2.3rem;
+    }
+
     &::placeholder {
       color: $gray-jumbo;
+      user-select: none;
     }
 
     &::-webkit-search-cancel-button {
