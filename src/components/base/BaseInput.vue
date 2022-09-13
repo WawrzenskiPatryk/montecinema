@@ -27,22 +27,7 @@ export default defineComponent({
       default: false,
     },
   },
-  data() {
-    return {
-      isdateInputText: false,
-    };
-  },
-  updated() {
-    if (this.type === 'date' && this.modelValue.length > 0) {
-      this.isdateInputText = true;
-    }
-  },
   computed: {
-    computedType() {
-      if (this.type === 'date' && !this.isdateInputText) {
-        return 'text';
-      } else return this.type;
-    },
     inputClass() {
       return {
         'input__field--has-specific-element': !!this.$slots.default,
@@ -51,15 +36,7 @@ export default defineComponent({
   },
   methods: {
     touchHandler(event) {
-      const isDateInputFocused = this.type === 'date' && event.type === 'focus';
-      const isDateInputBlured = this.type === 'date' && event.type === 'blur';
-      const isInputEmpty = !event.target.value;
-
-      if (isDateInputFocused) {
-        this.isdateInputText = true;
-      } else if (isDateInputBlured && isInputEmpty) {
-        this.isdateInputText = false;
-      }
+      this.$emit('input-touch', event);
     },
   },
 });
@@ -73,13 +50,14 @@ export default defineComponent({
     <input
       :value="modelValue"
       :required="required"
-      :type="computedType"
+      :type="type"
       :placeholder="placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
       @focus="touchHandler"
       @blur="touchHandler"
       :class="inputClass"
       class="input__field"
+      v-bind="$attrs"
     />
     <div class="input__specific-element">
       <slot />

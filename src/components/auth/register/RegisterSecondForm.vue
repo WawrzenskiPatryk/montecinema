@@ -4,7 +4,8 @@ import { defineComponent } from 'vue';
 import AuthFormCard from '@/components/auth/AuthFormCard.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import BaseCheckbox from '../../base/BaseCheckbox.vue';
+import BaseCheckbox from '@/components/base/BaseCheckbox.vue';
+import DateInput from '@/components/input/DateInput.vue';
 
 export default defineComponent({
   components: {
@@ -12,6 +13,7 @@ export default defineComponent({
     BaseInput,
     BaseButton,
     BaseCheckbox,
+    DateInput,
   },
   data() {
     return {
@@ -52,10 +54,9 @@ export default defineComponent({
       placeholder="e.g. Walton"
       class="register-form__input"
     />
-    <BaseInput
+    <DateInput
       v-model="dateOfBirth"
       required
-      type="date"
       label="Date of Birth"
       placeholder="DD / MM / YYYY"
       class="register-form__input"
