@@ -2,11 +2,13 @@
 import { defineComponent } from 'vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import PasswordInput from '@/components/input/PasswordInput.vue';
 
 export default defineComponent({
   components: {
     BaseInput,
     BaseButton,
+    PasswordInput,
   },
   props: {
     userData: {
@@ -69,20 +71,18 @@ export default defineComponent({
       label="Email"
       v-model="email"
     />
-    <BaseInput
+    <PasswordInput
       required
       v-model="currentPassword"
-      type="password"
       :label="isNewPasswordTriggered ? 'Current password' : 'Password'"
       :placeholder="
         isNewPasswordTriggered ? 'Enter current password' : 'Enter password to confirm changes'
       "
     />
-    <BaseInput
+    <PasswordInput
       v-if="isNewPasswordTriggered"
       required
       v-model="newPassword"
-      type="password"
       label="New password"
       placeholder="Enter new password"
     />

@@ -1,28 +1,44 @@
 <script>
 import { defineComponent } from 'vue';
-import VisibilityIcon from '../../assets/icons/eye.svg';
+
+import BaseInput from '@/components/base/BaseInput.vue';
+import VisibilityIcon from '@/assets/icons/eye.svg';
 
 export default defineComponent({
   components: {
+    BaseInput,
     VisibilityIcon,
   },
-  props: {
-    isPasswordVisible: {
-      type: Boolean,
-      required: true,
+  data() {
+    return {
+      isPasswordVisible: false,
+    };
+  },
+  methods: {
+    togglePasswordVisibility() {
+      this.isPasswordVisible = !this.isPasswordVisible;
+    },
+  },
+  computed: {
+    computedType() {
+      if (this.isPasswordVisible) return 'text';
+      else return 'password';
     },
   },
 });
 </script>
 
 <template>
-  <button
-    type="button"
-    class="password-visibility-button"
-    :class="{ 'password-visibility-button--shown': isPasswordVisible }"
-  >
-    <VisibilityIcon />
-  </button>
+  <BaseInput :type="computedType">
+    <button
+      @click.prevent="togglePasswordVisibility"
+      type="button"
+      class="password-visibility-button"
+      :class="{ 'password-visibility-button--shown': isPasswordVisible }"
+    >
+      <VisibilityIcon />
+    </button>
+  </BaseInput>
 </template>
 
 <style lang="scss" scoped>

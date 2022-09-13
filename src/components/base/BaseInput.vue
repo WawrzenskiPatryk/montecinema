@@ -1,11 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
-import PasswordVisibilityButton from '@/components/auth/PasswordVisibilityButton.vue';
 
 export default defineComponent({
-  components: {
-    PasswordVisibilityButton,
-  },
   props: {
     label: {
       type: String,
@@ -33,7 +29,6 @@ export default defineComponent({
   },
   data() {
     return {
-      isPasswordVisible: false,
       isdateInputText: false,
     };
   },
@@ -44,23 +39,17 @@ export default defineComponent({
   },
   computed: {
     computedType() {
-      if (
-        (this.type === 'date' && !this.isdateInputText) ||
-        (this.type === 'password' && this.isPasswordVisible)
-      ) {
+      if (this.type === 'date' && !this.isdateInputText) {
         return 'text';
       } else return this.type;
     },
     inputClass() {
       return {
-        'input__field--password': this.type === 'password',
+        'input__field--has-specific-element': !!this.$slots.default,
       };
     },
   },
   methods: {
-    togglePasswordVisibility() {
-      this.isPasswordVisible = !this.isPasswordVisible;
-    },
     touchHandler(event) {
       const isDateInputFocused = this.type === 'date' && event.type === 'focus';
       const isDateInputBlured = this.type === 'date' && event.type === 'blur';
@@ -83,21 +72,18 @@ export default defineComponent({
     </label>
     <input
       :value="modelValue"
+      :required="required"
+      :type="computedType"
+      :placeholder="placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
       @focus="touchHandler"
       @blur="touchHandler"
-      :type="computedType"
-      :placeholder="placeholder"
-      :required="required"
-      class="input__field"
       :class="inputClass"
+      class="input__field"
     />
-    <PasswordVisibilityButton
-      v-if="type === 'password'"
-      @click.prevent="togglePasswordVisibility"
-      :is-password-visible="isPasswordVisible"
-      class="input__password-visibility-button"
-    />
+    <div class="input__specific-element">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -140,7 +126,7 @@ export default defineComponent({
     &:active {
       background-color: $white-blue;
       border: 1px solid $blue-dodger;
-      padding: 0 2.3rem;
+      padding-left: 2.3rem;
     }
 
     &::placeholder {
@@ -152,15 +138,15 @@ export default defineComponent({
       display: none;
     }
 
-    &--password {
+    &--has-specific-element {
       padding-right: 6rem;
     }
   }
 
-  &__password-visibility-button {
+  &__specific-element {
     position: absolute;
     right: 1.6rem;
-    top: 50%;
+    top: 52%;
   }
 }
 </style>
