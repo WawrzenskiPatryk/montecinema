@@ -6,7 +6,8 @@
     "prod": "vite build",
     "stage": "vite build --mode staging",
     "preview": "vite preview --port 4173",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "test": "vitest"
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^3.4.7",
@@ -19,12 +20,15 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.1",
+    "@vue/test-utils": "^2.0.2",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
+    "happy-dom": "^6.0.4",
     "prettier": "2.7.1",
     "sass": "^1.54.4",
     "vite": "^3.0.1",
-    "vite-svg-loader": "^3.4.0"
+    "vite-svg-loader": "^3.4.0",
+    "vitest": "^0.23.2"
   }
 }

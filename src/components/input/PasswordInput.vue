@@ -1,5 +1,5 @@
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 
 import BaseInput from '@/components/base/BaseInput.vue';
 import VisibilityIcon from '@/assets/icons/eye.svg';
@@ -15,24 +15,26 @@ export default defineComponent({
       default: '',
     },
   },
-  data() {
-    return {
-      isPasswordVisible: false,
-    };
-  },
-  methods: {
-    togglePasswordVisibility() {
-      this.isPasswordVisible = !this.isPasswordVisible;
-    },
-    onUpdate(value) {
-      this.$emit('update:modelValue', value);
-    },
-  },
-  computed: {
-    computedType() {
-      if (this.isPasswordVisible) return 'text';
+  setup(_, context) {
+    const isPasswordVisible = ref(false);
+
+    const computedType = computed(() => {
+      if (isPasswordVisible.value) return 'text';
       else return 'password';
-    },
+    });
+
+    const togglePasswordVisibility = () => (isPasswordVisible.value = !isPasswordVisible.value);
+
+    const onUpdate = value => {
+      context.emit('update:modelValue', value);
+    };
+
+    return {
+      isPasswordVisible,
+      computedType,
+      togglePasswordVisibility,
+      onUpdate,
+    };
   },
 });
 </script>
@@ -44,6 +46,7 @@ export default defineComponent({
       type="button"
       class="password-visibility-button"
       :class="{ 'password-visibility-button--shown': isPasswordVisible }"
+      data-spec="password-button"
     >
       <VisibilityIcon />
     </button>
