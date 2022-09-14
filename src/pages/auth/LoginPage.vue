@@ -6,11 +6,13 @@ import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import LoginForm from '@/components/auth/login/LoginForm.vue';
+import AuthFormCard from '@/components/auth/AuthFormCard.vue';
 
 export default defineComponent({
   components: {
     BaseHeading,
     LoginForm,
+    AuthFormCard,
   },
   setup() {
     const auth = useAuthStore();
@@ -50,14 +52,20 @@ export default defineComponent({
       <span class="login-page__heading--light"> Care to log in? </span>
     </BaseHeading>
 
-    <LoginForm @login-submit="onLoginSubmit" :is-submitted="isSubmitted" class="login-page__form" />
-    <span class="login-page__reset">
-      Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
-    </span>
-
-    <!-- <div v-else>
-      <h1>Loading...</h1>
-    </div> -->
+    <AuthFormCard v-if="isSubmitted" class="login-page__form">
+      <!-- todo -->
+      <h1>Loading spinner...</h1>
+    </AuthFormCard>
+    <template v-else>
+      <LoginForm
+        @login-submit="onLoginSubmit"
+        :is-submitted="isSubmitted"
+        class="login-page__form"
+      />
+      <span class="login-page__reset">
+        Did you forget your password? <a href="#" class="login-page__reset--link">Reset it now</a>
+      </span>
+    </template>
   </section>
 </template>
 

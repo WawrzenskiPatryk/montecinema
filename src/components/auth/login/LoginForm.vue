@@ -13,12 +13,6 @@ export default defineComponent({
     BaseButton,
     PasswordInput,
   },
-  props: {
-    isSubmitted: {
-      type: Boolean,
-      required: true,
-    },
-  },
   data() {
     return {
       email: '',
@@ -41,38 +35,32 @@ export default defineComponent({
 
 <template>
   <AuthFormCard @submit.prevent="onSubmit" class="login-form">
-    <div v-if="isSubmitted">
-      <!-- todo -->
-      <h1>Loading...</h1>
+    <BaseInput
+      v-model="email"
+      required
+      type="email"
+      label="Email"
+      placeholder="Something ending with monterail.com"
+      class="login-form__input"
+    />
+    <PasswordInput
+      v-model="password"
+      required
+      label="Password"
+      placeholder="Enter your password"
+      class="login-form__input"
+    />
+    <div class="login-form__buttons">
+      <BaseButton size="large" class="login-form__button" type="submit"> Log in </BaseButton>
+      <BaseButton
+        :to="{ name: 'RegisterPage' }"
+        size="large"
+        button-type="borderless-red"
+        class="login-form__button"
+      >
+        Register instead
+      </BaseButton>
     </div>
-    <template v-else>
-      <BaseInput
-        v-model="email"
-        required
-        type="email"
-        label="Email"
-        placeholder="Something ending with monterail.com"
-        class="login-form__input"
-      />
-      <PasswordInput
-        v-model="password"
-        required
-        label="Password"
-        placeholder="Enter your password"
-        class="login-form__input"
-      />
-      <div class="login-form__buttons">
-        <BaseButton size="large" class="login-form__button" type="submit"> Log in </BaseButton>
-        <BaseButton
-          :to="{ name: 'RegisterPage' }"
-          size="large"
-          button-type="borderless-red"
-          class="login-form__button"
-        >
-          Register instead
-        </BaseButton>
-      </div>
-    </template>
   </AuthFormCard>
 </template>
 
