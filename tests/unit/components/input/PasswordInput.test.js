@@ -21,18 +21,20 @@ describe('PasswordInput.vue', () => {
     expect(wrapper.find('label').text()).toMatch('Password');
   });
 
-  it('shows password when button is clicked the first time', async () => {
-    const wrapper = createComponent();
-    const button = wrapper.find('[data-spec="password-button"]');
-    await button.trigger('click');
-    expect(wrapper.find('input[type="text"]').exists()).toBeTruthy();
-  });
+  describe('when password visibility button is clicked', () => {
+    it('shows password the first time', async () => {
+      const wrapper = createComponent();
+      const button = wrapper.find('[data-spec="password-button"]');
+      await button.trigger('click');
+      expect(wrapper.find('input[type="text"]').exists()).toBeTruthy();
+    });
 
-  it('hides password when button is clicked the second time', async () => {
-    const wrapper = createComponent();
-    const button = wrapper.find('[data-spec="password-button"]');
-    await button.trigger('click');
-    await button.trigger('click');
-    expect(wrapper.find('input[type="password"]').exists()).toBeTruthy();
+    it('hides password the second time', async () => {
+      const wrapper = createComponent();
+      const button = wrapper.find('[data-spec="password-button"]');
+      await button.trigger('click');
+      await button.trigger('click');
+      expect(wrapper.find('input[type="password"]').exists()).toBeTruthy();
+    });
   });
 });
