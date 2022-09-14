@@ -20,6 +20,8 @@ export const useMainStore = defineStore('main', {
 
   actions: {
     storeErrorToDisplay(error, errorTime = this.errorDisplayTime) {
+      if (this.error !== null) return;
+
       this.error = error;
       this.errorDisplayTime = errorTime;
       if (errorTime !== Infinity) {
