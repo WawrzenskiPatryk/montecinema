@@ -1,5 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
+import { useMeta } from 'vue-meta';
+
 import HomeHeroBanner from '@/components/home/HomeHeroBanner.vue';
 import HomeMoviesPanel from '@/components/home/HomeMoviesPanel.vue';
 import ScreeningsPanel from '@/components/screenings/ScreeningsPanel.vue';
@@ -11,6 +13,9 @@ export default defineComponent({
     HomeMoviesPanel,
     ScreeningsPanel,
     HomeContactPanel,
+  },
+  setup() {
+    useMeta({ title: 'Home' });
   },
 });
 </script>

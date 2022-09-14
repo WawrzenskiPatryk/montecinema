@@ -96,7 +96,6 @@ export default defineComponent({
     padding: 0;
     gap: 1.6rem;
 
-    font-family: 'Roboto', sans-serif;
     font-weight: $font-weight-bold;
     font-size: 1.4rem;
     line-height: 1.6rem;

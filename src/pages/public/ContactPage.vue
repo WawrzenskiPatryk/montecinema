@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
+import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import BaseHeading from '@/components/base/BaseHeading.vue';
@@ -30,6 +31,9 @@ export default defineComponent({
     GithubIcon,
     BehanceIcon,
     DribbbleIcon,
+  },
+  setup() {
+    useMeta({ title: 'Contact us' });
   },
   data() {
     return {

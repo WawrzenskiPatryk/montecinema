@@ -76,7 +76,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <component :is="componentType" :class="buttonClasses" :to="to" @click="this.$emit('click')">
+  <component :is="componentType" :class="buttonClasses" :to="to">
     <ArrowLeftIcon v-if="arrowType === 'left'" :class="iconClasses" />
     <slot>button_label</slot>
     <ArrowRightIcon v-if="arrowType === 'right'" :class="iconClasses" />
@@ -135,16 +135,7 @@ export default defineComponent({
     background-color: $red-cherryred;
     border-color: $red-cherryred;
     font-weight: $font-weight-regular;
-
-    @include hover {
-      background-color: $red-totempole;
-      border-color: $red-totempole;
-    }
-    &:focus-visible,
-    &:active {
-      background-color: $red-totempole;
-      border-color: $red-totempole;
-    }
+    @include button-states($white, $red-totempole, $red-totempole);
   }
 
   &--hollow-red {
@@ -152,16 +143,7 @@ export default defineComponent({
     border-color: $red-cherryred;
     background: none;
     font-weight: $font-weight-medium;
-
-    @include hover {
-      color: $red-totempole;
-      border-color: $red-totempole;
-    }
-    &:focus-visible,
-    &:active {
-      color: $red-totempole;
-      border-color: $red-totempole;
-    }
+    @include button-states($red-totempole, none, $red-totempole);
   }
 
   &--hollow-red-faded {
@@ -169,16 +151,7 @@ export default defineComponent({
     border-color: $red-sweetpink;
     background: none;
     font-weight: $font-weight-medium;
-
-    @include hover {
-      color: $red-bittersweet;
-      border-color: $red-bittersweet;
-    }
-    &:focus-visible,
-    &:active {
-      color: $red-bittersweet;
-      border-color: $red-bittersweet;
-    }
+    @include button-states($red-bittersweet, none, $red-bittersweet);
   }
 
   &--filled-dark {
@@ -186,16 +159,7 @@ export default defineComponent({
     background-color: $gray-tuna;
     border-color: $gray-tuna;
     font-weight: $font-weight-regular;
-
-    @include hover {
-      background-color: $gray-midgray;
-      border-color: $gray-midgray;
-    }
-    &:focus-visible,
-    &:active {
-      background-color: $gray-midgray;
-      border-color: $gray-midgray;
-    }
+    @include button-states($white, $gray-midgray, $gray-midgray);
   }
 
   &--hollow-dark {
@@ -203,16 +167,7 @@ export default defineComponent({
     border-color: $gray-tuna;
     background: none;
     font-weight: $font-weight-medium;
-
-    @include hover {
-      color: $gray-jumbo;
-      border-color: $gray-jumbo;
-    }
-    &:focus-visible,
-    &:active {
-      color: $gray-jumbo;
-      border-color: $gray-jumbo;
-    }
+    @include button-states($gray-jumbo, none, $gray-jumbo);
   }
 
   &--borderless-red {
@@ -220,14 +175,7 @@ export default defineComponent({
     border-color: $transparent;
     background: none;
     font-weight: $font-weight-medium;
-
-    @include hover {
-      color: $red-totempole;
-    }
-    &:focus-visible,
-    &:active {
-      color: $red-totempole;
-    }
+    @include button-states($red-totempole, none, $transparent);
   }
 
   &--large {
@@ -257,6 +205,17 @@ export default defineComponent({
     }
     &--left {
       margin-left: -0.8rem;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    transition: none;
+    opacity: 0.4;
+
+    &:focus-visible,
+    &:active {
+      transform: none;
     }
   }
 }

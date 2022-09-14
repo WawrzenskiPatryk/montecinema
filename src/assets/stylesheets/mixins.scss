@@ -27,3 +27,19 @@
     padding-bottom: 6.4rem;
   }
 }
+
+@mixin button-states($color-value, $bg-value, $border-value) {
+  &:not(:disabled) {
+    @include hover {
+      color: $color-value;
+      background-color: $bg-value;
+      border-color: $border-value;
+    }
+    &:focus-visible,
+    &:active {
+      color: $color-value;
+      background-color: $bg-value;
+      border-color: $border-value;
+    }
+  }
+}

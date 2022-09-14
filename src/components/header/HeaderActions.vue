@@ -1,16 +1,37 @@
 <script>
 import { defineComponent } from 'vue';
+import { useAuthStore } from '@/store/auth.js';
+
 import BaseButton from '@/components/base/BaseButton.vue';
 
 export default defineComponent({
   components: {
     BaseButton,
   },
+  setup() {
+    const auth = useAuthStore();
+    return { auth };
+  },
+  computed: {
+    isLoggedIn() {
+      return this.auth.isLoggedIn;
+    },
+  },
+  methods: {
+    logout() {
+      this.auth.logout();
+      this.$router.push({ name: 'HomePage' });
+    },
+  },
 });
 </script>
 
 <template>
-  <div class="header-actions">
+  <div v-if="isLoggedIn" class="header-actions">
+    <BaseButton :to="{ name: 'UserAccountPage' }" button-type="hollow-red">My account</BaseButton>
+    <BaseButton @click="logout">Log out</BaseButton>
+  </div>
+  <div v-else class="header-actions">
     <BaseButton :to="{ name: 'RegisterPage' }" button-type="borderless-red">Register</BaseButton>
     <BaseButton :to="{ name: 'LoginPage' }">Login</BaseButton>
   </div>

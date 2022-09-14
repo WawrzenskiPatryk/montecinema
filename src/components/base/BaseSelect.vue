@@ -75,7 +75,6 @@ export default defineComponent({
     border-radius: 0.8rem;
 
     font-family: 'Roboto', sans-serif;
-    font-weight: $font-weight-regular;
     font-size: 1.8rem;
     line-height: 2.1rem;
 

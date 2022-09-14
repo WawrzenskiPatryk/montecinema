@@ -2,7 +2,7 @@ export default [
   {
     path: '',
     name: 'HomePage',
-    component: () => import('@/pages/landing/HomePage.vue'),
+    component: () => import('@/pages/public/HomePage.vue'),
   },
   {
     path: '/movies',
@@ -11,12 +11,12 @@ export default [
       {
         path: '',
         name: 'MoviesListPage',
-        component: () => import('@/pages/landing/MoviesPage.vue'),
+        component: () => import('@/pages/public/MoviesPage.vue'),
       },
       {
         path: ':movieId',
         name: 'MovieDetailPage',
-        component: () => import('@/pages/landing/movies/MovieDetailPage.vue'),
+        component: () => import('@/pages/public/movies/MovieDetailPage.vue'),
         props: true,
       },
     ],
@@ -24,11 +24,11 @@ export default [
   {
     path: '/screenings',
     name: 'ScreeningsPage',
-    component: () => import('@/pages/landing/ScreeningsPage.vue'),
+    component: () => import('@/pages/public/ScreeningsPage.vue'),
   },
   {
     path: '/contact-us',
     name: 'ContactPage',
-    component: () => import('@/pages/landing/ContactPage.vue'),
+    component: () => import('@/pages/public/ContactPage.vue'),
   },
 ];

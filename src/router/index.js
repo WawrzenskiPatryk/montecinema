@@ -1,14 +1,16 @@
 import { createWebHistory, createRouter } from 'vue-router';
-
-import landing from './landing';
-import auth from './auth';
+import { authGuard } from '@/router/authGuard.js';
+import publicRoutes from './public';
+import authRoutes from './auth';
+import userRoutes from './user';
 
 const routes = [
   {
     path: '/',
     component: () => import('@/pages/LandingPanel.vue'),
     children: [
-      ...landing,
+      ...publicRoutes,
+      ...userRoutes,
       {
         path: '/404',
         name: '404Page',
@@ -19,7 +21,7 @@ const routes = [
   {
     path: '/auth',
     component: () => import('@/pages/AuthPanel.vue'),
-    children: [...auth],
+    children: [...authRoutes],
   },
   {
     path: '/:path*',
@@ -34,5 +36,7 @@ const router = createRouter({
     return { top: 0 };
   },
 });
+
+router.beforeEach(authGuard);
 
 export default router;
