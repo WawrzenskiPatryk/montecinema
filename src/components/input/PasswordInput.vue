@@ -1,42 +1,29 @@
-<script>
-import { defineComponent, ref, computed } from 'vue';
-
+<script setup>
+import { ref, computed } from 'vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import VisibilityIcon from '@/assets/icons/eye.svg';
 
-export default defineComponent({
-  components: {
-    BaseInput,
-    VisibilityIcon,
-  },
-  props: {
-    modelValue: {
-      type: [String, Number],
-      default: '',
-    },
-  },
-  setup(_, context) {
-    const isPasswordVisible = ref(false);
-
-    const computedType = computed(() => {
-      if (isPasswordVisible.value) return 'text';
-      else return 'password';
-    });
-
-    const togglePasswordVisibility = () => (isPasswordVisible.value = !isPasswordVisible.value);
-
-    const onUpdate = value => {
-      context.emit('update:modelValue', value);
-    };
-
-    return {
-      isPasswordVisible,
-      computedType,
-      togglePasswordVisibility,
-      onUpdate,
-    };
+defineProps({
+  modelValue: {
+    type: [String, Number],
+    default: '',
   },
 });
+
+const emit = defineEmits(['update:modelValue']);
+
+const isPasswordVisible = ref(false);
+
+const computedType = computed(() => {
+  if (isPasswordVisible.value) return 'text';
+  else return 'password';
+});
+
+const togglePasswordVisibility = () => (isPasswordVisible.value = !isPasswordVisible.value);
+
+const onUpdate = value => {
+  emit('update:modelValue', value);
+};
 </script>
 
 <template>
