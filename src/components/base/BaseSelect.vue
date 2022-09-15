@@ -27,8 +27,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <label class="select">
-    {{ label }}
+  <div class="select">
+    <label class="select__label">
+      {{ label }}
+    </label>
     <select
       :value="modelValue"
       @change="$emit('update:modelValue', $event.target.value)"
@@ -44,19 +46,22 @@ export default defineComponent({
       </option>
     </select>
     <ArrowheadDown class="select__arrow-icon" />
-  </label>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .select {
-  position: relative;
   display: inline-block;
-  font-family: 'Roboto Mono', monospace;
-  font-weight: $font-weight-bold;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-  text-transform: uppercase;
-  color: $red-bittersweet;
+  position: relative;
+
+  &__label {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+    line-height: 1.8rem;
+    text-transform: uppercase;
+    color: $red-bittersweet;
+  }
 
   &__field {
     -webkit-appearance: none;
@@ -79,6 +84,10 @@ export default defineComponent({
     line-height: 2.1rem;
 
     color: $gray-tuna;
+
+    @include hover {
+      background-color: $gray-basic;
+    }
   }
 
   &__arrow-icon {

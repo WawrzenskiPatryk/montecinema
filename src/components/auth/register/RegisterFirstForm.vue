@@ -4,12 +4,14 @@ import { defineComponent } from 'vue';
 import AuthFormCard from '@/components/auth/AuthFormCard.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import PasswordInput from '../../input/PasswordInput.vue';
 
 export default defineComponent({
   components: {
     AuthFormCard,
     BaseInput,
     BaseButton,
+    PasswordInput,
   },
   data() {
     return {
@@ -39,10 +41,9 @@ export default defineComponent({
       placeholder="Something ending with monterail.com"
       class="register-form__input"
     />
-    <BaseInput
+    <PasswordInput
       v-model="password"
       required
-      type="password"
       label="Password"
       placeholder="Enter your password"
       class="register-form__input"

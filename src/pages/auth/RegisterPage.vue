@@ -1,22 +1,26 @@
 <script>
 import { defineComponent } from 'vue';
+import { useMainStore } from '@/store/index.js';
 import { useAuthStore } from '@/store/auth.js';
 import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';
 import RegisterFirstForm from '@/components/auth/register/RegisterFirstForm.vue';
 import RegisterSecondForm from '@/components/auth/register/RegisterSecondForm.vue';
+import AuthFormCard from '@/components/auth/AuthFormCard.vue';
 
 export default defineComponent({
   components: {
     BaseHeading,
     RegisterFirstForm,
     RegisterSecondForm,
+    AuthFormCard,
   },
   setup() {
+    const mainStore = useMainStore();
     const auth = useAuthStore();
     useMeta({ title: 'Register' });
-    return { auth };
+    return { mainStore, auth };
   },
   data() {
     return {
@@ -49,12 +53,7 @@ export default defineComponent({
           ...this.firstStepData,
           ...this.secondStepData,
         });
-        
-        if (this.$route.query.redirect) {
-          this.$router.push({ name: this.$route.query.redirect });
-        } else {
-          this.$router.push({ name: 'HomePage' });
-        }
+        this.mainStore.leaveRoute();
       }
     },
   },
@@ -68,22 +67,20 @@ export default defineComponent({
       <span class="register-page__heading--light"> Care to register? </span>
     </BaseHeading>
 
-    <template v-if="step <= 1">
-      <RegisterFirstForm
-        v-if="step === 0"
-        @register-step-submit="onStepSubmit"
-        class="register-page__form"
-      />
-      <RegisterSecondForm
-        v-else-if="step === 1"
-        @register-step-submit="onStepSubmit"
-        class="register-page__form"
-      />
-    </template>
-    <div v-else>
+    <RegisterFirstForm
+      v-if="step === 0"
+      @register-step-submit="onStepSubmit"
+      class="register-page__form"
+    />
+    <RegisterSecondForm
+      v-else-if="step === 1"
+      @register-step-submit="onStepSubmit"
+      class="register-page__form"
+    />
+    <AuthFormCard v-else class="register-page__form">
       <!-- todo -->
       <h1>Loading spinner...</h1>
-    </div>
+    </AuthFormCard>
   </section>
 </template>
 

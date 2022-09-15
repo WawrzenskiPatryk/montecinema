@@ -1,8 +1,7 @@
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
-import { mapState } from 'pinia';
-import { mainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
@@ -21,59 +20,51 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
-    // MovieDetailPage title should be dynamic, but we have some errors here
-    // please check the comments below
-    useMeta({ title: 'Movie Details' });
-    //
-  },
-  data() {
-    return {
-      isLoading: true,
-      storedMovie: null,
+  setup(props) {
+    const { allMovies, showError } = useMainStore();
+
+    const isLoading = ref(true);
+    const storedMovie = ref(null);
+
+    const movieTitle = computed(() => (isLoading.value ? '' : storedMovie.value.title));
+    const meta = computed(() => {
+      return {
+        title: isLoading.value ? '' : storedMovie.value.title,
+      };
+    });
+
+    const findMovieInAllMovies = () => {
+      const filteredMovie = allMovies.find(movie => movie.id == props.movieId);
+      storedMovie.value = filteredMovie;
+      isLoading.value = false;
     };
-  },
-  async mounted() {
-    if (this.allMovies.length > 0) {
-      this.findMovieInAllMovies();
-    } else {
-      await this.loadSingleMovie();
-    }
-  },
-  computed: {
-    movieTitle() {
-      return this.isLoading ? '' : this.storedMovie.title;
-    },
-    ...mapState(mainStore, ['allMovies', 'areMoviesLoading']),
-  },
-  methods: {
-    findMovieInAllMovies() {
-      const filteredMovie = this.allMovies.find(movie => movie.id == this.movieId);
 
-      this.storedMovie = filteredMovie;
-      this.isLoading = false;
-
-      // This works:
-      //
-      // useMeta({ title: this.storedMovie.title });
-      //
-    },
-
-    async loadSingleMovie() {
-      this.isLoading = true;
+    const loadSingleMovie = async () => {
+      isLoading.value = true;
       try {
-        this.storedMovie = await getMovieData(this.movieId);
-      } catch {
-        this.$router.push({ name: '404Page' });
+        storedMovie.value = await getMovieData(props.movieId);
+      } catch (error) {
+        showError(error);
       } finally {
-        this.isLoading = false;
-
-        // But this line throws error: No manager or current instance at useMeta
-        //
-        // useMeta({ title: this.storedMovie.title });
-        //
+        isLoading.value = false;
       }
-    },
+    };
+
+    useMeta(meta);
+
+    onMounted(async () => {
+      if (allMovies.length > 0) {
+        findMovieInAllMovies();
+      } else {
+        await loadSingleMovie();
+      }
+    });
+
+    return {
+      isLoading,
+      storedMovie,
+      movieTitle,
+    };
   },
 });
 </script>

@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
-import { mainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
@@ -32,7 +32,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapState(mainStore, ['allMovies', 'areMoviesLoading', 'allGenres', 'areGenresLoading']),
+    ...mapState(useMainStore, ['allMovies', 'areMoviesLoading', 'allGenres', 'areGenresLoading']),
 
     categoryOptions() {
       const defaultOption = { id: 0, name: 'All categories' };
@@ -46,7 +46,7 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapActions(mainStore, ['loadAllMovies', 'loadAllGenres']),
+    ...mapActions(useMainStore, ['loadAllMovies', 'loadAllGenres']),
 
     filterMoviesByName(movies, filterValue) {
       const filteredMovies = movies.filter(movie => {

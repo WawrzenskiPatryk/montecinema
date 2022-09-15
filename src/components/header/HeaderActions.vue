@@ -29,7 +29,7 @@ export default defineComponent({
 <template>
   <div v-if="isLoggedIn" class="header-actions">
     <BaseButton :to="{ name: 'UserAccountPage' }" button-type="hollow-red">My account</BaseButton>
-    <BaseButton @click="logout">Log out</BaseButton>
+    <BaseButton @click="logout">Logout</BaseButton>
   </div>
   <div v-else class="header-actions">
     <BaseButton :to="{ name: 'RegisterPage' }" button-type="borderless-red">Register</BaseButton>
