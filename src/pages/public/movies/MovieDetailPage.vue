@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, ref, onMounted, computed, onUpdated } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
 import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
@@ -22,9 +22,16 @@ export default defineComponent({
   },
   setup(props) {
     const { allMovies, showError } = useMainStore();
+
     const isLoading = ref(true);
     const storedMovie = ref(null);
+
     const movieTitle = computed(() => (isLoading.value ? '' : storedMovie.value.title));
+    const meta = computed(() => {
+      return {
+        title: isLoading.value ? '' : storedMovie.value.title,
+      };
+    });
 
     const findMovieInAllMovies = () => {
       const filteredMovie = allMovies.find(movie => movie.id == props.movieId);
@@ -43,16 +50,14 @@ export default defineComponent({
       }
     };
 
+    useMeta(meta);
+
     onMounted(async () => {
       if (allMovies.length > 0) {
         findMovieInAllMovies();
       } else {
         await loadSingleMovie();
       }
-    });
-
-    onUpdated(() => {
-      useMeta({ title: movieTitle.value });
     });
 
     return {
