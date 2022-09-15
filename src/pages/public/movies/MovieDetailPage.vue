@@ -1,5 +1,5 @@
 <script>
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { defineComponent, ref, onMounted, computed, onUpdated } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
 import { useMainStore } from '@/store/index.js';
 import { useMeta } from 'vue-meta';
@@ -25,7 +25,6 @@ export default defineComponent({
     const isLoading = ref(true);
     const storedMovie = ref(null);
     const movieTitle = computed(() => (isLoading.value ? '' : storedMovie.value.title));
-    const setTitle = title => useMeta({ title: title });
 
     const findMovieInAllMovies = () => {
       const filteredMovie = allMovies.find(movie => movie.id == props.movieId);
@@ -47,12 +46,13 @@ export default defineComponent({
     onMounted(async () => {
       if (allMovies.length > 0) {
         findMovieInAllMovies();
-        setTitle(movieTitle.value); // this works well
       } else {
         await loadSingleMovie();
       }
-      // --- TODO: This is still giving problems in / after "else" scenario ---
-      // setTitle(movieTitle.value); // >>> "Error: No manager or current instance"
+    });
+
+    onUpdated(() => {
+      useMeta({ title: movieTitle.value });
     });
 
     return {

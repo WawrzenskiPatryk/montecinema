@@ -6,13 +6,19 @@ export default defineComponent({
   components: {
     BaseInput,
   },
+  props: {
+    modelValue: {
+      type: [String, Number],
+      default: '',
+    },
+  },
+  updated() {
+    this.onUpdate(this.modelValue);
+  },
   data() {
     return {
       isTypeDate: false,
     };
-  },
-  updated() {
-    if (this.$refs.dateInput.modelValue) this.isTypeDate = true;
   },
   computed: {
     computedType() {
@@ -25,10 +31,19 @@ export default defineComponent({
       if (event.type === 'focus') this.isTypeDate = true;
       else if (!event.target.value) this.isTypeDate = false;
     },
+    onUpdate(value) {
+      if (value) this.isTypeDate = true;
+      this.$emit('update:modelValue', value);
+    },
   },
 });
 </script>
 
 <template>
-  <BaseInput :type="computedType" @input-touch="onTouch" ref="dateInput" />
+  <BaseInput
+    :model-value="modelValue"
+    :type="computedType"
+    @update:model-value="onUpdate"
+    @input-touch="onTouch"
+  />
 </template>

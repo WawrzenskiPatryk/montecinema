@@ -48,9 +48,7 @@ export default defineComponent({
   <div class="app">
     <div v-if="isError" class="app__error">
       <span class="app__error-info">{{ errorMessage }}</span>
-      <button class="app__error-escape-button" @click.prevent="this.mainStore.error = null">
-        X
-      </button>
+      <button class="app__error-escape-button" @click="this.mainStore.error = null">X</button>
     </div>
     <TheHeader class="app__header" />
     <router-view class="app__content" />
@@ -108,8 +106,3 @@ export default defineComponent({
   }
 }
 </style>
-
-<!-- TypeScript part 2 notatki
-
-
--->

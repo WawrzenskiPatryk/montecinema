@@ -9,6 +9,12 @@ export default defineComponent({
     BaseInput,
     VisibilityIcon,
   },
+  props: {
+    modelValue: {
+      type: [String, Number],
+      default: '',
+    },
+  },
   data() {
     return {
       isPasswordVisible: false,
@@ -17,6 +23,9 @@ export default defineComponent({
   methods: {
     togglePasswordVisibility() {
       this.isPasswordVisible = !this.isPasswordVisible;
+    },
+    onUpdate(value) {
+      this.$emit('update:modelValue', value);
     },
   },
   computed: {
@@ -29,7 +38,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <BaseInput :type="computedType">
+  <BaseInput :model-value="modelValue" @update:model-value="onUpdate" :type="computedType">
     <button
       @click.prevent="togglePasswordVisibility"
       type="button"
