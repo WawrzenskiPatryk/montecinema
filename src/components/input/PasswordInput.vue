@@ -1,14 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import VisibilityIcon from '@/assets/icons/eye.svg';
 
-defineProps({
-  modelValue: {
-    type: [String, Number],
-    default: '',
-  },
-});
+defineProps<{
+  modelValue: string;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -19,9 +16,11 @@ const computedType = computed(() => {
   else return 'password';
 });
 
-const togglePasswordVisibility = () => (isPasswordVisible.value = !isPasswordVisible.value);
+const togglePasswordVisibility = () => {
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
 
-const onUpdate = value => {
+const onUpdate = (value: string | number): void => {
   emit('update:modelValue', value);
 };
 </script>
