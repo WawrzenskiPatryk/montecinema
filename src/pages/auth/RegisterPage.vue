@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.ts';
 import { useAuthStore } from '@/store/auth.js';
 import { useMeta } from 'vue-meta';
 

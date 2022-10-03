@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.ts';
 import { useMeta } from 'vue-meta';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';

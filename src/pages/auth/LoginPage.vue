@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth.js';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.ts';
 import { useMeta } from 'vue-meta';
 
 import BaseHeading from '@/components/base/BaseHeading.vue';

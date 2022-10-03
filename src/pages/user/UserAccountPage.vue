@@ -2,7 +2,7 @@
 import { defineComponent } from 'vue';
 import { getUserData } from '@/services/api/data.js';
 import { updateUser } from '@/services/api/auth.js';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.ts';
 import { useAuthStore } from '@/store/auth.js';
 import { useMeta } from 'vue-meta';
 

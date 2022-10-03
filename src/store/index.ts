@@ -1,25 +1,26 @@
 import { defineStore } from 'pinia';
 import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api/data.js';
+import { GenreData, MovieData, SeanceData, ScreeningData } from '@/types/data';
 import router from '@/router';
 
 export const useMainStore = defineStore('main', {
   state() {
     return {
-      error: null,
-      errorDisplayTime: 4,
+      error: null as Error,
+      errorDisplayTime: 4 as number,
       areMoviesLoading: false,
       areGenresLoading: false,
       areSeancesLoading: false,
       areScreeningsLoading: false,
-      allMovies: [],
-      allGenres: [],
-      storedSeances: [],
-      storedScreenings: [],
+      allMovies: [] as Array<MovieData>,
+      allGenres: [] as Array<GenreData>,
+      storedSeances: [] as Array<SeanceData>,
+      storedScreenings: [] as Array<ScreeningData>,
     };
   },
 
   actions: {
-    storeErrorToDisplay(error, errorTime = this.errorDisplayTime) {
+    storeErrorToDisplay(error: Error, errorTime: number = this.errorDisplayTime) {
       if (this.error !== null) return;
 
       this.error = error;
@@ -31,7 +32,7 @@ export const useMainStore = defineStore('main', {
       }
     },
 
-    showError(error, errorTime) {
+    showError(error: Error, errorTime: number = this.errorDisplayTime) {
       if (error.message === 'Network Error') {
         this.storeErrorToDisplay(new Error('CONNECTION TO SERVER LOST'), Infinity);
       } else {
@@ -61,7 +62,7 @@ export const useMainStore = defineStore('main', {
       }
     },
 
-    async loadSeancesByDate(movieId, date) {
+    async loadSeancesByDate(movieId: number | string, date: string) {
       this.areSeancesLoading = true;
       try {
         this.storedSeances = await getSeancesData(movieId, date);
@@ -72,7 +73,7 @@ export const useMainStore = defineStore('main', {
       }
     },
 
-    async loadScreenings(movieId, date) {
+    async loadScreenings(movieId: number | string, date: string) {
       this.areScreeningsLoading = true;
 
       await this.loadSeancesByDate(movieId, date);
@@ -84,33 +85,27 @@ export const useMainStore = defineStore('main', {
       this.areScreeningsLoading = false;
     },
 
-    matchSeancesToMovies(seances, movies) {
-      const storedScreenings = seances.reduce((screenings, seance) => {
-        const currentSeance = {
-          id: seance.id,
-          datetime: seance.datetime,
-        };
-
+    matchSeancesToMovies(
+      seances: Array<SeanceData>,
+      movies: Array<MovieData>
+    ): Array<ScreeningData> {
+      return seances.reduce((screenings: Array<ScreeningData>, seance: SeanceData) => {
         const screeningIndex = screenings.findIndex(screening => screening.id === seance.movie);
-
         if (screeningIndex < 0) {
           const matchingMovieToSeance = movies.find(movie => movie.id === seance.movie);
           const newScreening = {
             ...matchingMovieToSeance,
-            seances: [currentSeance],
+            seances: [seance],
           };
           screenings.push(newScreening);
         } else {
-          screenings[screeningIndex].seances.push(currentSeance);
+          screenings[screeningIndex].seances.push(seance);
         }
-
         return screenings;
       }, []);
-
-      return storedScreenings;
     },
 
-    formatMovieLength(movieLength) {
+    formatMovieLength(movieLength: number) {
       if (!movieLength) return '0h 0 min';
       const allMinutes = movieLength;
       const hours = Math.floor(allMinutes / 60);
@@ -118,12 +113,12 @@ export const useMainStore = defineStore('main', {
       return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
 
-    leaveRoute(destinationName = null) {
+    leaveRoute(destinationName: string = '') {
       const routeQuery = router.currentRoute.value.query;
-      if (destinationName) {
-        router.push({ name: destinationName });
+      if (destinationName.length > 0) {
+        router.push({ name: <string>destinationName });
       } else if (routeQuery.redirect) {
-        router.push({ name: routeQuery.redirect });
+        router.push({ name: <string>routeQuery.redirect });
       } else {
         router.push({ name: 'HomePage' });
       }
