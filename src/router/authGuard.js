@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/auth.js';
+import { useAuthStore } from '@/store/auth.ts';
 
 export const authGuard = (to, _, next) => {
   const { isLoggedIn } = useAuthStore();

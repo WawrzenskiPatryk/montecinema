@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '@/router';
-import { useAuthStore } from '@/store/auth.js';
+import { useAuthStore } from '@/store/auth.ts';
 
 const API = import.meta.env.VITE_API;
 
