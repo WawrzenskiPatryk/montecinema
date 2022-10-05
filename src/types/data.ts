@@ -21,5 +21,5 @@ export interface SeanceData {
 }
 
 export interface ScreeningData extends MovieData {
-  seances: Array<SeanceData>;
+  seances: SeanceData[];
 }

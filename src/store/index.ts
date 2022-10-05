@@ -6,23 +6,22 @@ import router from '@/router';
 export const useMainStore = defineStore('main', {
   state() {
     return {
-      error: null as Error,
-      errorDisplayTime: 4 as number,
+      error: null as Error | null,
+      errorDisplayTime: 4,
       areMoviesLoading: false,
       areGenresLoading: false,
       areSeancesLoading: false,
       areScreeningsLoading: false,
-      allMovies: [] as Array<MovieData>,
-      allGenres: [] as Array<GenreData>,
-      storedSeances: [] as Array<SeanceData>,
-      storedScreenings: [] as Array<ScreeningData>,
+      allMovies: [] as MovieData[],
+      allGenres: [] as GenreData[],
+      storedSeances: [] as SeanceData[],
+      storedScreenings: [] as ScreeningData[],
     };
   },
 
   actions: {
-    storeErrorToDisplay(error: Error, errorTime: number = this.errorDisplayTime) {
+    storeErrorToDisplay(error: Error, errorTime: number = 4) {
       if (this.error !== null) return;
-
       this.error = error;
       this.errorDisplayTime = errorTime;
       if (errorTime !== Infinity) {
@@ -32,7 +31,7 @@ export const useMainStore = defineStore('main', {
       }
     },
 
-    showError(error: Error, errorTime: number = this.errorDisplayTime) {
+    showError(error: Error, errorTime: number = 4) {
       if (error.message === 'Network Error') {
         this.storeErrorToDisplay(new Error('CONNECTION TO SERVER LOST'), Infinity);
       } else {
@@ -45,7 +44,7 @@ export const useMainStore = defineStore('main', {
       try {
         this.allMovies = await getAllMoviesData();
       } catch (error) {
-        this.showError(error);
+        if (error instanceof Error) this.showError(error);
       } finally {
         this.areMoviesLoading = false;
       }
@@ -56,24 +55,24 @@ export const useMainStore = defineStore('main', {
       try {
         this.allGenres = await getMovieGenresData();
       } catch (error) {
-        this.showError(error);
+        if (error instanceof Error) this.showError(error);
       } finally {
         this.areGenresLoading = false;
       }
     },
 
-    async loadSeancesByDate(movieId: number | string, date: string) {
+    async loadSeancesByDate(movieId: string, date: string) {
       this.areSeancesLoading = true;
       try {
         this.storedSeances = await getSeancesData(movieId, date);
       } catch (error) {
-        this.showError(error);
+        if (error instanceof Error) this.showError(error);
       } finally {
         this.areSeancesLoading = false;
       }
     },
 
-    async loadScreenings(movieId: number | string, date: string) {
+    async loadScreenings(movieId: string, date: string) {
       this.areScreeningsLoading = true;
 
       await this.loadSeancesByDate(movieId, date);
@@ -85,19 +84,18 @@ export const useMainStore = defineStore('main', {
       this.areScreeningsLoading = false;
     },
 
-    matchSeancesToMovies(
-      seances: Array<SeanceData>,
-      movies: Array<MovieData>
-    ): Array<ScreeningData> {
-      return seances.reduce((screenings: Array<ScreeningData>, seance: SeanceData) => {
+    matchSeancesToMovies(seances: SeanceData[], movies: MovieData[]): ScreeningData[] {
+      return seances.reduce((screenings: ScreeningData[], seance: SeanceData) => {
         const screeningIndex = screenings.findIndex(screening => screening.id === seance.movie);
         if (screeningIndex < 0) {
           const matchingMovieToSeance = movies.find(movie => movie.id === seance.movie);
-          const newScreening = {
-            ...matchingMovieToSeance,
-            seances: [seance],
-          };
-          screenings.push(newScreening);
+          if (matchingMovieToSeance) {
+            const newScreening = {
+              ...matchingMovieToSeance,
+              seances: [seance],
+            };
+            screenings.push(newScreening);
+          }
         } else {
           screenings[screeningIndex].seances.push(seance);
         }
@@ -105,7 +103,7 @@ export const useMainStore = defineStore('main', {
       }, []);
     },
 
-    formatMovieLength(movieLength: number) {
+    formatMovieLength(movieLength: number | undefined): string {
       if (!movieLength) return '0h 0 min';
       const allMinutes = movieLength;
       const hours = Math.floor(allMinutes / 60);
@@ -113,7 +111,7 @@ export const useMainStore = defineStore('main', {
       return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
 
-    leaveRoute(destinationName: string = '') {
+    leaveRoute(destinationName = '') {
       const routeQuery = router.currentRoute.value.query;
       if (destinationName.length > 0) {
         router.push({ name: <string>destinationName });

@@ -7,7 +7,7 @@ const TOKEN_STORAGE_KEY = 'auth-token';
 export const useAuthStore = defineStore('auth', {
   state() {
     return {
-      token: null as string,
+      token: '',
     };
   },
   getters: {
@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
       setAuthHeader(token);
     },
     resetToken() {
-      this.token = null;
+      this.token = '',
       localStorage.removeItem(TOKEN_STORAGE_KEY);
       removeAuthHeader();
     },

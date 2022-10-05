@@ -19,11 +19,8 @@ describe('dates.js', () => {
     });
 
     it('throws an error for id outside the range of 0 to 6', () => {
-      expect(() => getWeekdayName(-3)).toThrowError();
       expect(() => getWeekdayName(-1)).toThrowError();
       expect(() => getWeekdayName(7)).toThrowError();
-      expect(() => getWeekdayName(8)).toThrowError();
-      expect(() => getWeekdayName(12)).toThrowError();
     });
   });
   describe('getFormattedDateObject', () => {

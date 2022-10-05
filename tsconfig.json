@@ -10,6 +10,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strict": true,
+    "allowJs": true,
   }
 }
