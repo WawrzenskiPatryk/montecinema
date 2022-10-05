@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from 'vue';
-import { useAuthStore } from '@/store/auth.js';
+import { useAuthStore } from '@/store/auth.ts';
 
 import BaseButton from '@/components/base/BaseButton.vue';
 

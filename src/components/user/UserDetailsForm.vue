@@ -42,7 +42,7 @@ export default defineComponent({
         lastName: this.lastName,
         dateOfBirth: this.dateOfBirth,
         currentPassword: this.currentPassword,
-        newPassword: this.newPassword,
+        password: this.newPassword,
       });
       this.isNewPasswordTriggered = false;
       this.newPassword = '';

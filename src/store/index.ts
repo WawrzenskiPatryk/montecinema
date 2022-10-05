@@ -1,27 +1,27 @@
 import { defineStore } from 'pinia';
 import { getAllMoviesData, getMovieGenresData, getSeancesData } from '@/services/api/data.js';
+import { GenreData, MovieData, SeanceData, ScreeningData } from '@/types/data';
 import router from '@/router';
 
 export const useMainStore = defineStore('main', {
   state() {
     return {
-      error: null,
+      error: null as Error | null,
       errorDisplayTime: 4,
       areMoviesLoading: false,
       areGenresLoading: false,
       areSeancesLoading: false,
       areScreeningsLoading: false,
-      allMovies: [],
-      allGenres: [],
-      storedSeances: [],
-      storedScreenings: [],
+      allMovies: [] as MovieData[],
+      allGenres: [] as GenreData[],
+      storedSeances: [] as SeanceData[],
+      storedScreenings: [] as ScreeningData[],
     };
   },
 
   actions: {
-    storeErrorToDisplay(error, errorTime = this.errorDisplayTime) {
+    storeErrorToDisplay(error: Error, errorTime: number = 4) {
       if (this.error !== null) return;
-
       this.error = error;
       this.errorDisplayTime = errorTime;
       if (errorTime !== Infinity) {
@@ -31,7 +31,7 @@ export const useMainStore = defineStore('main', {
       }
     },
 
-    showError(error, errorTime) {
+    showError(error: Error, errorTime: number = 4) {
       if (error.message === 'Network Error') {
         this.storeErrorToDisplay(new Error('CONNECTION TO SERVER LOST'), Infinity);
       } else {
@@ -44,7 +44,7 @@ export const useMainStore = defineStore('main', {
       try {
         this.allMovies = await getAllMoviesData();
       } catch (error) {
-        this.showError(error);
+        if (error instanceof Error) this.showError(error);
       } finally {
         this.areMoviesLoading = false;
       }
@@ -55,24 +55,24 @@ export const useMainStore = defineStore('main', {
       try {
         this.allGenres = await getMovieGenresData();
       } catch (error) {
-        this.showError(error);
+        if (error instanceof Error) this.showError(error);
       } finally {
         this.areGenresLoading = false;
       }
     },
 
-    async loadSeancesByDate(movieId, date) {
+    async loadSeancesByDate(movieId: string, date: string) {
       this.areSeancesLoading = true;
       try {
         this.storedSeances = await getSeancesData(movieId, date);
       } catch (error) {
-        this.showError(error);
+        if (error instanceof Error) this.showError(error);
       } finally {
         this.areSeancesLoading = false;
       }
     },
 
-    async loadScreenings(movieId, date) {
+    async loadScreenings(movieId: string, date: string) {
       this.areScreeningsLoading = true;
 
       await this.loadSeancesByDate(movieId, date);
@@ -84,33 +84,26 @@ export const useMainStore = defineStore('main', {
       this.areScreeningsLoading = false;
     },
 
-    matchSeancesToMovies(seances, movies) {
-      const storedScreenings = seances.reduce((screenings, seance) => {
-        const currentSeance = {
-          id: seance.id,
-          datetime: seance.datetime,
-        };
-
+    matchSeancesToMovies(seances: SeanceData[], movies: MovieData[]): ScreeningData[] {
+      return seances.reduce((screenings: ScreeningData[], seance: SeanceData) => {
         const screeningIndex = screenings.findIndex(screening => screening.id === seance.movie);
-
         if (screeningIndex < 0) {
           const matchingMovieToSeance = movies.find(movie => movie.id === seance.movie);
-          const newScreening = {
-            ...matchingMovieToSeance,
-            seances: [currentSeance],
-          };
-          screenings.push(newScreening);
+          if (matchingMovieToSeance) {
+            const newScreening = {
+              ...matchingMovieToSeance,
+              seances: [seance],
+            };
+            screenings.push(newScreening);
+          }
         } else {
-          screenings[screeningIndex].seances.push(currentSeance);
+          screenings[screeningIndex].seances.push(seance);
         }
-
         return screenings;
       }, []);
-
-      return storedScreenings;
     },
 
-    formatMovieLength(movieLength) {
+    formatMovieLength(movieLength: number | undefined): string {
       if (!movieLength) return '0h 0 min';
       const allMinutes = movieLength;
       const hours = Math.floor(allMinutes / 60);
@@ -118,12 +111,12 @@ export const useMainStore = defineStore('main', {
       return `${hours}h ${minutes.toString().padStart(2, '0')} min`;
     },
 
-    leaveRoute(destinationName = null) {
+    leaveRoute(destinationName = '') {
       const routeQuery = router.currentRoute.value.query;
-      if (destinationName) {
-        router.push({ name: destinationName });
+      if (destinationName.length > 0) {
+        router.push({ name: <string>destinationName });
       } else if (routeQuery.redirect) {
-        router.push({ name: routeQuery.redirect });
+        router.push({ name: <string>routeQuery.redirect });
       } else {
         router.push({ name: 'HomePage' });
       }

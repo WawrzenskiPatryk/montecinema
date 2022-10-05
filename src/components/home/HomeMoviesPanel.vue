@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapState, mapActions } from 'pinia';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.ts';
 
 import MovieList from '@/components/movies/MovieList.vue';
 

@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { mapActions } from 'pinia';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index.ts';
 import { movieImagePositioning } from '@/services/images.js';
 
 import BaseTag from '@/components/base/BaseTag.vue';

@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue';
-import { useAuthStore } from '@/store/auth.js';
-import { useMainStore } from '@/store/index.js';
+import { useAuthStore } from '@/store/auth.ts';
+import { useMainStore } from '@/store/index.ts';
 
 import TheHeader from '@/components/TheHeader.vue';
 

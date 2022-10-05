@@ -1,40 +1,28 @@
-<script>
-import { defineComponent } from 'vue';
-
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 import VisibilityIcon from '@/assets/icons/eye.svg';
 
-export default defineComponent({
-  components: {
-    BaseInput,
-    VisibilityIcon,
-  },
-  props: {
-    modelValue: {
-      type: [String, Number],
-      default: '',
-    },
-  },
-  data() {
-    return {
-      isPasswordVisible: false,
-    };
-  },
-  methods: {
-    togglePasswordVisibility() {
-      this.isPasswordVisible = !this.isPasswordVisible;
-    },
-    onUpdate(value) {
-      this.$emit('update:modelValue', value);
-    },
-  },
-  computed: {
-    computedType() {
-      if (this.isPasswordVisible) return 'text';
-      else return 'password';
-    },
-  },
+defineProps<{
+  modelValue: string;
+}>();
+
+const emit = defineEmits(['update:modelValue']);
+
+const isPasswordVisible = ref(false);
+
+const computedType = computed(() => {
+  if (isPasswordVisible.value) return 'text';
+  else return 'password';
 });
+
+const togglePasswordVisibility = () => {
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
+
+const onUpdate = (value: string | number): void => {
+  emit('update:modelValue', value);
+};
 </script>
 
 <template>
@@ -44,6 +32,7 @@ export default defineComponent({
       type="button"
       class="password-visibility-button"
       :class="{ 'password-visibility-button--shown': isPasswordVisible }"
+      data-spec="password-button"
     >
       <VisibilityIcon />
     </button>

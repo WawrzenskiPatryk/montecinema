@@ -14,7 +14,7 @@ export const getMovieGenresData = () => getData(endpoint.GENRES);
 
 export const getUserData = () => getData(endpoint.USER);
 
-export const getSeancesData = (movieId = null, date = null) => {
+export const getSeancesData = (movieId = '', date = '') => {
   return getData(endpoint.SEANCES, {
     params: {
       movie_id: movieId,

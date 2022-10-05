@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import { getMovieData } from '@/services/api/data.js';
-import { useMainStore } from '@/store/index.js';
+import { useMainStore } from '@/store/index';
 import { useMeta } from 'vue-meta';
+import { MovieData } from '@/types/data';
 
 import TheBreadcrumb from '@/components/TheBreadcrumb.vue';
 import MovieDetail from '@/components/movies/MovieDetail.vue';
@@ -16,22 +17,23 @@ export default defineComponent({
   },
   props: {
     movieId: {
-      type: String,
+      type: [String, Number],
       required: true,
     },
   },
   setup(props) {
     const { allMovies, showError } = useMainStore();
-
     const isLoading = ref(true);
-    const storedMovie = ref(null);
+    const storedMovie = ref<MovieData>(null);
+    const movieTitle = computed((): string => (isLoading.value ? '' : storedMovie.value.title));
 
-    const movieTitle = computed(() => (isLoading.value ? '' : storedMovie.value.title));
     const meta = computed(() => {
       return {
         title: isLoading.value ? '' : storedMovie.value.title,
       };
     });
+
+    useMeta(meta);
 
     const findMovieInAllMovies = () => {
       const filteredMovie = allMovies.find(movie => movie.id == props.movieId);
@@ -49,8 +51,6 @@ export default defineComponent({
         isLoading.value = false;
       }
     };
-
-    useMeta(meta);
 
     onMounted(async () => {
       if (allMovies.length > 0) {
