@@ -1,95 +1,58 @@
-<script>
-import { defineComponent } from 'vue';
-import { getUserData } from '@/services/api/data.js';
-import { updateUser } from '@/services/api/auth.ts';
-import { useMainStore } from '@/store/index.ts';
-import { useAuthStore } from '@/store/auth.ts';
+<script setup>
 import { useMeta } from 'vue-meta';
-
-import UserDetailsForm from '@/components/user/UserDetailsForm.vue';
 import UserDetailsCard from '@/components/user/UserDetailsCard.vue';
 
-export default defineComponent({
-  components: {
-    UserDetailsForm,
-    UserDetailsCard,
-  },
-  setup() {
-    const mainStore = useMainStore();
-    const auth = useAuthStore();
-    useMeta({ title: 'My account' });
-    return { mainStore, auth };
-  },
-  mounted() {
-    this.getCurrentUserData();
-  },
-  data() {
-    return {
-      isUnauthorized: false,
-      isLoading: true,
-      userData: null,
-    };
-  },
-  methods: {
-    async getCurrentUserData() {
-      try {
-        this.isLoading = true;
-        this.userData = await getUserData();
-      } catch (error) {
-        if (error.response.status === 401) {
-          this.isUnauthorized = true;
-          await this.auth.logout();
-          this.$router.push({ name: 'LoginPage' });
-        } else {
-          this.mainStore.showError(error);
-        }
-      } finally {
-        this.isLoading = false;
-      }
-    },
-    async onUpdateSubmit(credentials) {
-      try {
-        this.isLoading = true;
-        await updateUser(credentials);
-        this.userData = await getUserData();
-      } catch (error) {
-        if (error.response.status === 401) {
-          this.isUnauthorized = true;
-          await this.auth.logout();
-          this.$router.push({ name: 'LoginPage' });
-        } else if (error.response.status === 422) {
-          const wrongDataError = new Error('Please provide correct data');
-          this.mainStore.showError(wrongDataError);
-        } else {
-          this.mainStore.showError(error);
-        }
-      } finally {
-        this.isLoading = false;
-      }
-    },
-  },
-});
+const links = [
+  { id: 0, text: 'Personal Details', componentName: 'UserPersonalDetailsPage' },
+  { id: 1, text: 'Reservations', componentName: 'UserReservationsPage' },
+];
+
+useMeta({ title: 'My account' });
 </script>
 
 <template>
   <section class="user-account-page">
+    <nav class="user-account-page__navigation">
+      <router-link
+        v-for="link in links"
+        :key="link.id"
+        :to="{ name: link.componentName }"
+        class="user-account-page__navigation-link"
+        active-class="user-account-page__navigation-link--active"
+      >
+        {{ link.text }}
+      </router-link>
+    </nav>
     <UserDetailsCard class="user-account-page__card">
-      <div v-if="isLoading">
-        <!-- todo spinner -->
-        <h1>Loading...</h1>
-      </div>
-      <!-- todo: probably should be a router-view -->
-      <UserDetailsForm
-        v-else-if="!isUnauthorized"
-        @user-data-update="onUpdateSubmit"
-        :user-data="userData"
-      />
+      <router-view />
     </UserDetailsCard>
   </section>
 </template>
 
 <style lang="scss" scoped>
 .user-account-page {
-  padding: 6.4rem 0;
+  padding-bottom: 6.4rem;
+
+  &__navigation {
+    margin: 6.4rem 0;
+    display: flex;
+    gap: 6.4rem;
+  }
+
+  &__navigation-link {
+    font-family: 'Eczar';
+    font-weight: 600;
+    font-size: 4.8rem;
+    line-height: 102%;
+    letter-spacing: -0.01em;
+    color: $gray-bombay;
+    @include button-states($gray-jumbo, none, none);
+
+    &--active {
+      color: $gray-tuna;
+      pointer-events: none;
+      @include button-states($gray-tuna, none, none);
+    }
+  }
 }
 </style>

@@ -1,71 +1,106 @@
-<script>
-import { defineComponent } from 'vue';
+<script setup>
+import { ref, computed } from 'vue';
+import { getUserData } from '@/services/api/data.js';
+import { updateUser } from '@/services/api/auth';
+import { useMainStore } from '@/store/index';
+import { useAuthStore } from '@/store/auth';
+
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import PasswordInput from '@/components/input/PasswordInput.vue';
 import DateInput from '@/components/input/DateInput.vue';
 
-export default defineComponent({
-  components: {
-    BaseInput,
-    BaseButton,
-    PasswordInput,
-    DateInput,
-  },
-  props: {
-    userData: {
-      type: Object,
-    },
-  },
-  mounted() {
-    this.email = this.userData.email;
-    this.firstName = this.userData.first_name;
-    this.lastName = this.userData.last_name;
-    this.dateOfBirth = this.userData.date_of_birth;
-  },
-  data() {
-    return {
-      email: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: '',
-      currentPassword: '',
-      newPassword: '',
-      isNewPasswordTriggered: false,
-    };
-  },
-  methods: {
-    onSubmit() {
-      this.$emit('user-data-update', {
-        email: this.email,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        dateOfBirth: this.dateOfBirth,
-        currentPassword: this.currentPassword,
-        password: this.newPassword,
-      });
-      this.isNewPasswordTriggered = false;
-      this.newPassword = '';
-      this.currentPassword = '';
-    },
-  },
-  computed: {
-    isSubmitDisabled() {
-      const isNoDataChanged =
-        this.email === this.userData.email &&
-        this.firstName === this.userData.first_name &&
-        this.lastName === this.userData.last_name &&
-        this.dateOfBirth === this.userData.date_of_birth &&
-        this.newPassword.length === 0;
+const mainStore = useMainStore();
+const auth = useAuthStore();
 
-      return isNoDataChanged || this.currentPassword.length === 0;
-    },
-  },
+const isLoading = ref(true);
+const isNewPasswordTriggered = ref(false);
+
+const email = ref('');
+const firstName = ref('');
+const lastName = ref('');
+const dateOfBirth = ref('');
+const currentPassword = ref('');
+const newPassword = ref('');
+
+let currentUserData = null;
+
+const isSubmitDisabled = computed(() => {
+  const isNoDataChanged =
+    email.value === currentUserData.email &&
+    firstName.value === currentUserData.first_name &&
+    lastName.value === currentUserData.last_name &&
+    dateOfBirth.value === currentUserData.date_of_birth &&
+    newPassword.value.length === 0;
+
+  return isNoDataChanged || currentPassword.value.length === 0;
 });
+
+const handleError = error => {
+  if (error.response.status === 401) {
+    auth.logout();
+    mainStore.leaveRoute('LoginPage');
+  } else if (error.response.status === 422) {
+    const wrongDataError = new Error('Please provide correct data');
+    mainStore.showError(wrongDataError);
+  } else {
+    mainStore.showError(error);
+  }
+};
+
+const triggerNewPasswordField = () => {
+  isNewPasswordTriggered.value = true;
+};
+
+const setValues = () => {
+  email.value = currentUserData.email;
+  firstName.value = currentUserData.first_name;
+  lastName.value = currentUserData.last_name;
+  dateOfBirth.value = currentUserData.date_of_birth;
+  currentPassword.value = '';
+  newPassword.value = '';
+  isNewPasswordTriggered.value = false;
+  isLoading.value = false;
+};
+
+const getCurrentUserData = async () => {
+  isLoading.value = true;
+  try {
+    currentUserData = await getUserData();
+  } catch (error) {
+    handleError(error);
+  } finally {
+    setValues();
+  }
+};
+
+const onSubmit = () => {
+  isLoading.value = true;
+  try {
+    updateUser({
+      email: email.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      dateOfBirth: dateOfBirth.value,
+      currentPassword: currentPassword.value,
+      password: newPassword.value,
+    });
+  } catch (error) {
+    handleError(error);
+  } finally {
+    getCurrentUserData();
+  }
+};
+
+getCurrentUserData();
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit" class="user-details-form">
+  <div v-if="isLoading">
+    <!-- todo spinner -->
+    <h1>Loading...</h1>
+  </div>
+  <form v-else @submit.prevent="onSubmit" class="user-details-form">
     <BaseInput
       required
       type="email"
@@ -90,7 +125,7 @@ export default defineComponent({
     />
     <BaseButton
       v-if="!isNewPasswordTriggered"
-      @click="isNewPasswordTriggered = true"
+      @click="triggerNewPasswordField"
       button-type="hollow-red"
       size="regular"
       type="button"
@@ -111,12 +146,7 @@ export default defineComponent({
       placeholder="e.g. Walton"
       label="Last Name"
     />
-    <DateInput
-      required
-      v-model="dateOfBirth"
-      label="Date of Birth"
-      placeholder="DD / MM / YYYY"
-    />
+    <DateInput required v-model="dateOfBirth" label="Date of Birth" placeholder="DD / MM / YYYY" />
     <BaseButton
       :disabled="isSubmitDisabled"
       type="submit"
