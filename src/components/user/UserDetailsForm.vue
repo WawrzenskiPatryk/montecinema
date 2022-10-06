@@ -1,22 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useMeta } from 'vue-meta';
-import { getUserData } from '@/services/api/data.js';
 import { updateUser } from '@/services/api/auth';
-import { useMainStore } from '@/store/index';
-import { useAuthStore } from '@/store/auth';
+import { useUserData } from '@/composables';
 
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import PasswordInput from '@/components/input/PasswordInput.vue';
 import DateInput from '@/components/input/DateInput.vue';
 
-const mainStore = useMainStore();
-const auth = useAuthStore();
+const { currentUserData, setCurrentUserData, handleUserDataError, isUserLoading } = useUserData();
 
-const isLoading = ref(true);
-const isNewPasswordTriggered = ref(false);
-
+const isNewPasswordField = ref(false);
 const email = ref('');
 const firstName = ref('');
 const lastName = ref('');
@@ -24,61 +19,40 @@ const dateOfBirth = ref('');
 const currentPassword = ref('');
 const newPassword = ref('');
 
-let currentUserData = null;
-
 const isSubmitDisabled = computed(() => {
   const isNoDataChanged =
-    email.value === currentUserData.email &&
-    firstName.value === currentUserData.first_name &&
-    lastName.value === currentUserData.last_name &&
-    dateOfBirth.value === currentUserData.date_of_birth &&
+    email.value === currentUserData.value?.email &&
+    firstName.value === currentUserData.value?.first_name &&
+    lastName.value === currentUserData.value?.last_name &&
+    dateOfBirth.value === currentUserData.value?.date_of_birth &&
     newPassword.value.length === 0;
 
   return isNoDataChanged || currentPassword.value.length === 0;
 });
 
-const handleError = error => {
-  if (error.response.status === 401) {
-    auth.logout();
-    mainStore.leaveRoute('LoginPage');
-  } else if (error.response.status === 422) {
-    const wrongDataError = new Error('Please provide correct data');
-    mainStore.showError(wrongDataError);
-  } else {
-    mainStore.showError(error);
+const showNewPasswordField = () => {
+  isNewPasswordField.value = true;
+};
+
+const setFormValues = async () => {
+  isUserLoading.value = true;
+  await setCurrentUserData();
+  if (currentUserData.value !== null) {
+    email.value = currentUserData.value.email;
+    firstName.value = currentUserData.value.first_name;
+    lastName.value = currentUserData.value.last_name;
+    dateOfBirth.value = currentUserData.value.date_of_birth;
   }
-};
-
-const triggerNewPasswordField = () => {
-  isNewPasswordTriggered.value = true;
-};
-
-const setValues = () => {
-  email.value = currentUserData.email;
-  firstName.value = currentUserData.first_name;
-  lastName.value = currentUserData.last_name;
-  dateOfBirth.value = currentUserData.date_of_birth;
   currentPassword.value = '';
   newPassword.value = '';
-  isNewPasswordTriggered.value = false;
-  isLoading.value = false;
+  isNewPasswordField.value = false;
+  isUserLoading.value = false;
 };
 
-const getCurrentUserData = async () => {
-  isLoading.value = true;
+const onSubmit = async () => {
+  isUserLoading.value = true;
   try {
-    currentUserData = await getUserData();
-  } catch (error) {
-    handleError(error);
-  } finally {
-    setValues();
-  }
-};
-
-const onSubmit = () => {
-  isLoading.value = true;
-  try {
-    updateUser({
+    await updateUser({
       email: email.value,
       firstName: firstName.value,
       lastName: lastName.value,
@@ -87,18 +61,18 @@ const onSubmit = () => {
       password: newPassword.value,
     });
   } catch (error) {
-    handleError(error);
+    handleUserDataError(error);
   } finally {
-    getCurrentUserData();
+    setFormValues();
   }
 };
 
 useMeta({ title: 'Personal Details' });
-getCurrentUserData();
+setFormValues();
 </script>
 
 <template>
-  <div v-if="isLoading">
+  <div v-if="isUserLoading">
     <!-- todo spinner -->
     <h1>Loading...</h1>
   </div>
@@ -113,21 +87,21 @@ getCurrentUserData();
     <PasswordInput
       required
       v-model="currentPassword"
-      :label="isNewPasswordTriggered ? 'Current password' : 'Password'"
+      :label="isNewPasswordField ? 'Current password' : 'Password'"
       :placeholder="
-        isNewPasswordTriggered ? 'Enter current password' : 'Enter password to confirm changes'
+        isNewPasswordField ? 'Enter current password' : 'Enter password to confirm changes'
       "
     />
     <PasswordInput
-      v-if="isNewPasswordTriggered"
+      v-if="isNewPasswordField"
       required
       v-model="newPassword"
       label="New password"
       placeholder="Enter new password"
     />
     <BaseButton
-      v-if="!isNewPasswordTriggered"
-      @click="triggerNewPasswordField"
+      v-if="!isNewPasswordField"
+      @click="showNewPasswordField"
       button-type="hollow-red"
       size="regular"
       type="button"

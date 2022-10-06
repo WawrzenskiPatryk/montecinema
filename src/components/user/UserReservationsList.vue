@@ -1,33 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useMeta } from 'vue-meta';
-import { ReservationData, UserData } from '@/types/data';
-import { getReservationsData, getUserData } from '@/services/api/data.js';
-
-const isLoading = ref(true);
+import { ReservationData } from '@/types/data';
+import { getReservationsData } from '@/services/api/data.js';
+import { useUserData } from '@/composables';
 
 const reservationsData = ref<ReservationData[]>([]);
-
-const getCurrentUserData = async (): Promise<UserData> => {
-  isLoading.value = true;
-  let userData;
-  try {
-    userData = await getUserData();
-  } catch (error) {
-    console.log(error);
-  }
-  return userData;
-};
+const { currentUserData, setCurrentUserData, handleUserDataError, isUserLoading } = useUserData();
+const areReservationsLoading = ref(true);
 
 const getUserReservationsData = async () => {
-  isLoading.value = true;
+  isUserLoading.value = true;
+  areReservationsLoading.value = true;
   try {
-    const currentUserData = await getCurrentUserData();
-    reservationsData.value = await getReservationsData(currentUserData.email, 1, 200);
+    await setCurrentUserData();
+    reservationsData.value = await getReservationsData(currentUserData.value?.email, 1, 200);
   } catch (error) {
-    console.log(error);
+    handleUserDataError(error);
   } finally {
-    isLoading.value = false;
+    isUserLoading.value = false;
+    areReservationsLoading.value = false;
   }
 };
 
@@ -36,7 +28,7 @@ getUserReservationsData();
 </script>
 
 <template>
-  <div v-if="isLoading">
+  <div v-if="areReservationsLoading">
     <!-- todo spinner -->
     <h1>Loading...</h1>
   </div>
