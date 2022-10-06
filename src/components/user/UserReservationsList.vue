@@ -57,6 +57,7 @@ getUserReservationsData();
         v-for="reservation in groupedReservations.upcoming"
         :key="reservation.id"
         :reservation="reservation"
+        :is-past="false"
       />
     </ul>
     <h3 class="reservations__group-heading">Past</h3>
@@ -66,6 +67,7 @@ getUserReservationsData();
         v-for="reservation in groupedReservations.past.slice(0, 4)"
         :key="reservation.id"
         :reservation="reservation"
+        :is-past="true"
       />
       <!---------->
     </ul>

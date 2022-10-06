@@ -2,9 +2,12 @@
 import { defineProps } from 'vue';
 import { ReservationData } from '@/types/data';
 import { computed } from 'vue';
+import BaseTag from '@/components/base/BaseTag.vue';
+import BaseButton from '@/components/base/BaseButton.vue';
 
 const props = defineProps<{
   reservation: ReservationData;
+  isPast: boolean;
 }>();
 
 const title = computed(() => {
@@ -41,6 +44,10 @@ const time = computed(() => {
   return timeString.replaceAll(',', ' —').replace('—', '');
 });
 
+const status = computed(() => {
+  return props.reservation.status;
+});
+
 const reservationData = computed(() => {
   return [
     { id: 0, label: 'movie', content: title.value },
@@ -57,13 +64,21 @@ const reservationData = computed(() => {
       <span class="reservation-item__element-label">{{ data.label }}</span>
       <span class="reservation-item__element-content">{{ data.content }} </span>
     </div>
+    <template v-if="!isPast">
+      <div class="reservation-item__status-wrapper">
+        <BaseTag :theme="status.id === 1 ? 'gray' : 'red'">{{ status.name }}</BaseTag>
+      </div>
+      <div class="reservation-item__button-wrapper">
+        <BaseButton button-type="hollow-dark">Remove</BaseButton>
+      </div>
+    </template>
   </li>
 </template>
 
 <style lang="scss" scoped>
 .reservation-item {
   display: grid;
-  grid-template-columns: 20rem 12.5rem 24.5rem 11.5rem;
+  grid-template-columns: 20rem 12.5rem 24.5rem 11.5rem 1fr auto;
   margin-bottom: 2.4rem;
   gap: 3.2rem;
 
@@ -71,6 +86,16 @@ const reservationData = computed(() => {
     display: flex;
     flex-direction: column;
     padding: 0;
+  }
+
+  &__status-wrapper,
+  &__button-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &__status-wrapper {
+    justify-content: center;
   }
 
   &__element-label {
