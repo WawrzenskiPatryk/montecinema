@@ -14,11 +14,21 @@ export const getMovieGenresData = () => getData(endpoint.GENRES);
 
 export const getUserData = () => getData(endpoint.USER);
 
-export const getSeancesData = (movieId = '', date = '') => {
+export const getSeancesData = (movie_id = '', date = '') => {
   return getData(endpoint.SEANCES, {
     params: {
-      movie_id: movieId,
-      date: date,
+      movie_id,
+      date,
+    },
+  });
+};
+
+export const getReservationsData = (user_email = '', page = 0, per_page = 25) => {
+  return getData(endpoint.RESERVATIONS, {
+    params: {
+      user_email,
+      page,
+      per_page,
     },
   });
 };

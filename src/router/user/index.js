@@ -19,7 +19,7 @@ export default [
       {
         path: 'reservations',
         name: 'UserReservationsPage',
-        component: () => import('@/components/user/UserDetailsForm.vue'),
+        component: () => import('@/components/user/UserReservationsList.vue'),
       },
     ],
   },

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { useMeta } from 'vue-meta';
 import { getUserData } from '@/services/api/data.js';
 import { updateUser } from '@/services/api/auth';
 import { useMainStore } from '@/store/index';
@@ -92,6 +93,7 @@ const onSubmit = () => {
   }
 };
 
+useMeta({ title: 'Personal Details' });
 getCurrentUserData();
 </script>
 
