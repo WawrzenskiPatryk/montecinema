@@ -2,14 +2,14 @@
 import { ref, computed } from 'vue';
 import { useMeta } from 'vue-meta';
 import { updateUser } from '@/services/api/auth';
-import { useUserData } from '@/composables';
+import { useUserData } from '@/composables/user';
 
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import PasswordInput from '@/components/input/PasswordInput.vue';
 import DateInput from '@/components/input/DateInput.vue';
 
-const { currentUserData, setCurrentUserData, handleUserDataError, isUserLoading } = useUserData();
+const { currentUserData, loadCurrentUserData, handleUserDataError, isUserLoading } = useUserData();
 
 const isNewPasswordField = ref(false);
 const email = ref('');
@@ -36,7 +36,7 @@ const showNewPasswordField = () => {
 
 const setFormValues = async () => {
   isUserLoading.value = true;
-  await setCurrentUserData();
+  await loadCurrentUserData();
   if (currentUserData.value !== null) {
     email.value = currentUserData.value.email;
     firstName.value = currentUserData.value.first_name;

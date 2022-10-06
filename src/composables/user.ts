@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth';
 import { UserData } from '@/types/data';
 import { getUserData } from '@/services/api/data.js';
 
-const mainStore = useMainStore();
+const main = useMainStore();
 const auth = useAuthStore();
 const isUserLoading = ref(true);
 const currentUserData = ref<UserData | null>(null);
@@ -14,16 +14,16 @@ export const useUserData = () => {
   const handleUserDataError = (error: any) => {
     if (error.response.status === 401) {
       auth.logout();
-      mainStore.leaveRoute('LoginPage');
+      main.leaveRoute('LoginPage');
     } else if (error.response.status === 422) {
       const wrongDataError = new Error('Please provide correct data');
-      mainStore.showError(wrongDataError);
+      main.showError(wrongDataError);
     } else {
-      mainStore.showError(error);
+      main.showError(error);
     }
   };
 
-  const setCurrentUserData = async () => {
+  const loadCurrentUserData = async () => {
     try {
       currentUserData.value = await getUserData();
     } catch (error) {
@@ -34,7 +34,7 @@ export const useUserData = () => {
   return {
     isUserLoading,
     currentUserData,
-    setCurrentUserData,
+    loadCurrentUserData,
     handleUserDataError,
   };
 };
