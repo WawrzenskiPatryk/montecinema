@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { ReservationData } from '@/types/data';
 import { computed } from 'vue';
 import BaseTag from '@/components/base/BaseTag.vue';

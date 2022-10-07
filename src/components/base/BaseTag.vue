@@ -1,22 +1,16 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import { computed } from 'vue';
-
-const props = defineProps<{
-  theme?: 'gray' | 'red';
-}>();
-
-const themeClass = computed(() => {
-  if (props.theme === 'red' || props.theme === undefined) {
-    return `tag--red`;
-  } else {
-    return `tag--${props.theme}`;
+const props = withDefaults(
+  defineProps<{
+    theme?: 'gray' | 'red';
+  }>(),
+  {
+    theme: 'red',
   }
-});
+);
 </script>
 
 <template>
-  <span class="tag" :class="themeClass">
+  <span class="tag" :class="`tag--${props.theme}`">
     <slot />
   </span>
 </template>
