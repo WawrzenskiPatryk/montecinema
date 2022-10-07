@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onUpdated } from 'vue';
+import { ref, computed } from 'vue';
 import BaseInput from '@/components/base/BaseInput.vue';
 
 const props = defineProps<{
@@ -26,9 +26,7 @@ const onUpdate = (value: string): void => {
   emit('update:modelValue', value);
 };
 
-onUpdated(() => {
-  onUpdate(props.modelValue);
-});
+onUpdate(props.modelValue);
 </script>
 
 <template>

@@ -1,71 +1,82 @@
-<script>
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useMeta } from 'vue-meta';
+import { updateUser } from '@/services/api/auth';
+import { useUserData } from '@/composables/user';
+
 import BaseInput from '@/components/base/BaseInput.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import PasswordInput from '@/components/input/PasswordInput.vue';
 import DateInput from '@/components/input/DateInput.vue';
 
-export default defineComponent({
-  components: {
-    BaseInput,
-    BaseButton,
-    PasswordInput,
-    DateInput,
-  },
-  props: {
-    userData: {
-      type: Object,
-    },
-  },
-  mounted() {
-    this.email = this.userData.email;
-    this.firstName = this.userData.first_name;
-    this.lastName = this.userData.last_name;
-    this.dateOfBirth = this.userData.date_of_birth;
-  },
-  data() {
-    return {
-      email: '',
-      firstName: '',
-      lastName: '',
-      dateOfBirth: '',
-      currentPassword: '',
-      newPassword: '',
-      isNewPasswordTriggered: false,
-    };
-  },
-  methods: {
-    onSubmit() {
-      this.$emit('user-data-update', {
-        email: this.email,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        dateOfBirth: this.dateOfBirth,
-        currentPassword: this.currentPassword,
-        password: this.newPassword,
-      });
-      this.isNewPasswordTriggered = false;
-      this.newPassword = '';
-      this.currentPassword = '';
-    },
-  },
-  computed: {
-    isSubmitDisabled() {
-      const isNoDataChanged =
-        this.email === this.userData.email &&
-        this.firstName === this.userData.first_name &&
-        this.lastName === this.userData.last_name &&
-        this.dateOfBirth === this.userData.date_of_birth &&
-        this.newPassword.length === 0;
+const { currentUserData, loadCurrentUserData, handleUserDataError, isUserLoading } = useUserData();
 
-      return isNoDataChanged || this.currentPassword.length === 0;
-    },
-  },
+const isNewPasswordField = ref(false);
+const email = ref('');
+const firstName = ref('');
+const lastName = ref('');
+const dateOfBirth = ref('');
+const currentPassword = ref('');
+const newPassword = ref('');
+
+const isSubmitDisabled = computed(() => {
+  const isNoDataChanged =
+    email.value === currentUserData.value?.email &&
+    firstName.value === currentUserData.value?.first_name &&
+    lastName.value === currentUserData.value?.last_name &&
+    dateOfBirth.value === currentUserData.value?.date_of_birth &&
+    newPassword.value.length === 0;
+
+  return isNoDataChanged || currentPassword.value.length === 0;
 });
+
+const showNewPasswordField = () => {
+  isNewPasswordField.value = true;
+};
+
+const setFormValues = async () => {
+  isUserLoading.value = true;
+  await loadCurrentUserData();
+  if (currentUserData.value !== null) {
+    email.value = currentUserData.value.email;
+    firstName.value = currentUserData.value.first_name;
+    lastName.value = currentUserData.value.last_name;
+    dateOfBirth.value = currentUserData.value.date_of_birth;
+  }
+  currentPassword.value = '';
+  newPassword.value = '';
+  isNewPasswordField.value = false;
+  isUserLoading.value = false;
+};
+
+const onSubmit = async () => {
+  isUserLoading.value = true;
+  try {
+    await updateUser({
+      email: email.value,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      dateOfBirth: dateOfBirth.value,
+      currentPassword: currentPassword.value,
+      password: newPassword.value,
+    });
+  } catch (error) {
+    handleUserDataError(error);
+  } finally {
+    setFormValues();
+  }
+};
+
+useMeta({ title: 'Personal Details' });
+setFormValues();
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit" class="user-details-form">
+  <div v-if="isUserLoading">
+    <!-- todo spinner -->
+    <h1>Loading...</h1>
+  </div>
+  <form v-else @submit.prevent="onSubmit" class="user-details-form">
     <BaseInput
       required
       type="email"
@@ -76,21 +87,21 @@ export default defineComponent({
     <PasswordInput
       required
       v-model="currentPassword"
-      :label="isNewPasswordTriggered ? 'Current password' : 'Password'"
+      :label="isNewPasswordField ? 'Current password' : 'Password'"
       :placeholder="
-        isNewPasswordTriggered ? 'Enter current password' : 'Enter password to confirm changes'
+        isNewPasswordField ? 'Enter current password' : 'Enter password to confirm changes'
       "
     />
     <PasswordInput
-      v-if="isNewPasswordTriggered"
+      v-if="isNewPasswordField"
       required
       v-model="newPassword"
       label="New password"
       placeholder="Enter new password"
     />
     <BaseButton
-      v-if="!isNewPasswordTriggered"
-      @click="isNewPasswordTriggered = true"
+      v-if="!isNewPasswordField"
+      @click="showNewPasswordField"
       button-type="hollow-red"
       size="regular"
       type="button"
@@ -111,12 +122,7 @@ export default defineComponent({
       placeholder="e.g. Walton"
       label="Last Name"
     />
-    <DateInput
-      required
-      v-model="dateOfBirth"
-      label="Date of Birth"
-      placeholder="DD / MM / YYYY"
-    />
+    <DateInput required v-model="dateOfBirth" label="Date of Birth" placeholder="DD / MM / YYYY" />
     <BaseButton
       :disabled="isSubmitDisabled"
       type="submit"

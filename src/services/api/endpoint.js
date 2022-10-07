@@ -5,4 +5,5 @@ export default {
   USER: '/user',
   LOGIN: '/login',
   REGISTER: '/register',
+  RESERVATIONS: '/reservations'
 };
